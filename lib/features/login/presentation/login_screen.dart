@@ -1,12 +1,10 @@
 import 'package:country_picker/country_picker.dart';
-import 'package:escola/core/config/widgets/config_builder.dart';
-import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/core/components/buttons/button_with_icon.dart';
 import 'package:escola/core/components/fields/error_field.dart';
 import 'package:escola/core/components/fields/phone_field.dart';
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/components/text/professors_container.dart';
-import 'package:escola/core/config/config.dart';
+import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/app_constants.dart';
@@ -18,6 +16,7 @@ import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/presentation/otp_screen.dart';
 import 'package:escola/features/privacy_policy/privacy_policy_screen.dart';
 import 'package:escola/features/terms_and_condtions/terms_and_conditions_screen.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -124,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               width: 210.csw,
                               child: ConfigSelector(
                                 selector: (config) => config.logo_horizontal,
-                                builder:(context, logo) => CommonImage(
+                                builder: (context, logo) => CommonImage(
                                   imageUrl: logo ?? Assets.icons.defaultHorizontalLogo.path,
                                   fallBackImagePath: Assets.icons.defaultHorizontalLogo.path,
                                   height: 90.h,
@@ -278,9 +277,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   formKey.currentState?.save();
                                   if (formKey.currentState?.validate() ?? false) {
-                                    BlocProvider.of<LoginBloc>(context).requestOTP(
-                                      phone: "+${country.phoneCode + phoneController.text}",
-                                      countryCode: country.countryCode,
+                                    // BlocProvider.of<LoginBloc>(context).requestOTP(
+                                    //   phone: "+${country.phoneCode + phoneController.text}",
+                                    //   countryCode: country.countryCode,
+                                    // );
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) => BlocProvider.value(
+                                          value: BlocProvider.of<LoginBloc>(context),
+                                          child: OTPScreen(
+                                            phone: phoneController.text,
+                                            phoneCode: country.phoneCode,
+                                            countryCode: country.countryCode,
+                                            rememberMe: rememberMeToggle.value,
+                                          ),
+                                        ),
+                                      ),
                                     );
                                   }
                                 },

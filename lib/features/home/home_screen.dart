@@ -137,12 +137,11 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                 if (context.isParents) const HomeCardsList(),
                                 if (context.isParents)
-                                  Column(
+                                  const Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-
-                                      const ChildrenMenus(),
+                                      ChildrenMenus(),
                                     ],
                                   ),
                                 if (events.isNotEmpty) ...[

@@ -66,7 +66,7 @@ class EventItem extends StatelessWidget {
                         padding:
                             validString(eventModel.imageUrl) ? EdgeInsets.zero : EdgeInsets.symmetric(vertical: 40.h),
                         child: CommonImage(
-                          imageUrl: validateString(eventModel.imageUrl, assetsPath('default_logo')),
+                          imageUrl: validateString(eventModel.imageUrl, assetsPath('Logo')),
                           fit: validString(eventModel.imageUrl) ? BoxFit.cover : BoxFit.contain,
                           height: 223.csh,
                           width: double.maxFinite,

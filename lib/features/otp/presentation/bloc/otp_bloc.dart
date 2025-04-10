@@ -2,16 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
-import 'package:escola/core/models/test_user.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
 import 'package:escola/features/login/models/login_requset.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
-import 'package:escola/my_app.dart';
 import 'package:flutter/cupertino.dart';
 
 // part 'otp_event.dart';
@@ -39,7 +36,7 @@ class OTPBloc extends Cubit<OTPState> {
 
   final int otpTimeout = 60;
 
-  _successOTP(OTPRequest model, String countryCode) async {
+  successOTP(OTPRequest model, String countryCode) async {
     final loginResponse =
         await loginRepository.login(LoginRequest(phone: model.phoneNumber, country_code: countryCode));
     await loginResponse.fold((l) async => emit(OTPFailure(l)), (user) async {
@@ -111,7 +108,7 @@ class OTPBloc extends Cubit<OTPState> {
           emit(OTPFailure(NetworkFailure(message: l.code ?? '')));
         }
       },
-      onSuccess: (r) async => _successOTP(r, countryCode),
+      onSuccess: (r) async => successOTP(r, countryCode),
     );
   }
 
@@ -138,7 +135,7 @@ class OTPBloc extends Cubit<OTPState> {
       (l) {
         emit(OTPFailure(NetworkFailure(message: l.code ?? '')));
       },
-      (r) => _successOTP(r, countryCode),
+      (r) => successOTP(r, countryCode),
     );
   }
 
