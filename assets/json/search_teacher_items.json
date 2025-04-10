@@ -1,0 +1,48 @@
+{
+    "data": {
+        "searchResult": [
+            {
+                "id": 1,
+                "name": "Teacher 1",
+                "avatar": ""
+            },
+            {
+                "id": 2,
+                "name": "Teacher 2",
+                "avatar": ""
+            },
+            {
+                "id": 3,
+                "name": "Teacher 3",
+                "avatar": ""
+            },
+            {
+                "id": 4,
+                "name": "Teacher 4",
+                "avatar": ""
+            },
+            {
+                "id": 5,
+                "name": "Teacher 5",
+                "avatar": ""
+            },
+            {
+                "id": 6,
+                "name": "Teacher 6",
+                "avatar": ""
+            },
+            {
+                "id": 11,
+                "name": "Teacher 7",
+                "avatar": "http://escola.local/storage/24/logo-1.png"
+            },
+            {
+                "id": 12,
+                "name": "Teacher 8",
+                "avatar": "http://escola.local/storage/64/WEBSHOTS.JPG"
+            }
+        ]
+    },
+    "message": "DataSent",
+    "statusCode": 200
+}

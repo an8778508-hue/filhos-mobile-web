@@ -1,0 +1,141 @@
+{
+  "fields": [
+    {
+      "title": "Determinando a paternidade",
+      "type": "dropdown",
+      "id": "choose_children",
+      "hint": "Please select child",
+      "values": [
+        {
+          "id": "1",
+          "title": "Osama Adel"
+        },
+        {
+          "id": "2",
+          "title": "Ahmed Emad"
+        }
+      ]
+    },
+    {
+      "title": "Determinando a Dose",
+      "type": "counter",
+      "id": "dose_quantity",
+      "min": "0.1",
+      "max": 2,
+      "step": 0.1
+    },
+    {
+      "type": "collection",
+      "items": [
+        {
+          "type": "dropdown",
+          "title": "Escolha a dose",
+          "hint": "Please select dose",
+          "id": "dose_type",
+          "values": [
+            {
+              "id": "tablet",
+              "title": "Tablet"
+            },
+            {
+              "id": "drink",
+              "title": "Drink"
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "title": "Número de doses",
+          "id": "dose_number",
+          "hint": "Please select number",
+          "initial": "one",
+          "values": [
+            {
+              "id": "tablet",
+              "title": "Tablet"
+            },
+            {
+              "id": "one",
+              "title": "One"
+            }
+          ]
+        },
+        {
+          "type": "segmented",
+          "title": "Tempo",
+          "id": "time",
+          "initial": "night",
+          "values": [
+            {
+              "id": "night",
+              "title": "noite"
+            },
+            {
+              "id": "midday",
+              "title": "Meio-dia"
+            },
+            {
+              "id": "sou",
+              "title": "SOU"
+            }
+          ]
+        },
+        {
+          "type": "segmented",
+          "title": "Instruções",
+          "id": "instructions",
+          "values": [
+            {
+              "id": "com_comida",
+              "title": "Com comida"
+            },
+            {
+              "id": "antes_de_comer",
+              "title": "antes de comer"
+            }
+          ]
+        },
+        {
+          "type": "segmented",
+          "title": "hoje",
+          "id": "day",
+          "values": [
+            {
+              "id": "mes",
+              "title": "Mês"
+            },
+            {
+              "id": "semana",
+              "title": "semana"
+            },
+            {
+              "id": "dia",
+              "title": "dia"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Período de tempo",
+      "type": "counter",
+      "id": "period",
+      "min": "1",
+      "max": 3,
+      "step": 1,
+      "initial": "2"
+    },
+    {
+      "type": "uploadImage",
+      "id": "upload_image",
+      "label": "Anexe uma cópia da receita",
+      "hint": "Por favor, tire uma boa foto da prescrição e deixe-a clara para leitura"
+    },
+    {
+      "type": "comments",
+      "id": "comments",
+      "label": "comentários",
+      "button": "Adicione uma anotação"
+    }
+  ]
+}

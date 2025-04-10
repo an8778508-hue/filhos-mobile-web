@@ -1,0 +1,33 @@
+{
+  "event": {
+    "id": 1,
+    "title": "Método do LITTLE KICKERS",
+    "description": "agora a turma do INFANTIL 1 também participam das aulas do métod agora a turma do INFANTIL 1 também participam das aulas do métod agora a turma do INFANTIL 1 também participam das aulas do métod",
+    "list_image_urls": [
+      "https://www.baby-chick.com/wp-content/uploads/2020/08/Beautiful-toddler-boy-playing-with-construction-blocks-at-kindergarten-1185931783_2209x1363-1024x632.jpeg",
+      "https://www.baby-chick.com/wp-content/uploads/2020/08/Beautiful-toddler-boy-playing-with-construction-blocks-at-kindergarten-1185931783_2209x1363-1024x632.jpeg"
+    ],
+    "start_date": "2021-09-01T00:00:00.000Z",
+    "end_date": "2021-09-01T00:00:00.000Z",
+    "currency": "USD",
+    "price_before_discount": "500",
+    "price_after_discount": "400",
+    "dead_line_for_approval": "2021-09-01T00:00:00.000Z",
+    "payment_info": "pix: 20222334xx",
+    "required_approval": true,
+    "required_paid": true,
+    "tags": [
+      {
+        "id":1,
+        "name":"All Students"
+      },
+      {
+        "id":2,
+        "name":"All Teachers"
+      }
+    ]
+
+
+
+}
+}

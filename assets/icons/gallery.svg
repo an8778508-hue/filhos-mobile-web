@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="38" height="29" viewBox="0 0 38 29">
+    <g data-name="Group 11695">
+        <path data-name="Rectangle 4757" transform="translate(3)" style="fill:#2b5f7f" d="M0 0h32v4H0z"/>
+        <g data-name="Rectangle 4756" style="stroke-width:2px;stroke:#000;fill:none">
+            <path style="stroke:none" d="M0 0h33v29H0z" transform="translate(2)"/>
+            <path style="fill:none" d="M1 1h31v27H1z" transform="translate(2)"/>
+        </g>
+        <g data-name="Polygon 4" style="fill:#2393d2">
+            <path d="M18.297 8H2.703L10.5 1.317 18.297 8z" style="stroke:none" transform="translate(0 15)"/>
+            <path d="M10.5 2.634 5.407 7h10.186L10.5 2.634M10.5 0 21 9H0l10.5-9z" style="fill:#000;stroke:none" transform="translate(0 15)"/>
+        </g>
+        <g data-name="Polygon 3" style="fill:#2393d2">
+            <path d="M23.586 12H2.414L13 1.414 23.586 12z" style="stroke:none" transform="translate(12 11)"/>
+            <path d="M13 2.828 4.828 11h16.344L13 2.828M13 0l13 13H0L13 0z" style="fill:#000;stroke:none" transform="translate(12 11)"/>
+        </g>
+        <g data-name="Ellipse 1543" transform="translate(7 7)" style="fill:#fcdd13;stroke-width:1.5px;stroke:#000">
+            <circle cx="3" cy="3" r="3" style="stroke:none"/>
+            <circle cx="3" cy="3" r="2.25" style="fill:none"/>
+        </g>
+    </g>
+</svg>

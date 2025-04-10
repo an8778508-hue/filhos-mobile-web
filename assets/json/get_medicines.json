@@ -1,0 +1,23 @@
+{
+  "children": [
+    {
+      "id": "1",
+      "name": "child name",
+      "avatar": "child image",
+      "class": "child class",
+      "medicines": [
+        {
+          "id": "1",
+          "title": "",
+          "body": "",
+          "attachments": [
+            "image PNG",
+            "image JPEG",
+            "file PDF",
+            "file DOC"
+          ]
+        }
+      ]
+    }
+  ]
+}

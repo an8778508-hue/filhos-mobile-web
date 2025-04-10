@@ -1,0 +1,77 @@
+{
+  "announcements": [
+    {
+      "id": 1,
+      "date": "2021-09-12T00:00:00.000Z",
+      "announcements": [
+        {
+          "id": 1,
+          "title": "Método do LITTLE KICKERS",
+          "description": "agora a turma do INFANTIL 1 também participam das aulas do métod",
+          "date": "2021-09-01T00:00:00.000Z",
+          "tags": [
+            {
+              "id": 1,
+              "name": "All Students"
+            },
+            {
+              "id": 2,
+              "name": "All Teachers"
+            }
+          ],
+          "attachments": [
+            "https://www.baby-chick.com/wp-content/uploads/2020/08/Beautiful-toddler-boy-playing-with-construction-blocks-at-kindergarten-1185931783_2209x1363-1024x632.jpeg",
+            "https://www.baby-chick.com/wp-content/uploads/2020/08/Beautiful-toddler-boy-playing-with-construction-blocks-at-kindergarten-1185931783_2209x1363-1024x632.jpeg",
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          ]
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "date": "2021-09-11T00:00:00.000Z",
+      "announcements": [
+        {
+          "id": 1,
+          "title": "Método do LITTLE KICKERS",
+          "description": "agora a turma do INFANTIL 1 também participam das aulas do métod",
+          "date": "2021-09-01T00:00:00.000Z",
+          "tags": [
+            {
+              "id": 1,
+              "name": "All Students"
+            }
+          ],
+          "attachments": [
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          ]
+        },
+        {
+          "id": 1,
+          "title": "Método do LITTLE KICKERS",
+          "description": "agora a turma do INFANTIL 1 também participam das aulas do métod",
+          "date": "2021-09-01T00:00:00.000Z",
+          "tags": [
+            {
+              "id": 2,
+              "name": "All Teachers"
+            }
+          ],
+          "attachments": [
+            "https://www.baby-chick.com/wp-content/uploads/2020/08/Beautiful-toddler-boy-playing-with-construction-blocks-at-kindergarten-1185931783_2209x1363-1024x632.jpeg",
+            "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+          ]
+        },
+        {
+          "id": 1,
+          "title": "Método do LITTLE KICKERS",
+          "description": "agora a turma do INFANTIL 1 também participam das aulas do métod",
+          "date": "2021-09-01T00:00:00.000Z",
+          "tags": [
+          ],
+          "attachments": []
+        }
+      ]
+    }
+  ]
+}

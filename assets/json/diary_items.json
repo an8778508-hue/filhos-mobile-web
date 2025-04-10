@@ -1,0 +1,100 @@
+{
+    "data": {
+        "school_levels": [
+            {
+                "id": 1,
+                "name": "Level 2"
+            },
+            {
+                "id": 2,
+                "name": "Level 1"
+            }
+        ],
+        "school_classes": [
+            {
+                "id": 3,
+                "name": "Class 2"
+            },
+            {
+                "id": 4,
+                "name": "Class 1"
+            }
+        ],
+        "children": [
+            {
+                "id": 5,
+                "name": "TEst3",
+                "avatar": "",
+                "class": "Class 1"
+            },
+            {
+                "id": 6,
+                "name": "Test2",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 7,
+                "name": "Test",
+                "avatar": "",
+                "class": "Class 1"
+            },
+            {
+                "id": 8,
+                "name": "Amr",
+                "avatar": "",
+                "class": null
+            },
+            {
+                "id": 9,
+                "name": "Khaled Ahmed",
+                "avatar": "",
+                "class": "Class 1"
+            },
+            {
+                "id": 10,
+                "name": "Mahmoud",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 11,
+                "name": "Mohamed",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 12,
+                "name": "dsa",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 13,
+                "name": "test test",
+                "avatar": "",
+                "class": "Class 1"
+            },
+            {
+                "id": 14,
+                "name": "123",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 15,
+                "name": "test test",
+                "avatar": "http://escola.local/storage/24/logo-1.png",
+                "class": "Class 1"
+            },
+            {
+                "id": 16,
+                "name": "simpa",
+                "avatar": "http://escola.local/storage/64/WEBSHOTS.JPG",
+                "class": "Class 2"
+            }
+        ]
+    },
+    "message": "DataSent",
+    "statusCode": 200
+}

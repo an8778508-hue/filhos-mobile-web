@@ -1,0 +1,153 @@
+{
+  "data": [
+    {
+      "title": "determine_child",
+      "type": "multiselect",
+      "id": "children",
+      "hint": "determine_child",
+      "required": "true",
+      "values": []
+    },
+    {
+      "type": "text",
+      "id": "name",
+      "title": "medicine_name",
+      "required": "true",
+      "hint": "medicine_name"
+    },
+    {
+      "title": "determine_dose",
+      "type": "counter",
+      "required": "true",
+      "id": "dose",
+      "min": 0.1,
+      "max": 10,
+      "step": 0.1
+    },
+    {
+      "type": "collection",
+      "items": [
+        {
+          "type": "dropdown",
+          "title": "choose_dose",
+          "required": "true",
+          "hint": "please_choose_dose",
+          "id": "dose_type",
+          "values": [
+            {
+              "id": 1,
+              "title": "tablet"
+            },
+            {
+              "id": 2,
+              "title": "drink"
+            }
+          ]
+        },
+        {
+          "type": "dropdown",
+          "title": "number_of_doses",
+          "id": "number_of_doses",
+          "required": "true",
+          "hint": "select_number",
+          "values": [
+            {
+              "id": 1,
+              "title": "two_times"
+            },
+            {
+              "id": 2,
+              "title": "one_times"
+            }
+          ]
+        },
+        {
+          "type": "periodOfTime",
+          "title": "time",
+          "required": "true",
+          "id": "tempo",
+          "hint": "select_time",
+          "values": [
+            {
+              "id": 1,
+              "title": "night"
+            },
+            {
+              "id": 2,
+              "title": "midday"
+            },
+            {
+              "id": 3,
+              "title": "sou"
+            }
+          ]
+        },
+        {
+          "type": "segmented",
+          "title": "instructions",
+          "required": "true",
+          "id": "instructions",
+          "values": [
+            {
+              "id": 1,
+              "title": "with_food"
+            },
+            {
+              "id": 2,
+              "title": "before_eating"
+            }
+          ]
+        },
+        {
+          "type": "segmented",
+          "title": "hour",
+          "required": "true",
+          "id": "day",
+          "values": [
+            {
+              "id": 1,
+              "title": "month"
+            },
+            {
+              "id": 2,
+              "title": "week"
+            },
+            {
+              "id": 3,
+              "title": "day"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "datePicker",
+      "id": "starting_date",
+      "required": "true",
+      "title": "starting_date",
+      "hint": "select_date"
+    },
+    {
+      "title": "period_time",
+      "type": "counter",
+      "required": "true",
+      "id": "period_of_time",
+      "min": 1,
+      "max": 10,
+      "step": 1
+    },
+    {
+      "type": "uploadImage",
+      "id": "upload_img",
+      "required": "true",
+      "label": "attach_copy_of_recipe",
+      "hint": "attach_copy_of_recipe_desc"
+    },
+    {
+      "type": "comments",
+      "id": "comments",
+      "label": "comments",
+      "button": "add_note"
+    }
+  ]
+}

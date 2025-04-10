@@ -1,0 +1,171 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Food",
+      "icon": "fas fa-archive",
+      "questions": [
+        {
+          "id": 1,
+          "type": "duration",
+          "allow_text": false,
+          "allow_alert": false,
+          "label": "وقت وجبة الافطار",
+          "check_values": null,
+          "select_values": null,
+          "multi_select": false,
+          "default_select": null
+        },
+        {
+          "id": 2,
+          "type": "rating",
+          "allow_text": true,
+          "allow_alert": false,
+          "label": "مستوى الأكل",
+          "check_values": null,
+          "select_values": null,
+          "multi_select": false,
+          "default_select": null
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Information",
+      "icon": "fas fa-archive",
+      "questions": [
+        {
+          "id": 1,
+          "type": "info",
+          "allow_text": false,
+          "allow_alert": false,
+          "label": null,
+          "check_values": null,
+          "select_values": null,
+          "multi_select": false,
+          "default_select": null
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Sleep",
+      "icon": "fas fa-bed",
+      "questions": [
+        {
+          "id": 3,
+          "type": "check",
+          "allow_text": false,
+          "allow_alert": false,
+          "label": "هل نام طول اليوم",
+          "check_values": {
+            "on": "نام",
+            "off": "منمش"
+          },
+          "select_values": null,
+          "multi_select": false,
+          "default_select": null
+        },
+        {
+          "id": 8,
+          "type": "images",
+          "allow_text": false,
+          "allow_alert": false,
+          "label": null,
+          "check_values": null,
+          "select_values": null,
+          "multi_select": false,
+          "default_select": null
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "attendances",
+      "icon": "fas fa-bullhorn",
+      "questions": [
+        {
+          "id": 4,
+          "type": "check",
+          "allow_text": false,
+          "allow_alert": false,
+          "label": "حضور",
+          "check_values": {
+            "on": null,
+            "off": null
+          },
+          "select_values": null,
+          "multi_select": false,
+          "default_select": null
+        },
+        {
+          "id": 5,
+          "type": "duration",
+          "allow_text": false,
+          "allow_alert": false,
+          "label": "وقت الحضور",
+          "check_values": null,
+          "select_values": null,
+          "multi_select": false,
+          "default_select": null
+        },
+        {
+          "id": 6,
+          "type": "duration",
+          "allow_text": true,
+          "allow_alert": false,
+          "label": "وقت الانصراف",
+          "check_values": null,
+          "select_values": null,
+          "multi_select": false,
+          "default_select": null
+        },
+        {
+          "id": 7,
+          "type": "select",
+          "allow_text": false,
+          "allow_alert": false,
+          "label": "وسيلة ذهاب الطفل للبيت",
+          "check_values": null,
+          "select_values": [
+            {
+              "id": 1,
+              "label": "الأب",
+              "icon": null
+            },
+            {
+              "id": 2,
+              "label": "الأم",
+              "icon": null
+            },
+            {
+              "id": 3,
+              "label": "أحد أقربائه",
+              "icon": null
+            },
+            {
+              "id": 4,
+              "label": "تاكسى",
+              "icon": null
+            },
+            {
+              "id": 5,
+              "label": "وسيلة اخرى",
+              "icon": null
+            }
+          ],
+          "multi_select": false,
+          "default_select": [
+            {
+              "id": 1,
+              "label": "الأب",
+              "icon": null
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "message": "DataSent",
+  "statusCode": 200
+}

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>$(APP_DISPLAY_NAME)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>escola</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>app-1-251920625695-ios-0caf412d2ce90d636f252a</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This app uses Bluetooth to connect to a device.</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app uses Bluetooth to connect to a device.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Need camera access for uploading images so that they can used as profile avatar or
+			in chat screens</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Need location access for updating nearby friends</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app will use your location to show features near you.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app needs microphone access to record audio and play audios in the chat between the users</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app uses your photo library to pick a photo or the ID so that they can used as
+			profile avatar or in chat screens</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This identifier will be used to deliver personalized ads to you.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>$(LAUNCH_SCREEN_STORYBOARD)</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UIRequiresFullScreen</key>
+	<false/>
+	<key>UIStatusBarHidden</key>
+	<false/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+	</array>
+</dict>
+</plist>

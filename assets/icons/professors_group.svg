@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="Oval" d="M0 25a25 25 0 1 1 25 25A25 25 0 0 1 0 25z" style="fill:none"/>
+        </clipPath>
+        <style>
+            
+        </style>
+    </defs>
+    <g id="Group_10202" data-name="Group 10202" transform="translate(-20 -116)">
+        <g id="Oval_2" data-name="Oval 2" transform="translate(20 116)">
+            <g id="Oval-2" data-name="Oval">
+                <circle id="Oval-3" data-name="Oval" cx="25" cy="25" r="25" style="fill:#fff"/>
+                <circle id="Oval-4" data-name="Oval" cx="25" cy="25" r="25" style="fill:rgba(40,59,106,.05)"/>
+                <circle id="Oval-5" data-name="Oval" cx="25" cy="25" r="25" style="fill:none"/>
+            </g>
+        </g>
+        <g id="group" transform="translate(29.005 122)">
+            <path id="Path_9706" data-name="Path 9706" d="M15.867 14.881a4.941 4.941 0 1 0-4.941-4.941 4.941 4.941 0 0 0 4.941 4.941zm0-7.881a2.941 2.941 0 1 1-2.941 2.941A2.941 2.941 0 0 1 15.867 7z" style="fill:#2b5f7f"/>
+            <path id="Path_9707" data-name="Path 9707" d="M6.533 17.785a3.8 3.8 0 1 0-3.8-3.8 3.8 3.8 0 0 0 3.8 3.8zm0-5.6a1.8 1.8 0 1 1-1.8 1.8 1.8 1.8 0 0 1 1.8-1.8z" style="fill:#2b5f7f"/>
+            <path id="Path_9708" data-name="Path 9708" d="M25.2 17.785a3.8 3.8 0 1 0-3.8-3.8 3.8 3.8 0 0 0 3.8 3.8zm0-5.6a1.8 1.8 0 1 1-1.8 1.8 1.8 1.8 0 0 1 1.8-1.8z" style="fill:#2b5f7f"/>
+            <path id="Path_9709" data-name="Path 9709" d="M25.333 19.791a5.269 5.269 0 0 0-2.506.653A8.237 8.237 0 0 0 16 16.607a8.237 8.237 0 0 0-6.827 3.837 5.269 5.269 0 0 0-2.506-.653A5.963 5.963 0 0 0 1 26a1 1 0 0 0 2 0 3.971 3.971 0 0 1 3.667-4.209 3.272 3.272 0 0 1 1.577.419 10.085 10.085 0 0 0-.711 3.732 1 1 0 0 0 2 0c0-4.045 2.9-7.335 6.467-7.335s6.467 3.29 6.467 7.335a1 1 0 0 0 2 0 10.085 10.085 0 0 0-.711-3.732 3.272 3.272 0 0 1 1.577-.419A3.971 3.971 0 0 1 29 26a1 1 0 0 0 2 0 5.963 5.963 0 0 0-5.667-6.209z" style="fill:#2b5f7f"/>
+        </g>
+    </g>
+</svg>

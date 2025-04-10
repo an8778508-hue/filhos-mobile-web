@@ -1,0 +1,52 @@
+{
+  "receivers": CreateFormParams(FormType.attendantsSelection, {
+  "children": [
+    21,
+    22,
+    25
+  ],
+  "teachers": [
+    all
+  ],
+  "parents": [],
+  "class": [
+    1,
+    2,
+    3
+  ],
+  "levels": [
+    1,
+    3
+  ]
+}),
+"title": CreateFormParams(FormType.text, Test),
+"description": CreateFormParams(FormType.richText, <p>Test </p>),
+"starting_date": CreateFormParams(FormType.datePicker, 2023-11-22),
+"starting_time": CreateFormParams(FormType.timePicker, 06: 09: 00),
+"ending_date": CreateFormParams(FormType.datePicker, 2023-11-22),
+"ending_time": CreateFormParams(FormType.timePicker, 06: 09: 00),
+"has_price": CreateFormParams(FormType.segmented, 1),
+"payment_info": CreateFormParams(FormType.richText, <p><br>Pix</p>),
+"price": CreateFormParams(FormType.number, 225),
+"require_approval": CreateFormParams(FormType.segmented, 1),
+"event_images": CreateFormParams(FormType.uploadImage, [UploadFileParam(null, /data/user/0/com.algoriza.profecriarte/cache/file_picker/IMG_20231020_142849.jpg)]),
+"image": CreateFormParams(FormType.uploadImage, [UploadFileParam(null, /data/user/0/com.algoriza.profecriarte/cache/file_picker/IMG_20231020_142849.jpg)])
+}
+
+audiences[child][]:5
+audiences[child][]:10
+audiences[class][]:1
+audiences[level][]:2
+audiences[teacher][]:1
+audiences[parent][]:2
+all_parents:0
+all_teachers:1
+title:title test
+description:<p>description</p>
+start_date:2023-11-25 14:00:00
+end_date:2023-11-25 20:00:00
+has_approval:1
+has_payment:1
+price:50
+price_for_all_children:0
+payment_info:<p>payment info html</p>

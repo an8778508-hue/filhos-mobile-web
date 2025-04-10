@@ -1,0 +1,80 @@
+{
+    "data": {
+        "searchResult": [
+            {
+                "id": 1,
+                "name": "TEst3",
+                "avatar": "",
+                "class": "Class 1"
+            },
+            {
+                "id": 2,
+                "name": "Test2",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 3,
+                "name": "Test",
+                "avatar": "",
+                "class": "Class 1"
+            },
+            {
+                "id": 4,
+                "name": "Amr",
+                "avatar": "",
+                "class": null
+            },
+            {
+                "id": 5,
+                "name": "Khaled Ahmed",
+                "avatar": "",
+                "class": "Class 1"
+            },
+            {
+                "id": 6,
+                "name": "Mahmoud",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 7,
+                "name": "Mohamed",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 8,
+                "name": "dsa",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 9,
+                "name": "test test",
+                "avatar": "",
+                "class": "Class 1"
+            },
+            {
+                "id": 10,
+                "name": "123",
+                "avatar": "",
+                "class": "Class 2"
+            },
+            {
+                "id": 11,
+                "name": "test test",
+                "avatar": "http://escola.local/storage/24/logo-1.png",
+                "class": "Class 1"
+            },
+            {
+                "id": 12,
+                "name": "simpa",
+                "avatar": "http://escola.local/storage/64/WEBSHOTS.JPG",
+                "class": "Class 2"
+            }
+        ]
+    },
+    "message": "DataSent",
+    "statusCode": 200
+}

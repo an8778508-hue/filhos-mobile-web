@@ -1,0 +1,36 @@
+{
+  "home": {
+    "events": [
+      {
+        "id": 1,
+        "title": "Método do LITTLE KICKERS",
+        "description": "agora a turma do INFANTIL 1 também participam das aulas do métod",
+        "image_url": "https://www.baby-chick.com/wp-content/uploads/2020/08/Beautiful-toddler-boy-playing-with-construction-blocks-at-kindergarten-1185931783_2209x1363-1024x632.jpeg",
+        "start_date": "2021-09-01T00:00:00.000Z",
+        "require_approval": true
+      },
+      {
+        "id": 1,
+        "title": "Método do LITTLE KICKERS",
+        "description": "agora a turma do INFANTIL 1 também participam das aulas do métod",
+        "image_url": "https://www.baby-chick.com/wp-content/uploads/2020/08/Beautiful-toddler-boy-playing-with-construction-blocks-at-kindergarten-1185931783_2209x1363-1024x632.jpeg",
+        "start_date": "2021-09-01T00:00:00.000Z",
+        "require_approval": false
+      }
+    ],
+    "children": [
+      {
+        "id": 1,
+        "name": "Omar Mohammed",
+        "age": 10,
+        "avatar": "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/girl_avatar_child_kid-512.png"
+      },
+      {
+        "id": 1,
+        "name": "Omar Mohammed",
+        "age": 12,
+        "avatar": "https://media.istockphoto.com/id/1271410315/photo/profile-portrait-of-a-cute-latin-american-boy.jpg?s=612x612&w=0&k=20&c=uS2qXPkwWvbRYuE7I87aAkOt9nNJnWgM9mksxrM8iaU="
+      }
+    ]
+  }
+}

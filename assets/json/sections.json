@@ -1,0 +1,42 @@
+{
+  "home": {
+    "sections": [
+      {
+        "id": 1,
+        "to": "timeline",
+        "title": "Linha do tempo",
+        "icon": "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fg4608%402x.png?alt=media&token=13dae3ad-c345-475a-815f-43ba43593c5b&_gl=1*wjkfm*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5NDQuMTIuMC4w"
+      },
+      {
+        "id": 2,
+        "to": "chats",
+        "title": "Bate-papos",
+        "icon": "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fchatting%402x.png?alt=media&token=9ead3cf4-8a9f-439b-9d7f-aee533941276&_gl=1*gz9pqn*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5NjYuNTEuMC4w"
+      },
+      {
+        "id": 3,
+        "to": "events",
+        "title": "Eventos",
+        "icon": "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FXMLID_306_%402x.png?alt=media&token=81a28d9c-0c07-4374-9df4-d88b1cd88970&_gl=1*m5f40x*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5OTAuMjcuMC4w"
+      },
+      {
+        "id": 4,
+        "to": "announcements",
+        "title": "Anúncios",
+        "icon": "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FGroup%2010798%402x.png?alt=media&token=f08e8fe8-ae19-4d01-823a-d8406a3d9227"
+      },
+      {
+        "id": 5,
+        "to": "mediecins",
+        "title": "Medicamentos",
+        "icon": "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fg1071%402x.png?alt=media&token=9b82ebbb-0a97-4b35-807f-8b2ad2f43615&_gl=1*4jc4ml*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5NzcuNDAuMC4w"
+      },
+      {
+        "id": 6,
+        "to": "authorizations",
+        "title": "Autorizações",
+        "icon": "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FLayer_x0020_1%402x.png?alt=media&token=847de253-6e5c-418f-a0d2-a02b7b07c717&_gl=1*1nbi47c*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTkwNDEuNjAuMC4w"
+      }
+    ]
+  }
+}

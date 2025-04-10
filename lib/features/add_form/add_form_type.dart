@@ -1,0 +1,1 @@
+enum AddFormType {medicine, event, announcement}

@@ -1,0 +1,148 @@
+{
+  "data": [
+    {
+      "type": "text",
+      "id": "title",
+      "required": "true",
+      "title": "event_name",
+      "hint": "event_name"
+    },
+    {
+      "type": "richText",
+      "id": "description",
+      "required": "true",
+      "title": "description",
+      "hint": "text_area"
+    },
+    {
+      "type": "datePicker",
+      "id": "starting_date",
+      "required": "true",
+      "title": "starting_date",
+      "hint": "select_date"
+    },
+    {
+      "type": "timePicker",
+      "id": "starting_time",
+      "required": "true",
+      "title": "starting_time",
+      "hint": "select_time"
+    },
+    {
+      "type": "datePicker",
+      "id": "ending_date",
+      "required": "true",
+      "title": "ending_date",
+      "hint": "select_date"
+    },
+    {
+      "type": "timePicker",
+      "id": "ending_time",
+      "required": "true",
+      "title": "ending_time",
+      "hint": "select_time"
+    },
+    {
+      "type": "segmented",
+      "id": "is_feature",
+      "required": "true",
+      "title": "is_featured",
+      "values": [
+        {
+          "id": "1",
+          "title": "yes"
+        },
+        {
+          "id": "0",
+          "title": "no"
+        }
+      ]
+    },
+    {
+      "type": "segmented",
+      "id": "has_payment",
+      "required": "true",
+      "title": "require_payment",
+      "values": [
+        {
+          "id": "1",
+          "title": "yes"
+        },
+        {
+          "id": "0",
+          "title": "no"
+        }
+      ]
+    },
+    {
+      "type": "segmented",
+      "id": "price_for_all_children",
+      "required": "true",
+      "title": "price_for_all_children",
+      "dependency": {
+        "id": "has_payment",
+        "value": "1"
+      },
+      "values": [
+        {
+          "id": "1",
+          "title": "yes"
+        },
+        {
+          "id": "0",
+          "title": "no"
+        }
+      ]
+    },
+    {
+      "type": "number",
+      "id": "price",
+      "title": "price",
+      "hint": "enter_price",
+      "required": "true",
+      "dependency": {
+        "id": "has_payment",
+        "value": "1"
+      }
+    },
+    {
+      "title": "payment_information",
+      "type": "richText",
+      "id": "payment_info",
+      "hint": "text_area",
+      "required": "true",
+      "dependency": {
+        "id": "has_payment",
+        "value": "1"
+      }
+    },
+    {
+      "type": "segmented",
+      "title": "require_confirmation",
+      "required": "true",
+      "id": "has_approval",
+      "values": [
+        {
+          "id": "1",
+          "title": "yes"
+        },
+        {
+          "id": "0",
+          "title": "no"
+        }
+      ]
+    },
+    {
+      "type": "uploadImage",
+      "id": "images",
+      "label": "slider_images"
+    },
+    {
+      "type": "uploadImage",
+      "id": "image",
+      "limit": 1,
+      "required": "true",
+      "label": "main_image"
+    }
+  ]
+}

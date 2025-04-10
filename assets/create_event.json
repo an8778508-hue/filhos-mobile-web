@@ -1,0 +1,30 @@
+{
+  "receivers": {
+    "children": [
+      22
+    ],
+    "teachers": [],
+    "parents": [],
+    "class": [],
+    "levels": [
+      1
+    ]
+  },
+  "title": "title",
+  "description": "<p>vbff</p>",
+  "start_date": "2023-11-14 12:00:00",
+  "starting_time": "06:00:00",
+  "end_date": "2023-11-15 12:00:00",
+  "ending_time": "12:16:00",
+  "require_payment": 1,
+  "payment_info": "<p>pix 123</p>",
+  "price": 20,
+  "require_approval": 1,
+  "slider_images": [
+    "",
+    ""
+  ],
+  "main_image": [
+    ""
+  ]
+}

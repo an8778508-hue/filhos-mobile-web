@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="Oval" d="M0 25a25 25 0 1 1 25 25A25 25 0 0 1 0 25z" style="fill:none"/>
+        </clipPath>
+        <style>
+            
+        </style>
+    </defs>
+    <g id="Group_10201" data-name="Group 10201" transform="translate(-20 -207)">
+        <g id="Oval_2" data-name="Oval 2" transform="translate(20 207)">
+            <g id="Oval-2" data-name="Oval">
+                <circle id="Oval-3" data-name="Oval" cx="25" cy="25" r="25" style="fill:#fff"/>
+                <circle id="Oval-4" data-name="Oval" cx="25" cy="25" r="25" style="fill:rgba(40,59,106,.05)"/>
+                <circle id="Oval-5" data-name="Oval" cx="25" cy="25" r="25" style="fill:none"/>
+            </g>
+        </g>
+        <g id="teacher" transform="translate(11.79 200.981)">
+            <path id="Path_9710" data-name="Path 9710" d="M149.519 114.877a1.75 1.75 0 0 0-1.75-1.75 4.037 4.037 0 0 1-2.926-1.752 8.748 8.748 0 0 1-5.253 1.752h-2.341a1.75 1.75 0 0 0-1.75 1.75v.006a1.75 1.75 0 0 0 1.75 1.75v.939a5.259 5.259 0 0 0 5.259 5.259 5.259 5.259 0 0 0 5.259-5.259v-.939a1.75 1.75 0 0 0 1.75-1.75v-.006z" transform="translate(-109.032 -90.769)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none"/>
+            <path id="Path_9711" data-name="Path 9711" d="m36.054 290.7.609 2.795 6.9 2.038a3.416 3.416 0 0 1 2.324 2.362l1.334 4.806H19.733l1.334-4.806a3.416 3.416 0 0 1 2.324-2.362l6.9-2.038.609-2.795" transform="translate(0 -259.66)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none"/>
+            <path id="Line_1" data-name="Line 1" transform="translate(30.291 33.833)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none" d="M3.186 2.864 0 0"/>
+            <path id="Line_2" data-name="Line 2" transform="translate(33.477 33.833)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none" d="M3.186 0 0 2.864"/>
+            <path id="Path_9712" data-name="Path 9712" d="m158.655 349.6-3.682 2.194-2.33-4.564" transform="translate(-125.177 -312.906)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none"/>
+            <path id="Path_9713" data-name="Path 9713" d="m256 349.6 3.682 2.194 2.33-4.564" transform="translate(-222.523 -312.906)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none"/>
+            <path id="Line_3" data-name="Line 3" transform="translate(25.428 39.534)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none" d="M0 0v3.505"/>
+            <path id="Line_4" data-name="Line 4" transform="translate(41.526 39.534)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none" d="M0 0v3.505"/>
+            <path id="Path_9714" data-name="Path 9714" d="M140.847 22.709A5.563 5.563 0 0 1 145.69 15h2.934c3.986.033 6.222 4.387 4.843 7.709" transform="translate(-113.68)" style="stroke:#2b5f7f;stroke-miterlimit:10;stroke-width:1.5px;fill:none"/>
+        </g>
+    </g>
+</svg>
