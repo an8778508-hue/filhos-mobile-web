@@ -67,49 +67,55 @@ class Config {
           "to": "timeline",
           "title": "timeline",
           "icon":
-              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fg4608%402x.png?alt=media&token=13dae3ad-c345-475a-815f-43ba43593c5b&_gl=1*wjkfm*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5NDQuMTIuMC4w"
+              // "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fg4608%402x.png?alt=media&token=13dae3ad-c345-475a-815f-43ba43593c5b&_gl=1*wjkfm*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5NDQuMTIuMC4w"
+              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fg4608%402x%20%5BTraced%5D.png?alt=media&token=dc10e06c-36d5-42f4-85ba-0711483dc14f"
         },
         {
           "id": 2,
           "to": "chats",
           "title": "chats",
           "icon":
-              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fchatting%402x.png?alt=media&token=9ead3cf4-8a9f-439b-9d7f-aee533941276&_gl=1*gz9pqn*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5NjYuNTEuMC4w"
+              // "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fchatting%402x.png?alt=media&token=9ead3cf4-8a9f-439b-9d7f-aee533941276&_gl=1*gz9pqn*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5NjYuNTEuMC4w"
+              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fchat.png?alt=media&token=2c5cde73-c7bb-42dc-a8ef-c48582205b6c"
         },
         {
           "id": 3,
           "to": "events",
           "title": "events",
           "icon":
-              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FXMLID_306_%402x.png?alt=media&token=81a28d9c-0c07-4374-9df4-d88b1cd88970&_gl=1*m5f40x*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5OTAuMjcuMC4w"
+              // "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FXMLID_306_%402x.png?alt=media&token=81a28d9c-0c07-4374-9df4-d88b1cd88970&_gl=1*m5f40x*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5OTAuMjcuMC4w"
+          "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Ffa3liat.png?alt=media&token=8445f782-e40d-4d34-b6c2-7a02f60242cc"
         },
         {
           "id": 4,
           "to": "announcements",
           "title": "announcements",
           "icon":
-              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FGroup%2010798%402x.png?alt=media&token=f08e8fe8-ae19-4d01-823a-d8406a3d9227"
+              // "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FGroup%2010798%402x.png?alt=media&token=f08e8fe8-ae19-4d01-823a-d8406a3d9227"
+              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fadds.png?alt=media&token=0ad68e21-3072-4405-a746-348af0f9c6c2"
         },
         {
           "id": 5,
           "to": "authorizations",
           "title": "authorizations",
           "icon":
-              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FLayer_x0020_1%402x.png?alt=media&token=847de253-6e5c-418f-a0d2-a02b7b07c717&_gl=1*1nbi47c*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTkwNDEuNjAuMC4w"
+              // "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FLayer_x0020_1%402x.png?alt=media&token=847de253-6e5c-418f-a0d2-a02b7b07c717&_gl=1*1nbi47c*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTkwNDEuNjAuMC4w"
+          "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fauth.png?alt=media&token=1170de26-e1a9-44b6-ac54-48fea445c1b1"
         },
         {
           "id": 6,
           "to": "multimedia",
           "title": "multimedia",
           "icon":
-              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FGroup%2010798%402x.png?alt=media&token=f08e8fe8-ae19-4d01-823a-d8406a3d9227"
+              // "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2FGroup%2010798%402x.png?alt=media&token=f08e8fe8-ae19-4d01-823a-d8406a3d9227"
+              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fadds.png?alt=media&token=0ad68e21-3072-4405-a746-348af0f9c6c2"
         },
         {
           "id": 6,
           "to": "medicines",
           "title": "medicines",
           "icon":
-              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fg1071%402x.png?alt=media&token=9b82ebbb-0a97-4b35-807f-8b2ad2f43615&_gl=1*4jc4ml*_ga*MzEyMTMyMDI2LjE2OTYxNTMyOTU.*_ga_CW55HF8NVT*MTY5NzAxODgyOC4yNy4xLjE2OTcwMTg5NzcuNDAuMC4w"
+              "https://firebasestorage.googleapis.com/v0/b/escola-cede2.appspot.com/o/temp%2Fmedcine.png?alt=media&token=1ade0463-24be-4380-bb00-941504952c5f"
         },
       ].map((e) => SectionModel.fromJson(e)).toList();
 

@@ -6,9 +6,12 @@ import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
 import 'package:escola/features/login/models/login_requset.dart';
+import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
+import 'package:flutter/foundation.dart';
 
 part 'login_event.dart';
+
 part 'login_state.dart';
 
 class LoginBloc extends Cubit<LoginState> {
@@ -54,7 +57,7 @@ class LoginBloc extends Cubit<LoginState> {
           return;
         }
         if (!isClosed) {
-          // emit(LoginFailure(NetworkFailure(message: l.code ?? '')));
+          emit(LoginFailure(NetworkFailure(message: l.code ?? '')));
         }
       },
       onSuccess: (r) async {},

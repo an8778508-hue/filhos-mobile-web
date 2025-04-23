@@ -6,7 +6,7 @@ import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
 
 abstract class LoginRepository {
-  final String loginEndpoint = "test/auth/login";
+  final String loginEndpoint = "auth/login";
   Future<Either<Failure, UserModel>> login(LoginRequest request);
 
   Future requestOTP({

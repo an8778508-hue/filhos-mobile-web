@@ -102,26 +102,26 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                             final String? name = user?.name;
                             final String hello = LocalizationKeys.hello.tr(context);
                             final title = stringNotNullOrEmpty(name) ? '$hello\n${name!}' : hello;
-                            return MyAppBar(
+                            return ConfigSelector(builder: (context, state) => MyAppBar(
                               title: title,
                               isHome: true,
                               image: user?.image,
-                              color: context.colors.primaryDark,
+                              color: state.colors.primary,
                               actionWidget: context.isProfessors
                                   ? IconButton(
-                                      onPressed: () {
-                                        WidgetFunctions.navigateTo(context, const SearchScreen());
-                                      },
-                                      icon: Icon(
-                                        Icons.search,
-                                        size: 24.h,
-                                        color: context.colors.background,
-                                      ),
-                                    )
+                                onPressed: () {
+                                  WidgetFunctions.navigateTo(context, const SearchScreen());
+                                },
+                                icon: Icon(
+                                  Icons.search,
+                                  size: 24.h,
+                                  color: context.colors.background,
+                                ),
+                              )
                                   : null,
                               hasAvatar: true,
                               hasNotification: true,
-                            );
+                            ), selector: (config) => config.styling ,);
                           },
                         ),
                         Expanded(

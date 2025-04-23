@@ -1,6 +1,7 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:escola/core/components/fields/custom_form_field.dart';
 import 'package:escola/core/components/fields/error_field.dart';
+import 'package:escola/core/components/icons/my_icon.dart';
 import 'package:escola/core/components/loading/loading_linear.dart';
 import 'package:escola/core/components/my_icon.dart';
 import 'package:escola/core/dependency_injection/di.dart';
@@ -17,8 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
-import '../models/otp_requset.dart';
 
 class OTPScreen extends StatefulWidget {
   const OTPScreen({
@@ -67,27 +66,19 @@ class _OTPScreenState extends State<OTPScreen> {
   Widget build(BuildContext context) {
     return BlocProvider<OTPBloc>(
       create: (BuildContext context) => di<OTPBloc>(),
-      // ..requestOTP(
-      //   phone: "+${widget.phoneCode + widget.phone}",
-      //   remember: widget.rememberMe,
-      //   countryCode: widget.countryCode,
-      // ),
+        // ..requestOTP(
+        //   phone: "+${widget.phoneCode + widget.phone}",
+        //   remember: widget.rememberMe,
+        //   countryCode: widget.countryCode,
+        // ),
       child: Builder(
         builder: (context) => BlocListener<OTPBloc, OTPState>(
           listener: (BuildContext context, OTPState state) async {
-            if (state is OTPSuccess) {
+            if(state is OTPSuccess){
               if (UserBloc.get.state.user?.isApproval == true) {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => const MainScreen()),
-                  (route) => false,
-                );
-              } else {
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (_) => const YourAccountUnderReviewScreen()),
-                  (route) => false,
-                );
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) =>const MainScreen()),(route) => false,);
+              }else{
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) =>const YourAccountUnderReviewScreen()),(route) => false,);
               }
             }
           },
@@ -180,7 +171,8 @@ class _OTPScreenState extends State<OTPScreen> {
                                 selector: (state) => state is LoginFailure ? state.failure.message.tr(context) : null,
                                 builder: (context, loginFail) => BlocSelector<OTPBloc, OTPState, String?>(
                                   selector: (state) => state is OTPFailure ? state.failure.message.tr(context) : null,
-                                  builder: (context, otpFail) => otpFail != null
+                                  builder: (context, otpFail) =>
+                                  otpFail != null
                                       ? ErrorField(text: otpFail.tr(context))
                                       : loginFail != null
                                           ? ErrorField(text: loginFail.tr(context))
@@ -248,16 +240,12 @@ class _OTPScreenState extends State<OTPScreen> {
                                       setState(() {
                                         field.setValue(value);
                                       });
-                                      if (value.length == 6 && !loading) {
-                                        BlocProvider.of<OTPBloc>(context).successOTP(
-                                            OTPRequest(phoneNumber: "+${widget.phoneCode + widget.phone}"),
-                                            widget.countryCode);
-
-                                        // BlocProvider.of<OTPBloc>(context).confirmSMSCode(
-                                        //   phone: "+${widget.phoneCode + widget.phone}",
-                                        //   code: codeController.text,
-                                        //   countryCode: widget.countryCode,
-                                        // );
+                                      if(value.length == 6 && !loading){
+                                        BlocProvider.of<OTPBloc>(context).confirmSMSCode(
+                                          phone: "+${widget.phoneCode + widget.phone}",
+                                          code: codeController.text,
+                                          countryCode: widget.countryCode,
+                                        );
                                       }
                                     },
                                     appContext: context,
@@ -315,9 +303,9 @@ class _OTPScreenState extends State<OTPScreen> {
                               ),
                               BlocSelector<OTPBloc, OTPState, bool>(
                                 selector: (state) => state is OTPLoading,
-                                builder: (context, loading) => ValueListenableBuilder(
+                                builder: (context, loading) =>  ValueListenableBuilder(
                                   valueListenable: BlocProvider.of<OTPBloc>(context).ready,
-                                  builder: (context, ready, child) => ready && !(loading)
+                                  builder: (context, ready, child) =>  ready && !(loading)
                                       ? Row(
                                           crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
@@ -334,8 +322,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                                     if (valid ?? false) {
                                                       BlocProvider.of<OTPBloc>(context).confirmSMSCode(
                                                         phone: "+${widget.phoneCode + widget.phone}",
-                                                        code: codeController.text,
-                                                        countryCode: widget.countryCode,
+                                                        code: codeController.text, countryCode: widget.countryCode,
                                                       );
                                                     }
                                                   },

@@ -277,22 +277,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   formKey.currentState?.save();
                                   if (formKey.currentState?.validate() ?? false) {
-                                    // BlocProvider.of<LoginBloc>(context).requestOTP(
-                                    //   phone: "+${country.phoneCode + phoneController.text}",
-                                    //   countryCode: country.countryCode,
-                                    // );
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (_) => BlocProvider.value(
-                                          value: BlocProvider.of<LoginBloc>(context),
-                                          child: OTPScreen(
-                                            phone: phoneController.text,
-                                            phoneCode: country.phoneCode,
-                                            countryCode: country.countryCode,
-                                            rememberMe: rememberMeToggle.value,
-                                          ),
-                                        ),
-                                      ),
+                                    BlocProvider.of<LoginBloc>(context).requestOTP(
+                                      phone: "+${country.phoneCode + phoneController.text}",
+                                      countryCode: country.countryCode,
                                     );
                                   }
                                 },

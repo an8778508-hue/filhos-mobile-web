@@ -36,7 +36,7 @@ class OTPBloc extends Cubit<OTPState> {
 
   final int otpTimeout = 60;
 
-  successOTP(OTPRequest model, String countryCode) async {
+  _successOTP(OTPRequest model, String countryCode) async {
     final loginResponse =
         await loginRepository.login(LoginRequest(phone: model.phoneNumber, country_code: countryCode));
     await loginResponse.fold((l) async => emit(OTPFailure(l)), (user) async {
@@ -108,7 +108,7 @@ class OTPBloc extends Cubit<OTPState> {
           emit(OTPFailure(NetworkFailure(message: l.code ?? '')));
         }
       },
-      onSuccess: (r) async => successOTP(r, countryCode),
+      onSuccess: (r) async => _successOTP(r, countryCode),
     );
   }
 
@@ -135,7 +135,7 @@ class OTPBloc extends Cubit<OTPState> {
       (l) {
         emit(OTPFailure(NetworkFailure(message: l.code ?? '')));
       },
-      (r) => successOTP(r, countryCode),
+      (r) => _successOTP(r, countryCode),
     );
   }
 
