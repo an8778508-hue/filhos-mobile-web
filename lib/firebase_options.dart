@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -50,19 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCZ0anUimaBVxePM2uJCqPVq7y8hwxdoWI',
-    appId: '1:251920625695:android:9ff5b6e871a97bc76f252a',
-    messagingSenderId: '251920625695',
-    projectId: 'escola-cede2',
-    storageBucket: 'escola-cede2.appspot.com',
+    apiKey: 'AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io',
+    appId: '1:328842559224:android:ef0ded4e56ad53aa06c50d',
+    messagingSenderId: '328842559224',
+    projectId: 'disney-d2bd5',
+    storageBucket: 'disney-d2bd5.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCW028ZzmUwUaiBHu2_gfk34zBg__qIMxg',
-    appId: '1:251920625695:ios:6a5ba30714535bd76f252a',
-    messagingSenderId: '251920625695',
-    projectId: 'escola-cede2',
-    storageBucket: 'escola-cede2.appspot.com',
-    iosBundleId: 'com.algoriza.criarte',
+    apiKey: 'AIzaSyD2AQM-q6yb5pW7WE4NMYZHKUu9pN7YxXc',
+    appId: '1:328842559224:ios:38f0762a0da95e3806c50d',
+    messagingSenderId: '328842559224',
+    projectId: 'disney-d2bd5',
+    storageBucket: 'disney-d2bd5.firebasestorage.app',
+    iosBundleId: 'com.algoriza.profedisney',
   );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyBsQEgA3xF4_Wso1ktlooyHBjlzJt4fgfM',
+    appId: '1:328842559224:web:c767225192dc787b06c50d',
+    messagingSenderId: '328842559224',
+    projectId: 'disney-d2bd5',
+    authDomain: 'disney-d2bd5.firebaseapp.com',
+    storageBucket: 'disney-d2bd5.firebasestorage.app',
+    measurementId: 'G-D7BVQY90NQ',
+  );
+
 }

@@ -1,5 +1,6 @@
 flutter_native_splash:
   background_image: "assets/app_icon/native_splash_background.png"
   image: "assets/app_icon/native_splash_icon.png"
-
+  info_plist_files:
+    - 'ios/Runner/Info-parents.plist'
   web: false

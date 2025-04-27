@@ -47,7 +47,7 @@ class PoweredByWidget extends StatelessWidget {
               ),
             ),
             Text(
-              ' Filhos.app',
+              ' Disney.app',
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontWeight: FontWeight.w500,

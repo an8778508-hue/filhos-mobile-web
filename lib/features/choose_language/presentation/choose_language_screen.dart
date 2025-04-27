@@ -74,7 +74,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with Ticker
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: context.colors.primaryDark,
+      backgroundColor: context.colors.primary,
       body: SafeArea(
         child: Column(
           children: [

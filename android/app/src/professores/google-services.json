@@ -1,87 +1,45 @@
 {
   "project_info": {
-    "project_number": "251920625695",
-    "project_id": "escola-cede2",
-    "storage_bucket": "escola-cede2.appspot.com"
+    "project_number": "328842559224",
+    "project_id": "disney-d2bd5",
+    "storage_bucket": "disney-d2bd5.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:251920625695:android:9ff5b6e871a97bc76f252a",
+        "mobilesdk_app_id": "1:328842559224:android:ef0ded4e56ad53aa06c50d",
         "android_client_info": {
-          "package_name": "com.algoriza.criarte"
+          "package_name": "com.algoriza.disney"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "251920625695-9u392sgluhvgn90mi74drtkrj4beacjt.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.algoriza.criarte",
-            "certificate_hash": "4b3ca5ad36d15f652d37bc9d96a92af19918615e"
-          }
-        },
-        {
-          "client_id": "251920625695-n31knpuhljh20mvhirqjfce86qe5j328.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCZ0anUimaBVxePM2uJCqPVq7y8hwxdoWI"
+          "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "251920625695-n31knpuhljh20mvhirqjfce86qe5j328.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "251920625695-57s1vg9evo8lc0cssaa36lmosptmu276.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.algoriza.criarte"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:251920625695:android:78753dab813255dd6f252a",
+        "mobilesdk_app_id": "1:328842559224:android:c1a7fd40c782a26c06c50d",
         "android_client_info": {
-          "package_name": "com.algoriza.profecriarte"
+          "package_name": "com.algoriza.profedisney"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "251920625695-n31knpuhljh20mvhirqjfce86qe5j328.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCZ0anUimaBVxePM2uJCqPVq7y8hwxdoWI"
+          "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "251920625695-n31knpuhljh20mvhirqjfce86qe5j328.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "251920625695-57s1vg9evo8lc0cssaa36lmosptmu276.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.algoriza.criarte"
-              }
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
