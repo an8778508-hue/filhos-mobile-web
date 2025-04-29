@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.algoriza.disney"
+    namespace "com.algoriza.disneyNew"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -60,7 +60,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.algoriza.disney"
+        applicationId "com.algoriza.disneyNew"
         multiDexEnabled true
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
@@ -82,7 +82,7 @@ android {
     productFlavors {
         professores {
             dimension "flavors"
-            applicationId "com.algoriza.profedisney"
+            applicationId "com.algoriza.profedisneyNew"
         }
         
         parents {

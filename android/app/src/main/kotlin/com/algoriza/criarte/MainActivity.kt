@@ -1,4 +1,4 @@
-package com.algoriza.disney
+package com.algoriza.disneyNew
 
 import io.flutter.embedding.android.FlutterActivity
 

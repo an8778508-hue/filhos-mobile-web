@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io',
-    appId: '1:328842559224:android:ef0ded4e56ad53aa06c50d',
+    appId: '1:328842559224:android:8bebcbbf0221a7d106c50d',
     messagingSenderId: '328842559224',
     projectId: 'disney-d2bd5',
     storageBucket: 'disney-d2bd5.firebasestorage.app',
@@ -56,11 +56,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD2AQM-q6yb5pW7WE4NMYZHKUu9pN7YxXc',
-    appId: '1:328842559224:ios:38f0762a0da95e3806c50d',
+    appId: '1:328842559224:ios:54f23af5b3ec1ec806c50d',
     messagingSenderId: '328842559224',
     projectId: 'disney-d2bd5',
     storageBucket: 'disney-d2bd5.firebasestorage.app',
-    iosBundleId: 'com.algoriza.profedisney',
+    iosBundleId: 'com.algoriza.profedisneyNew',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
