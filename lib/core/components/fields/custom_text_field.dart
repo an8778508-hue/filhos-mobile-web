@@ -1,4 +1,3 @@
-import 'package:escola/core/components/icons/my_icon.dart';
 import 'package:escola/core/components/my_icon.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';

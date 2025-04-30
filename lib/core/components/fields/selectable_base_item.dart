@@ -1,4 +1,3 @@
-import 'package:escola/core/components/icons/my_icon.dart';
 import 'package:escola/core/components/my_icon.dart';
 import 'package:escola/core/utils/funuctions/global_functions.dart';
 import 'package:escola/core/utils/size_config.dart';

@@ -1,7 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:escola/core/components/fields/custom_form_field.dart';
 import 'package:escola/core/components/fields/error_field.dart';
-import 'package:escola/core/components/icons/my_icon.dart';
 import 'package:escola/core/components/loading/loading_linear.dart';
 import 'package:escola/core/components/my_icon.dart';
 import 'package:escola/core/dependency_injection/di.dart';

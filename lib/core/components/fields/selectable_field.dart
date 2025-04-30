@@ -1,6 +1,5 @@
 import 'package:escola/core/components/fields/custom_form_field.dart';
 import 'package:escola/core/components/fields/custom_text_field.dart';
-import 'package:escola/core/components/icons/my_icon.dart';
 import 'package:escola/core/components/my_icon.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
