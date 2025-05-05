@@ -175,7 +175,7 @@ class _MedicinesRequestsPageState extends State<MedicinesRequestsPage> with Auto
                                           isScrollControlled: true,
                                           builder: (BuildContext _) => BottomSheetWidget(
                                             bloc: BlocProvider.of<MedReqBloc>(context),
-                                            id: med.medicines[i].childMedicineId,
+                                            id: med.medicines[i].id,
                                           ),
                                         );
                                         if (b == true) {

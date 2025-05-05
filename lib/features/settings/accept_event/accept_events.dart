@@ -433,7 +433,7 @@ class _AcceptEventScreenState extends State<AcceptEventScreen> {
                           Padding(
                             padding: EdgeInsets.symmetric(vertical: 20.csh),
                             child: CustomButton(
-                              title: LocalizationKeys.payment_made.tr(context),
+                              title: LocalizationKeys.require_payment.tr(context),
                               onTap: () {
                                 showButtonSheet(
                                     context: context,

@@ -32,7 +32,7 @@ class MedicineHeaderWidget extends StatelessWidget {
                 image: NetworkImage(validString(imageUrl)
                     ? imageUrl
                     //TODO: add default image
-                    : imageUrl),
+                    : 'https://drive.google.com/file/d/17LjfxdKAVrs7VAYVWAxJ0V_6KX_X2ZG_/view?usp=sharing'),
                 fit: BoxFit.cover,
               ),
             ),

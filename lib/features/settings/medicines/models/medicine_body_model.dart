@@ -51,8 +51,8 @@ class MedicineBodyModel {
     // } else {
     //   payload = {};
     // }
-    print('MedicineBodyModel.fromJson ${json}');
-    print('MedicineBodyModel.fromJson ${validateString(json['name']?.toString())}');
+    // print('MedicineBodyModel.fromJson ${json}');
+    // print('MedicineBodyModel.fromJson ${validateString(json['name']?.toString())}');
     return MedicineBodyModel(
       id: validateString(json['id']?.toString()),
       childMedicineId: validateString(json['child_medicine_id']?.toString()),

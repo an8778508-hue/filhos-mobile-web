@@ -52,7 +52,7 @@ class AddAddressBloc extends Bloc<AddAddressEvents, AddAddressStates> {
               if (event.addressModel?.countryModel != null) {
                 add(SelectCountry(event.addressModel!.countryModel!));
               } else {
-                add(SelectCountry(r.first));
+                // add(SelectCountry(r.first));
               }
             }
             ;
@@ -73,7 +73,7 @@ class AddAddressBloc extends Bloc<AddAddressEvents, AddAddressStates> {
               initialCity = null;
             } else {
               if (r.isNotEmpty) {
-                add(SelectCity(r.first));
+                // add(SelectCity(r.first));
               }
             }
           },
@@ -93,7 +93,7 @@ class AddAddressBloc extends Bloc<AddAddressEvents, AddAddressStates> {
               initialRegion = null;
             } else {
               if (r.isNotEmpty) {
-                add(SelectRegion(r.first));
+                // add(SelectRegion(r.first));
               }
             }
           },

@@ -30,7 +30,7 @@ class EventForUserModel {
     return EventForUserModel(
       // eventId: validateString(json['event_id']),
       // userId: validateString(json['user_id']),
-      isApproved: json['approved'] == null ? null : json['approved'] == "1",
+      isApproved: json['approved']!=null ? isSuccess(json['approved']) : null,
       isPaid: isSuccess(json['paid']),
       approvedDate: json['approved_date'] != null ? DateTime.parse(json['approved_date']) : null,
       payment_date: json['payment_date'] != null ? DateTime.parse(json['payment_date']) : null,

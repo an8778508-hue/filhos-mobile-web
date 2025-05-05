@@ -105,6 +105,15 @@ abstract class Question extends Equatable {
             subtitle: json['subtitle'],
             icon_value: json['icon_value'].toString(),
             items: json['value'] == null ?[]:List<SelectItem>.from(json['value'].map((e) => SelectItem.fromJson(e))));
+      case 'email':
+        return InfoQuestion(
+          mainCategory: mainCategory,
+          id: questionData['id'],
+          label: questionData['label'] ?? questionData['title'],
+          subtitle: json['subtitle'],
+          info: json['value'],
+          icon_value: json['icon_value'].toString(),
+        );
       default:
         throw Exception('Invalid question type');
     }
@@ -114,7 +123,7 @@ abstract class Question extends Equatable {
   Map<String, dynamic> toJson();
 }
 
-enum QuestionType { select, checkbox, number, rating, textarea, textfield, duration, image }
+enum QuestionType { select, checkbox, number, rating, textarea, textfield, duration, image,email }
 
 extension QuestionTypeExtension on QuestionType {
   String get name {
@@ -135,6 +144,8 @@ extension QuestionTypeExtension on QuestionType {
         return 'duration';
       case QuestionType.image:
         return 'image';
+      case QuestionType.email:
+        return 'email';
       default:
         return 'textarea';
     }
@@ -160,6 +171,8 @@ extension StringExtension on String {
         return QuestionType.duration;
       case 'image':
         return QuestionType.image;
+      case 'email':
+        return QuestionType.email;
       default:
         return QuestionType.textarea;
     }

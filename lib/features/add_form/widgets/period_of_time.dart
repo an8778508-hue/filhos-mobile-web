@@ -112,11 +112,29 @@ class _PeriodOfTimeWidgetState extends State<PeriodOfTimeWidget> {
                         '3'
                     ? 2
                     : 1;
+                final tempo = AddFormBloc.get(context)
+                            .state
+                            .formState
+                            .data
+                            ?.entries
+                            .safeFirstWhere((e) => e.key.id == 'tempo_id')
+                            ?.value
+                            .value
+                            .toString() ==
+                        '3'
+                    ? 2
+                    : 1;
                 if (!validList(selectedItemController.value)) {
                   return LocalizationKeys.this_field_cant_be_empty.tr(context);
                 }
                 if (selectedItemController.value.length < limit) {
+                  debugPrint('selectedItemController.value.length ${selectedItemController.value.length}');
+                  debugPrint('limit $limit');
                   return LocalizationKeys.choose_at_least.tr(context, limit.toString());
+                }if(selectedItemController.value.length==2&&limit==4) {
+                  return LocalizationKeys.choose_at_least.tr(context, limit.toString());
+                } {
+
                 }
                 return null;
               },

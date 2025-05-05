@@ -110,14 +110,14 @@ class CitiesState {
   final bool loading;
   final String? error;
 
-  const CitiesState({
+ const  CitiesState({
     this.selected,
     this.data = const [],
     this.loading = false,
     this.error,
   });
 
-  CitiesState get fetching => const CitiesState(
+  CitiesState get fetching => CitiesState(
     loading: true,
   );
 

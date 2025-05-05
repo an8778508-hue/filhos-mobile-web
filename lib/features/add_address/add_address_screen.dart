@@ -57,23 +57,30 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   late final ValueNotifier<BrazilStatesModel?> brazilStatesModel;
   late final ValueNotifier<String?> errorCep;
   late final ValueNotifier<bool> loadingCep;
-
+   CityModel?chosenCityModel;
+   RegionModel?chosenRegionModel;
   bool get isUpdate => widget.addressModel != null;
 
   @override
   void initState() {
     super.initState();
-    areaController = TextEditingController(text: widget.addressModel?.area ?? '');
+    areaController = TextEditingController(text: widget.addressModel?.regionModel?.name ?? '');
     nameController = TextEditingController(text: widget.addressModel?.name ?? '');
     addressController = TextEditingController(text: widget.addressModel?.address ?? '');
-    cepController = TextEditingController(text: CepInputFormatter().formatEditUpdate(TextEditingValue(text: ''),TextEditingValue(text:  widget.addressModel?.zip_code ?? '')).text);
-    cityController = TextEditingController(text: widget.addressModel?.city ?? '');
+    cepController = TextEditingController(text: CepInputFormatter().formatEditUpdate(const TextEditingValue(text: ''),TextEditingValue(text:  widget.addressModel?.zip_code ?? '')).text);
+    cityController = TextEditingController(text: widget.addressModel?.cityModel?.name ?? '');
     completeAddressController = TextEditingController(text: widget.addressModel?.complement ?? '');
     errorCep = ValueNotifier(null);
     loadingCep = ValueNotifier(false);
     BrazilStatesModel? model =
         BrazilStates.states.safeFirstWhere((element) => element.code == widget.addressModel?.brazil_state_code);
     brazilStatesModel = ValueNotifier(model);
+    if(widget.addressModel?.cityModel != null) {
+      chosenCityModel = widget.addressModel?.cityModel;
+    }
+    if(widget.addressModel?.regionModel != null) {
+      chosenRegionModel = widget.addressModel?.regionModel;
+    }
   }
 
   @override
@@ -118,7 +125,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                         backgroundColor: context.colors.success,
                         content: Text(LocalizationKeys.address_added_successfully.tr(context))));
                   }
-                  Navigator.of(context).maybePop(true);
+                  Navigator.of(context).pop(true);
                 },
               ),
             ],
@@ -286,7 +293,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                 const FieldTitle(textKey: LocalizationKeys.city),
                                                 BlocSelector<AddAddressBloc, AddAddressStates, CitiesState>(
                                                   selector: (state) => state.citiesState,
-                                                  builder: (context, state) => SelectableField<CityModel>(
+                                                  builder: (context, state) {
+                                                    return SelectableField<CityModel>(
                                                     whereCondition: (model, String searchValue) {
                                                       return model.name
                                                           .toLowerCase()
@@ -294,14 +302,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                     },
                                                     item: (model) => AddressCityItem(
                                                       model: model,
-                                                      selected: state.selected,
+                                                      selected:state.selected?? chosenCityModel,
                                                     ),
                                                     list: state.data,
                                                     onSelected: (value) {
                                                       final bloc = BlocProvider.of<AddAddressBloc>(context);
                                                       bloc.add(SelectCity(value));
                                                     },
-                                                    value: state.selected?.name,
+                                                    value: state.selected == null  ? chosenCityModel?.name : state.selected?.name,
                                                     hintKey: (LocalizationKeys.city).tr(context),
                                                     background: Colors.white,
                                                     padding: EdgeInsetsDirectional.symmetric(
@@ -321,7 +329,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                     strokeColor: context.colors.background,
                                                     elevation: 0,
                                                     marginErrorWidthPercentage: 0.0,
-                                                  ),
+                                                  );
+                                                  },
                                                 ),
                                                 SizedBox(height: getHeightByNumber(14)),
                                                 const FieldTitle(textKey: LocalizationKeys.region),
@@ -335,14 +344,14 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                     },
                                                     item: (model) => AddressRegionItem(
                                                       model: model,
-                                                      selected: state.selected,
+                                                      selected: state.selected ?? chosenRegionModel,
                                                     ),
                                                     list: state.data,
                                                     onSelected: (value) {
                                                       final bloc = BlocProvider.of<AddAddressBloc>(context);
                                                       bloc.add(SelectRegion(value));
                                                     },
-                                                    value: state.selected?.name,
+                                                    value: state.selected == null ? chosenRegionModel?.name : state.selected?.name,
                                                     hintKey: (LocalizationKeys.region).tr(context),
                                                     background: Colors.white,
                                                     padding: EdgeInsetsDirectional.symmetric(

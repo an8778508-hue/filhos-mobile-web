@@ -17,6 +17,8 @@ class QuestionTemplateItem extends StatelessWidget {
       return ImagesItem(question: question);
     } else if (question.type == QuestionType.textarea) {
       return InfoItem(question: question);
+    }else if(question.type == QuestionType.email){
+      return EmailItem(question: question);
     }
 
     return Container(

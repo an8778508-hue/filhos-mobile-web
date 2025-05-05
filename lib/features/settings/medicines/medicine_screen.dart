@@ -96,7 +96,7 @@ class MedicinesScreen extends StatelessWidget {
                                                       (context, index) {
                                                     final med = medicines[index];
                                                     if(med.medicines.isEmpty){
-                                                      return SizedBox();
+                                                      return const SizedBox();
                                                     }
                                                     final w = Column(
                                                       children: [
