@@ -388,9 +388,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -527,25 +531,27 @@
 				APP_DISPLAY_NAME = "Disney Professores";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-professores";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = Y7K45XUMA7;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 1;
-				FLUTTER_TARGET = /Users/ahmedemad/StudioProjects/Escola/lib/main_professores.dart;
+				FLUTTER_TARGET = "/Users/khaledsaber/StudioProjects/disney-mobile/lib/main_professores.dart";
 				INFOPLIST_FILE = "Runner/Info-professores.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN_STORYBOARD = LaunchScreenProfessores;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.profedisneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -635,25 +641,27 @@
 				APP_DISPLAY_NAME = "Disney Professores";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-professores";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = Y7K45XUMA7;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 1;
-				FLUTTER_TARGET = /Users/ahmedemad/StudioProjects/Escola/lib/main_professores.dart;
+				FLUTTER_TARGET = "/Users/khaledsaber/StudioProjects/disney-mobile/lib/main_professores.dart";
 				INFOPLIST_FILE = "Runner/Info-professores.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN_STORYBOARD = LaunchScreenProfessores;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.profedisneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -738,25 +746,27 @@
 				APP_DISPLAY_NAME = "Disney Professores";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-professores";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = Y7K45XUMA7;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 1;
-				FLUTTER_TARGET = /Users/ahmedemad/StudioProjects/Escola/lib/main_professores.dart;
+				FLUTTER_TARGET = "/Users/khaledsaber/StudioProjects/disney-mobile/lib/main_professores.dart";
 				INFOPLIST_FILE = "Runner/Info-professores.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN_STORYBOARD = LaunchScreenProfessores;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.profedisneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -841,25 +851,27 @@
 				APP_DISPLAY_NAME = Disney;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-parents";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = Y7K45XUMA7;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 1;
-				FLUTTER_TARGET = /Users/ahmedemad/StudioProjects/Escola/lib/main.dart;
+				FLUTTER_TARGET = "/Users/khaledsaber/StudioProjects/disney-mobile/lib/main.dart";
 				INFOPLIST_FILE = "Runner/Info-parents.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN_STORYBOARD = LaunchScreenParents;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.disneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1035,25 +1047,27 @@
 				APP_DISPLAY_NAME = disney;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-parents";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = Y7K45XUMA7;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 1;
-				FLUTTER_TARGET = /Users/ahmedemad/StudioProjects/Escola/lib/main.dart;
+				FLUTTER_TARGET = "/Users/khaledsaber/StudioProjects/disney-mobile/lib/main.dart";
 				INFOPLIST_FILE = "Runner/Info-parents.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN_STORYBOARD = LaunchScreenParents;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.disneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1072,25 +1086,27 @@
 				APP_DISPLAY_NAME = Disney;
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-parents";
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
-				DEVELOPMENT_TEAM = Y7K45XUMA7;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
 				FLUTTER_BUILD_NAME = 1.0.27;
 				FLUTTER_BUILD_NUMBER = 1;
-				FLUTTER_TARGET = /Users/ahmedemad/StudioProjects/Escola/lib/main.dart;
+				FLUTTER_TARGET = "/Users/khaledsaber/StudioProjects/disney-mobile/lib/main.dart";
 				INFOPLIST_FILE = "Runner/Info-parents.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(APP_DISPLAY_NAME)";
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LAUNCH_SCREEN_STORYBOARD = LaunchScreenParents;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.disneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
