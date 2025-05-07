@@ -12,6 +12,7 @@ import 'package:escola/features/all_children/presentation/bloc/all_children_bloc
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/diary/presentation/widgets/professor_questions/school_items_list.dart';
 import 'package:escola/features/search/bloc/search_bloc.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -80,7 +81,7 @@ class _AllChildrenScreenState extends State<AllChildrenScreen> {
                             onClearSearch: () => context.read<SearchBloc>().add(ClearSearch()),
                             onSearch: (value) {
                               if (stringNotNullOrEmpty(value)) {
-                                context.read<SearchBloc>().add(GlobalSearch(query: value));
+                                context.read<SearchBloc>().add(GlobalSearch(query: value,isTeacher: context.isProfessors  ));
                               }
                             },
                             controller: _searchController,
@@ -120,7 +121,7 @@ class _AllChildrenScreenState extends State<AllChildrenScreen> {
                                       child: ErrorScreen(
                                         errorText: searchState.failure.message,
                                         onRetry: () {
-                                          context.read<SearchBloc>().add(GlobalSearch(query: _searchController.text));
+                                          context.read<SearchBloc>().add(GlobalSearch(query: _searchController.text,isTeacher: context.isProfessors  ));
                                         },
                                       ),
                                     ),

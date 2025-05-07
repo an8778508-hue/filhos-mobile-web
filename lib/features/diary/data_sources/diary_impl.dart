@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:escola/core/errors/failures.dart';
@@ -11,6 +13,7 @@ import 'package:escola/features/diary/models/questions_models/question.dart';
 import 'package:escola/features/diary/models/questions_models/select_question.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/diary/models/tamplets/question_category_template.dart';
+import 'package:flutter/cupertino.dart';
 
 class DiaryImpl extends DiaryRepo {
   final NetworkClientRepository networkClient;
@@ -63,7 +66,7 @@ class DiaryImpl extends DiaryRepo {
         }
 
         if (filterAttendance) {
-          categories = categories.where((e) => e.type == 'attendance').toList();
+          categories = categories.where((e) => e.type == 'attendence').toList();
         }
         if (filterMedia) {
           categories = categories.where((e) => e.questionTamplets.any((e) => e.type == QuestionType.image)).toList();
@@ -94,47 +97,179 @@ class DiaryImpl extends DiaryRepo {
     }
     return value;
   }
-
+// @override
+//   Future<Either<Failure, void>> sendQuestions({
+//     required List<QuestionCategory> categories,
+//     required SchoolItem item,
+//     required String teacherId,
+//   }) async {
+//     final answers = [];
+//     for (final category in categories) {
+//       for (final question in category.questions!) {
+//         print('DiaryImpl.sendQuestions 1 $question');
+//         answers.add({
+//           'timeline_category_id': category.id.toString(),
+//           'id': question.id.toString(),
+//           if (question.type != QuestionType.image) 'metadata': [question.toJson()],
+//           "type": category.type,
+//           "is_image": question.type == QuestionType.image ? 1.toString() : 0.toString(),
+//           if (category.statusType != null) "type_status": category.statusType,
+//           'value': getSelectedItemValue(question),
+//         });
+//       }
+//     }
+//     final body = {
+//       "typeable_type": _getTypeableType(item),
+//       "typeable_id": item.type == SchoolItemType.allChildType ? null : item.id,
+//       if (item.type == SchoolItemType.level) "level_id": item.id.toString(),
+//       if (item.type == SchoolItemType.classType) "class_id": item.id.toString(),
+//       if (item.type == SchoolItemType.childType) "child_id": item.id.toString(),
+//       'fields': answers,
+//     };
+//
+//     return await networkClient.handleRequest(
+//       NetworkRequest(
+//         method: HttpMethod.post,
+//         url: sendQuestionsEndpoint,
+//         body: FormData.fromMap(body),
+//       ),
+//       onSuccess: (json) {},
+//     );
+//   }
+//   @override
+//   Future<Either<Failure, void>> sendQuestions({
+//     required List<QuestionCategory> categories,
+//     required SchoolItem item,
+//     required String teacherId,
+//   }) async {
+//     final formData = FormData();
+//
+//     // Add general fields
+//     formData.fields.addAll([
+//       MapEntry("typeable_type", _getTypeableType(item)?? "child"),
+//       if (item.type == SchoolItemType.level)
+//         MapEntry("level_id", item.id.toString()),
+//       if (item.type == SchoolItemType.classType)
+//         MapEntry("class_id", item.id.toString()),
+//       if (item.type == SchoolItemType.childType)
+//         MapEntry("child_id", item.id.toString()),
+//       if (item.type != SchoolItemType.allChildType)
+//         MapEntry("typeable_id", item.id.toString()),
+//     ]);
+//
+//     // Add questions and file uploads
+//     int fieldIndex = 0;
+//     for (final category in categories) {
+//       for (final question in category.questions!) {
+//         final baseKey = 'fields[$fieldIndex]';
+//
+//         formData.fields.addAll([
+//           MapEntry("$baseKey[timeline_category_id]", category.id.toString()),
+//           MapEntry("$baseKey[id]", question.id.toString()),
+//           MapEntry("$baseKey[type]", category.type?? "question"),
+//           MapEntry("$baseKey[is_image]",
+//               question.type == QuestionType.image ? "1" : "0"),
+//           if (category.statusType != null)
+//             MapEntry("$baseKey[type_status]", category.statusType!),
+//           if (question.type != QuestionType.image)
+//             MapEntry("$baseKey[metadata]",
+//                 jsonEncode([question.toJson()])), // as a string
+//         ]);
+//
+//         final value = getSelectedItemValue(question);
+//         if (question.type == QuestionType.image) {
+//           debugPrint('11111111111111111111111111');
+//           for (final file in value) {
+//             formData.files.add(MapEntry("$baseKey[value][]", file)); // ✅ key with []
+//           }
+//           debugPrint('222222222222222222222222222');
+//         } else {
+//           formData.fields.add(MapEntry("$baseKey[value]", value.toString()));
+//         }
+//         // if (question.type == QuestionType.image && value is List<MultipartFile>) {
+//         //   for (final file in value) {
+//         //     formData.files.add(MapEntry("$baseKey[value][]", file)); // ✅ key with []
+//         //   }
+//         // } else {
+//         //   formData.fields.add(MapEntry("$baseKey[value]", value.toString()));
+//         // }
+//
+//         fieldIndex++;
+//       }
+//     }
+//
+//     return await networkClient.handleRequest(
+//       NetworkRequest(
+//         method: HttpMethod.post,
+//         url: sendQuestionsEndpoint,
+//         body: formData,
+//       ),
+//       onSuccess: (json) {},
+//     );
+//   }
   @override
   Future<Either<Failure, void>> sendQuestions({
     required List<QuestionCategory> categories,
     required SchoolItem item,
     required String teacherId,
   }) async {
-    final answers = [];
+    final formData = FormData();
+
+    // Add general fields
+    formData.fields.addAll([
+      MapEntry("typeable_type", _getTypeableType(item) ?? "child"),
+      if (item.type != SchoolItemType.allChildType)
+        MapEntry("typeable_id", item.id.toString()),
+      if (item.type == SchoolItemType.level)
+        MapEntry("level_id", item.id.toString()),
+      if (item.type == SchoolItemType.classType)
+        MapEntry("class_id", item.id.toString()),
+      if (item.type == SchoolItemType.childType)
+        MapEntry("child_id", item.id.toString()),
+    ]);
+
+    // Add questions with proper indexing
+    int fieldIndex = 0;
     for (final category in categories) {
       for (final question in category.questions!) {
-        print('DiaryImpl.sendQuestions 1 $question');
-        answers.add({
-          'timeline_category_id': category.id.toString(),
-          'id': question.id.toString(),
-          if (question.type != QuestionType.image) 'metadata': [question.toJson()],
-          "type": category.type,
-          "is_image": question.type == QuestionType.image ? 1.toString() : 0.toString(),
-          if (category.statusType != null) "type_status": category.statusType,
-          'value': getSelectedItemValue(question),
-        });
+        final baseKey = 'fields[$fieldIndex]';
+
+        formData.fields.addAll([
+          MapEntry("$baseKey[timeline_category_id]", category.id.toString()),
+          MapEntry("$baseKey[id]", question.id.toString()),
+          MapEntry("$baseKey[type]", category.type ?? "question"),
+          MapEntry("$baseKey[is_image]",
+              question.type == QuestionType.image ? "1" : "0"),
+          if (category.statusType != null)
+            MapEntry("$baseKey[type_status]", category.statusType!),
+          if (question.type != QuestionType.image)
+            MapEntry("$baseKey[metadata]", jsonEncode([question.toJson()])),
+        ]);
+
+        // Handle value based on question type
+        final value = getSelectedItemValue(question);
+        if (question.type == QuestionType.image) {
+          // For images, add each file separately with array notation
+          for (final file in value) {
+            formData.files.add(MapEntry("$baseKey[value][]", file));
+          }
+        } else {
+          formData.fields.add(MapEntry("$baseKey[value]", value.toString()));
+        }
+
+        fieldIndex++;
       }
     }
-    final body = {
-      "typeable_type": _getTypeableType(item),
-      "typeable_id": item.type == SchoolItemType.allChildType ? null : item.id,
-      if (item.type == SchoolItemType.level) "level_id": item.id.toString(),
-      if (item.type == SchoolItemType.classType) "class_id": item.id.toString(),
-      if (item.type == SchoolItemType.childType) "child_id": item.id.toString(),
-      'fields': answers,
-    };
 
     return await networkClient.handleRequest(
       NetworkRequest(
         method: HttpMethod.post,
         url: sendQuestionsEndpoint,
-        body: FormData.fromMap(body),
+        body: formData,
       ),
       onSuccess: (json) {},
     );
   }
-
   @override
   Future<Either<Failure, List<SchoolItem>>> getSchoolItems() async {
     // final data = await rootBundle.loadString('assets/json/diary_items.json');

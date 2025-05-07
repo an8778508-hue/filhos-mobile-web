@@ -89,7 +89,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                             if (showSearchAppBar) ...[
                               SearchField(
                                 inAppBar: true,
-                                hint: searchHint(),
+                                hint: searchHint(widget.groupType==GroupType.internals),
                                 showClearButton: globalSearchResult != null,
                                 onClearSearch: () => toggleSearch(context),
                                 onSearch: (value) => _onSearch(context, value),
@@ -132,15 +132,15 @@ class _ContactsScreenState extends State<ContactsScreen> {
     );
   }
 
-  String searchHint() {
+  String searchHint(bool isInternal) {
     return context.isParents
         ? LocalizationKeys.search_by_professor_name.tr(context)
-        : LocalizationKeys.search_by_child_name.tr(context);
+        : isInternal ? LocalizationKeys.search_by_professor_name.tr(context) : LocalizationKeys.search_by_child_name.tr(context);
   }
 
   void _onSearch(BuildContext context, String value) {
     if (stringNotNullOrEmpty(value)) {
-      context.read<SearchBloc>().add(context.isParents ? ProfessorSearch(query: value) : GlobalSearch(query: value));
+      context.read<SearchBloc>().add(context.isParents ? ProfessorSearch(query: value) : GlobalSearch(query: value,isTeacher: context.isProfessors));
     }
   }
 

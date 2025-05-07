@@ -13,6 +13,7 @@ import 'package:escola/features/search_for_filter/bloc/search_for_filter_event.d
 import 'package:escola/features/search_for_filter/bloc/search_for_filter_state.dart';
 import 'package:escola/features/search_for_filter/model/search_for_filter_model.dart';
 import 'package:escola/features/search_for_filter/widgets/search_for_filter_items_list.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,7 +74,7 @@ class _SearchForFilterScreenState extends State<SearchForFilterScreen> {
                           if (stringNotNullOrEmpty(value)) {
                             context
                                 .read<SearchForFilterBloc>()
-                                .add(SubmitSearchForFilter(query: value, searchModelType: widget.searchModelType));
+                                .add(SubmitSearchForFilter(query: value, searchModelType: widget.searchModelType,isTeacher: context.isProfessors));
                           }
                         },
                         controller: _searchController,

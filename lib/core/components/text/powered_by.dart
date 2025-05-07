@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../utils/lang_utils.dart';
+
 class PoweredByWidget extends StatelessWidget {
   const PoweredByWidget({Key? key}) : super(key: key);
 
@@ -28,7 +30,7 @@ class PoweredByWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              LocalizationKeys.powerd_by.tr(context) + ' ',
+              '${LocalizationKeys.powerd_by.tr(context)} ',
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
@@ -47,7 +49,7 @@ class PoweredByWidget extends StatelessWidget {
               ),
             ),
             Text(
-              ' Disney.app',
+           isRTL(context)? 'تطبيق فالوس'   :' Filhos.app',
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontWeight: FontWeight.w500,

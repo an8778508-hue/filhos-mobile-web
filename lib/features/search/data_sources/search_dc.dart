@@ -12,7 +12,7 @@ abstract class SearchRepo {
 
   Future<Either<Failure, List<SchoolItem>>> childSearch(String query);
 
-  Future<Either<Failure, GlobalSearchResult>> globalSearchForProfessor(String query);
+  Future<Either<Failure, GlobalSearchResult>> globalSearchForProfessor(String query, bool isTeacher);
 
   Future<Either<Failure, List<SchoolItem>>> professorSearch(String query);
 }
@@ -40,8 +40,41 @@ class SearchImpl extends SearchRepo {
   }
 
   @override
-  Future<Either<Failure, GlobalSearchResult>> globalSearchForProfessor(String query) async {
-    final queryParameters = {'q': query};
+  // Future<Either<Failure, GlobalSearchResult>> globalSearchForProfessor(String query) async {
+  //   final queryParameters = {'q': query};
+  //
+  //   return await networkClient.handleRequest<GlobalSearchResult>(
+  //     NetworkRequest(method: HttpMethod.get, url: globalSearchEndpoint, queryParameters: queryParameters),
+  //     onSuccess: (json) {
+  //       final List<SchoolItem> teachers = [];
+  //       final List<SchoolItem> parents = [];
+  //       final List<SchoolItem> levels = [];
+  //       final List<SchoolItem> children = [];
+  //
+  //       for (final item in json['data']?['teachers']??[]) {
+  //         teachers.add(SchoolItem.fromJson(item, SchoolItemType.teacherType));
+  //       }
+  //       for (final item in json['data']?['parents']??[]) {
+  //         parents.add(SchoolItem.fromJson(item, SchoolItemType.parentType));
+  //       }
+  //       for (final item in json['data']?['children']??[]) {
+  //         children.add(SchoolItem.fromJson(item, SchoolItemType.childType));
+  //       }
+  //       for (final item in json['data']?['levels']??[]) {
+  //         levels.add(SchoolItem.fromJson(item, SchoolItemType.level));
+  //       }
+  //
+  //       return GlobalSearchResult(
+  //         teachers: teachers,
+  //         parents: parents,
+  //         children: children,
+  //         levels: levels,
+  //       );
+  //     },
+  //   );
+  // }
+  Future<Either<Failure, GlobalSearchResult>> globalSearchForProfessor(String query, bool isTeacher) async {
+    final queryParameters = {'q': query,'is_teacher': isTeacher};
 
     return await networkClient.handleRequest<GlobalSearchResult>(
       NetworkRequest(method: HttpMethod.get, url: globalSearchEndpoint, queryParameters: queryParameters),
@@ -51,17 +84,26 @@ class SearchImpl extends SearchRepo {
         final List<SchoolItem> levels = [];
         final List<SchoolItem> children = [];
 
-        for (final item in json['data']?['teachers']??[]) {
-          teachers.add(SchoolItem.fromJson(item, SchoolItemType.teacherType));
-        }
-        for (final item in json['data']?['parents']??[]) {
-          parents.add(SchoolItem.fromJson(item, SchoolItemType.parentType));
-        }
-        for (final item in json['data']?['children']??[]) {
-          children.add(SchoolItem.fromJson(item, SchoolItemType.childType));
-        }
-        for (final item in json['data']?['levels']??[]) {
-          levels.add(SchoolItem.fromJson(item, SchoolItemType.level));
+        // The API is returning data as a direct array, not categorized objects
+        if (json['data'] is List) {
+          // Assuming these are children based on the response structure
+          for (final item in json['data']) {
+            children.add(SchoolItem.fromJson(item, SchoolItemType.childType));
+          }
+        } else if (json['data'] is Map) {
+          // Handle the case where data might be an object with categorized arrays
+          for (final item in json['data']?['teachers'] ?? []) {
+            teachers.add(SchoolItem.fromJson(item, SchoolItemType.teacherType));
+          }
+          for (final item in json['data']?['parents'] ?? []) {
+            parents.add(SchoolItem.fromJson(item, SchoolItemType.parentType));
+          }
+          for (final item in json['data']?['children'] ?? []) {
+            children.add(SchoolItem.fromJson(item, SchoolItemType.childType));
+          }
+          for (final item in json['data']?['levels'] ?? []) {
+            levels.add(SchoolItem.fromJson(item, SchoolItemType.level));
+          }
         }
 
         return GlobalSearchResult(
@@ -73,7 +115,6 @@ class SearchImpl extends SearchRepo {
       },
     );
   }
-
   @override
   Future<Either<Failure, List<SchoolItem>>> professorSearch(String query) async {
     final queryParameters = {'q': query};

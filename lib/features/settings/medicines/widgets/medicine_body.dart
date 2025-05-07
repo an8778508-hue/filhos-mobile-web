@@ -171,9 +171,11 @@ class MedicineBody extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      data[index].value1,
-                      style: style1,
+                    Expanded(
+                      child: Text(
+                        data[index].value1,
+                        style: style1,
+                      ),
                     ),
                     AutoScroller(
                       height: 30.h,

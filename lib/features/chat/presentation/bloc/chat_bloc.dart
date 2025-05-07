@@ -115,7 +115,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   Future<void> _sendMessage(SendMessage event, Emitter<ChatState> emit) async {
     final senderType = event.message.sender.type;
-
+debugPrint('ChatBloc._sendMessage      1 ${event.message}');
     if (event.message.child != null) {
       if (senderType == UserType.parent) {
         await _sendToRelatedTeachers(event, emit);
