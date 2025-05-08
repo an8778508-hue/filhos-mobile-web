@@ -51,13 +51,13 @@ class LoginBloc extends Cubit<LoginState> {
         emit(LoginReady());
       },
       onFailed: (l) async {
-        print('OTPBloc.requestOTP ${l.code}');
+        print('OTPBloc.requestOTP ${l.message}');
         if (l.code == 'already_sent') {
           emit(LoginReady());
           return;
         }
         if (!isClosed) {
-          emit(LoginFailure(NetworkFailure(message: l.code ?? '')));
+          emit(LoginFailure(NetworkFailure(message: '${l.code}''${l.message}' ?? '')));
         }
       },
       onSuccess: (r) async {},

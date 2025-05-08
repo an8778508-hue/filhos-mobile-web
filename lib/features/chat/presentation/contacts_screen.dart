@@ -92,7 +92,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                 hint: searchHint(widget.groupType==GroupType.internals),
                                 showClearButton: globalSearchResult != null,
                                 onClearSearch: () => toggleSearch(context),
-                                onSearch: (value) => _onSearch(context, value),
+                                onSearch: (value) => _onSearch(context, value,widget.groupType==GroupType.internals),
                                 controller: _searchController,
                               )
                             ],
@@ -138,9 +138,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
         : isInternal ? LocalizationKeys.search_by_professor_name.tr(context) : LocalizationKeys.search_by_child_name.tr(context);
   }
 
-  void _onSearch(BuildContext context, String value) {
+  void _onSearch(BuildContext context, String value,bool isInternal) {
     if (stringNotNullOrEmpty(value)) {
-      context.read<SearchBloc>().add(context.isParents ? ProfessorSearch(query: value) : GlobalSearch(query: value,isTeacher: context.isProfessors));
+      context.read<SearchBloc>().add((context.isProfessors&&isInternal) ? ProfessorSearch(query: value) : GlobalSearch(query: value,isTeacher: context.isProfessors));
     }
   }
 

@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordController = TextEditingController();
     rememberMeToggle = ValueNotifier(false);
     // todo
-    country = Country.parse(AppConstants.brazilCountryCode);
+    country = Country.parse(AppConstants.egCountryCode);
     super.initState();
   }
 
@@ -164,9 +164,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 padding: EdgeInsets.symmetric(vertical: 5.csh, horizontal: 20.csw),
                                 borderRadius: 30.r,
                                 onChanged: (value) {
-                                  if (!showValidNumberError) {
-                                    setState(() => showValidNumberError = true);
-                                  }
+                                  // if (!showValidNumberError) {
+                                  //   setState(() => showValidNumberError = true);
+                                  // }
                                 },
                                 isCountryValid: (valid) {
                                   setState(() => isValidNumber = valid);
@@ -248,6 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           fontWeight: FontWeight.w400,
                                         ),
                                       ),
+
                                     ],
                                   ),
                                 ),

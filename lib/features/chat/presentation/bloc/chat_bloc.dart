@@ -117,7 +117,9 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final senderType = event.message.sender.type;
 debugPrint('ChatBloc._sendMessage      1 ${event.message}');
     if (event.message.child != null) {
+      debugPrint('ChatBloc._sendMessage      2 ${event.message}');
       if (senderType == UserType.parent) {
+
         await _sendToRelatedTeachers(event, emit);
       } else {
         final parent = event.message.child!.parent;
@@ -125,10 +127,13 @@ debugPrint('ChatBloc._sendMessage      1 ${event.message}');
         print('ChatBloc._sendMessage      3 ${parent}');
           await _sendSingleMessage(event.message.copyWith(reciever: ChatUser.fromUserModel(parent)), emit);
         }
+        debugPrint('ChatBloc._sendMessage      4');
         await _sendToRelatedTeachers(event, emit);
       }
     } else {
-      await _sendToRelatedTeachers(event, emit);
+      debugPrint('ChatBloc._sendMessage      5');
+      // await _sendToRelatedTeachers(event, emit);
+      await _sendProfessorToProfessor(event.message, emit);
     }
   }
 
@@ -136,8 +141,11 @@ debugPrint('ChatBloc._sendMessage      1 ${event.message}');
     final child = event.message.child;
     final sender = event.message.sender;
     final senderType = event.message.sender.type;
-
-    if (child != null && relatedTeachers.isNotEmpty) {
+     debugPrint('ChatBloc._sendToRelatedTeachers      1 ${event.message}');
+     debugPrint('senderType $senderType');
+    debugPrint('child $child');
+    relatedTeachers.forEach((element) { debugPrint('relatedTeachersssssssssssssssssss $element'); });
+    if ( relatedTeachers.isNotEmpty) {
       await Future.wait(
         relatedTeachers.map((e) async {
           final message = event.message.copyWith(reciever: e);
@@ -146,6 +154,22 @@ debugPrint('ChatBloc._sendMessage      1 ${event.message}');
           }
         }).toList(),
       );
+    }else{
+      debugPrint('related teachers is empty');
+    }
+  }
+
+  Future<void> _sendProfessorToProfessor(Message message, Emitter<ChatState> emit) async {
+    debugPrint('11111111111111111111111');
+    // Check if both sender and receiver are professors
+    if (message.sender.type == UserType.professor && message.reciever.type == UserType.professor) {
+      debugPrint('22222222222222222222222');
+      // Send direct message between professors
+      await _sendSingleMessage(message, emit);
+    } else {
+      emit(const SendMessageError(failure: ServerFailure(
+          message: "Invalid operation: Both users must be professors for this communication"
+      )));
     }
   }
 

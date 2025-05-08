@@ -2,13 +2,14 @@ import 'package:dartz/dartz.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
+import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/search/models/global_search.dart';
 
 abstract class SearchRepo {
   final String childSearchEndpoint = "/teacher/timeline/";
   final String globalSearchEndpoint = "/teacher/timeline/";
-  final String professorSearchEndpoint = "/teacher-search";
+  final String professorSearchEndpoint = "teacher/teacher-search";
 
   Future<Either<Failure, List<SchoolItem>>> childSearch(String query);
 
@@ -74,7 +75,7 @@ class SearchImpl extends SearchRepo {
   //   );
   // }
   Future<Either<Failure, GlobalSearchResult>> globalSearchForProfessor(String query, bool isTeacher) async {
-    final queryParameters = {'q': query,'is_teacher': isTeacher};
+    final queryParameters = {'q': query};
 
     return await networkClient.handleRequest<GlobalSearchResult>(
       NetworkRequest(method: HttpMethod.get, url: globalSearchEndpoint, queryParameters: queryParameters),
@@ -123,7 +124,7 @@ class SearchImpl extends SearchRepo {
       NetworkRequest(method: HttpMethod.get, url: professorSearchEndpoint, queryParameters: queryParameters),
       onSuccess: (json) {
         final items = <SchoolItem>[];
-        for (final item in json['data']['teachers']) {
+        for (final item in json['data']) {
           items.add(SchoolItem.fromJson(item, SchoolItemType.teacherType));
         }
 
