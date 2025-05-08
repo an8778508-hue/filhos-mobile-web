@@ -15,8 +15,9 @@ class ChildSearch extends SearchEvent {
 
 class GlobalSearch extends SearchEvent {
   final String query;
+  final bool isTeacher;
 
-  const GlobalSearch({required this.query});
+  const GlobalSearch({required this.query, required this.isTeacher});
 }
 
 class ProfessorSearch extends SearchEvent {

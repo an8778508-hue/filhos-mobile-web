@@ -17,6 +17,7 @@ import 'package:escola/core/user/widgets/user_builder.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/size_config.dart';
 import 'package:escola/features/splash/presentation/splash_screen.dart';
+import 'core/user/bloc/user_state.dart';
 import 'core/utils/print.dart';
 
 class MyApp extends StatefulWidget {
@@ -76,28 +77,33 @@ class MaterialAppWidget extends StatelessWidget {
         selector: (config) => config.translations,
         builder: (context, translations) => ConfigSelector(
           selector: (config) => config.styling,
-          builder:(context, state) => MaterialApp(
-            key: mainKey,
-            navigatorKey: navigatorKey,
-            navigatorObservers: [NavObs()],
-            debugShowCheckedModeBanner: false,
-            color: context.colors.primary,
-            theme: MainTheme.lightTheme,
-            darkTheme: MainTheme.lightTheme,
-            themeMode: ThemeMode.light,
-            locale: Locale(printR('CURRENT_LOCALE_IS', language)),
-            // supportedLocales: LocalizationsHelper.getSupportedLocales(),
-            localizationsDelegates: LocalizationsHelper.getTranslationDelegates(language, translations),
-            localeResolutionCallback: LocalizationsHelper.localeResolutionCallback,
-            // localeListResolutionCallback: LocalizationsHelper.localeListResolutionCallback,
-            builder: (context, child) {
-              SizeConfig.initSize(context);
-              return ScaffoldMessenger(
-                child: child!,
-              );
-            },
-            home: const SplashScreen(),
-          ),
+          builder:(context, state) => BlocBuilder<UserBloc, UserState>(builder: (context, state) {
+            return MaterialApp(
+              key: mainKey,
+              navigatorKey: navigatorKey,
+              navigatorObservers: [NavObs()],
+              debugShowCheckedModeBanner: false,
+              color: context.colors.primary,
+              theme: MainTheme.lightTheme,
+              darkTheme: MainTheme.lightTheme,
+              themeMode: ThemeMode.light,
+              locale: Locale(printR('CURRENT_LOCALE_IS', language)),
+              // supportedLocales: LocalizationsHelper.getSupportedLocales(),
+              localizationsDelegates: LocalizationsHelper.getTranslationDelegates(language, translations),
+              localeResolutionCallback: LocalizationsHelper.localeResolutionCallback,
+              // localeListResolutionCallback: LocalizationsHelper.localeListResolutionCallback,
+              builder: (context, child) {
+                SizeConfig.initSize(context);
+                return Directionality(
+                  textDirection:state.language == 'en' ? TextDirection.ltr : TextDirection.rtl,
+                  child: ScaffoldMessenger(
+                    child: child!,
+                  ),
+                );
+              },
+              home: const SplashScreen(),
+            );
+          },),
         ),
       ),
     );

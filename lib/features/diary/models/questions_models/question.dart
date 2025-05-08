@@ -114,6 +114,15 @@ abstract class Question extends Equatable {
           info: json['value'],
           icon_value: json['icon_value'].toString(),
         );
+      case 'text':
+        return InfoQuestion(
+          mainCategory: mainCategory,
+          id: questionData['id'],
+          label: questionData['label'] ?? questionData['title'],
+          subtitle: json['subtitle'],
+          info: json['value'],
+          icon_value: json['icon_value'].toString(),
+        );
       default:
         throw Exception('Invalid question type');
     }

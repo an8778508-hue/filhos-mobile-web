@@ -57,7 +57,7 @@ class AnnouncementsScreen extends StatelessWidget {
                     case AnnouncementsFetchedSuccessfully():
                       final List<AnnouncementsWithDateModel> announcements = state.announcements;
                       if (announcements.isEmpty) {
-                        return EmptyAnnouncements();
+                        return const EmptyAnnouncements();
                       }
                       return Expanded(
                         child: Padding(

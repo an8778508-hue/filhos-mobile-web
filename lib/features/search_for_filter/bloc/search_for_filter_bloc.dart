@@ -41,7 +41,7 @@ class SearchForFilterBloc extends Bloc<SearchForFilterEvent, SearchForFilterStat
 
   Future<void> _handleSearchForFilter(SubmitSearchForFilter event, Emitter<SearchForFilterState> emit) async {
     emit(SearchForFilterItemsLoading());
-    await searchRepo.globalSearchForProfessor(event.query).then((value) {
+    await searchRepo.globalSearchForProfessor(event.query,event.isTeacher).then((value) {
       value.fold(
         (l) => emit(SearchForFilterItemsError(failure: l)),
         (items) {

@@ -50,7 +50,7 @@ class LoginImpl extends LoginRepository {
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phone,
       forceResendingToken: _resendToken,
-      timeout: const Duration(seconds: 60),
+      timeout: const Duration(seconds: 120),
       verificationCompleted: (credential) async {
         debugPrint('OTP AUTO VERIFICATION ');
 

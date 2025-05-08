@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/notifications_service/notification_helper.dart';
+import 'package:escola/core/utils/lang_utils.dart';
 import 'package:escola/my_app.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -62,12 +63,22 @@ class LocalNotificationHelper {
         styleInformation:
             _buildBigPictureStyleInformation(notification?.title ?? "", notification?.body ?? "", picturePath, true),
       );
+     final context = navigatorKey.currentContext;
+     String? title = notification?.title;
+      String? body = notification?.body;
+     if(context != null){
+       bool isEnglish = (isRTL(context)==false);
+       debugPrint("isEnglissssssssssssssssh : $isEnglish");
+       final data = message.data;
+        title = isEnglish ? data['title_en'] : data['title_ar'];
+       body = isEnglish ? data['body_en'] : data['body_ar'];
 
+     }
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
-          notification.title,
-          notification.body,
+          title,
+         body,
           NotificationDetails(android: androidDetails, iOS: iOSPlatformChannelSpecifics),
           payload: json.encode(message.data),
         );

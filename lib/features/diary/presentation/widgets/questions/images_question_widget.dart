@@ -48,6 +48,7 @@ class ImagesQuestionWidget extends StatelessWidget {
                 maxLength,
                 (index) {
                   final image = questionCategory?.answer?[index];
+                  debugPrint('imageeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee: $image');
                   final ext = image?.split('.').last ?? "";
                   final fileIsImage = isImage(ext);
                   final fileIsVideo = isVideo(ext);

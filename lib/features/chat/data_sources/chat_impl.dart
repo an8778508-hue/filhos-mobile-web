@@ -37,6 +37,7 @@ class ChatImpl extends ChatRepo {
 
         // set data to sender user document
         await senderUser.set(message.sender.toJson());
+        debugPrint('receiver useeeeeeeeeeeeeeer: ${message.reciever.toJson()}');
 
         // set data to receiver user document
         await receiverUser.set(message.reciever.toJson());

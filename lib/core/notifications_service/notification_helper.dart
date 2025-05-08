@@ -8,11 +8,14 @@ import 'package:escola/features/diary/presentation/dairy_screen.dart';
 import 'package:escola/features/settings/accept_event/accept_events.dart';
 import 'package:escola/features/settings/events/event_screen.dart';
 import 'package:escola/my_app.dart';
+import 'package:flutter/cupertino.dart';
 
 class NotificationHelper {
   static Future handleNotificationTap({required Map<String, dynamic> data}) async {
     final type = (data?['type'])??(data['eventable_type']);
     final id = (data['id'])?? (data['eventable_id']);
+    final eventableId = (data['eventable_id']);
+    debugPrint("NotificationHelper.handleNotificationTap: $data");
 
     if (type == "chat") {
       final senderData = data['sender'] == null ? null : jsonDecode(data['sender']);
@@ -23,8 +26,8 @@ class NotificationHelper {
         await WidgetFunctions.navigateTo(navigatorKey.currentContext!, ChatScreen(contact: contact, child: child));
       }
     } else if (type == "event"|| type.toString().toLowerCase() == "events") {
-      if(id != null){
-        await WidgetFunctions.navigateTo(navigatorKey.currentContext!, AcceptEventScreen(eventId: id));
+      if(eventableId != null){
+        await WidgetFunctions.navigateTo(navigatorKey.currentContext!, AcceptEventScreen(eventId: eventableId.toString()));
       }else{
       await WidgetFunctions.navigateTo(navigatorKey.currentContext!, const EventsScreen());
       }

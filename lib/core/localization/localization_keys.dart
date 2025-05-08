@@ -329,6 +329,7 @@ abstract class LocalizationKeys {
   static const String is_featured = "is_featured";
   static const String see_more = "see_more";
   static const String file = "file";
+  static const String choose = "choose";
 }
 
 extension LocalizationKeysTr on String {

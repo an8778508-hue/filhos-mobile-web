@@ -32,7 +32,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
 
   _globalSearch(GlobalSearch event, Emitter<SearchState> emit) async {
     emit(SearchLoading());
-    return searchRepo.globalSearchForProfessor(event.query).then((result) {
+    return searchRepo.globalSearchForProfessor(event.query,event.isTeacher).then((result) {
       result.fold(
         (failure) => emit(SearchFailed(failure: failure)),
         (results) {

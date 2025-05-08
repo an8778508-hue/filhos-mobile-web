@@ -18,8 +18,9 @@ class GetSearchForFilterItems extends SearchForFilterEvent {
 class SubmitSearchForFilter extends SearchForFilterEvent {
   final String query;
   final SearchForFilterModelType searchModelType;
+ final bool isTeacher;
 
-  const SubmitSearchForFilter({required this.query,required this.searchModelType});
+  const SubmitSearchForFilter({required this.query,required this.searchModelType, required this.isTeacher });
 }
 
 class ClearSearchForFilter extends SearchForFilterEvent {}

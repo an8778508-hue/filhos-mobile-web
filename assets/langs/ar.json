@@ -145,5 +145,7 @@
   "retry": "إعادة المحاولة",
   "pick_images": "اختيار الصور",
   "video": "فيديو",
-  "select_all": "اختر الكل"
+  "select_all": "اختر الكل",
+  "medicine_notification_title": "ديزنى",
+  "medicine_notification_desc": "الدواء الان"
 }

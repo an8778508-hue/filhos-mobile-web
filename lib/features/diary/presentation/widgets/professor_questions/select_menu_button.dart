@@ -9,6 +9,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:collection/collection.dart';
 
+import '../../../../../core/localization/localization_keys.dart';
+
 class SelectMenuButton extends StatelessWidget {
   final QuestionTemplate question;
 
@@ -37,7 +39,7 @@ class SelectMenuButton extends StatelessWidget {
           Container(
             constraints: BoxConstraints(maxWidth: 100.w),
             child: Text(
-              getValue(questionValue),
+              getValue(questionValue,context),
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: TextStyle(
@@ -57,7 +59,7 @@ class SelectMenuButton extends StatelessWidget {
     );
   }
 
-  String getValue(dynamic questionValue) {
+  String getValue(dynamic questionValue,BuildContext context) {
     try {
       if (questionValue != null && question.type == QuestionType.checkbox) {
         return questionValue.toString();
@@ -66,10 +68,10 @@ class SelectMenuButton extends StatelessWidget {
         final selectItem = questionValue as List<SelectItem>;
         return selectItem[0].value ?? "N/D";
       }
-      return "N/D";
+      return LocalizationKeys.choose.tr(context);
     } catch (e) {
       print("error: $e");
-      return "N/D";
+      return LocalizationKeys.choose.tr(context);
     }
   }
 }
