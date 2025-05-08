@@ -12,7 +12,28 @@
           "package_name": "com.algoriza.disney"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "328842559224-bt3hg538i3b0uv2rkg9mi5f144qsudvv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.disney",
+            "certificate_hash": "6b7dd6220657045efc5a848c6dcc64b6f4009624"
+          }
+        },
+        {
+          "client_id": "328842559224-h9tlqamf4mm63rr6v8m0g910fh31512t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.disney",
+            "certificate_hash": "24a3928f69f1fd1aecb4e79e4f1e9b64dda99048"
+          }
+        },
+        {
+          "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
@@ -20,7 +41,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328842559224-1oufa3usthhum7r9elft730ka4thqs16.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.algoriza.disney"
+              }
+            }
+          ]
         }
       }
     },
@@ -31,7 +64,36 @@
           "package_name": "com.algoriza.disneyNew"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "328842559224-8rchg8jn9f8ikchtrk5t8rbaums5kf3s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.disneyNew",
+            "certificate_hash": "24a3928f69f1fd1aecb4e79e4f1e9b64dda99048"
+          }
+        },
+        {
+          "client_id": "328842559224-aihkknn2jhd7arpqcqkr0mdoihqfegdh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.disneyNew",
+            "certificate_hash": "551da0912af481d372ab2b31fed8ab0e3773231b"
+          }
+        },
+        {
+          "client_id": "328842559224-v17h54olkdt4oj7jo526506j2kfjpdm9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.disneyNew",
+            "certificate_hash": "6b7dd6220657045efc5a848c6dcc64b6f4009624"
+          }
+        },
+        {
+          "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
@@ -39,7 +101,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328842559224-1oufa3usthhum7r9elft730ka4thqs16.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.algoriza.disney"
+              }
+            }
+          ]
         }
       }
     },
@@ -50,7 +124,20 @@
           "package_name": "com.algoriza.profedisney"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "328842559224-4nbo0hasum6mk5o6por53heuh3ooinb6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.profedisney",
+            "certificate_hash": "24a3928f69f1fd1aecb4e79e4f1e9b64dda99048"
+          }
+        },
+        {
+          "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
@@ -58,7 +145,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328842559224-1oufa3usthhum7r9elft730ka4thqs16.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.algoriza.disney"
+              }
+            }
+          ]
         }
       }
     },
@@ -69,7 +168,36 @@
           "package_name": "com.algoriza.profedisneyNew"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "328842559224-93vu01p6fftccel2hs7klt5b2n72mq7o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.profedisneyNew",
+            "certificate_hash": "24a3928f69f1fd1aecb4e79e4f1e9b64dda99048"
+          }
+        },
+        {
+          "client_id": "328842559224-m54gqmb0912a97achnlicl7aencbmv02.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.profedisneyNew",
+            "certificate_hash": "c1a5469be611b06b454026f6ff3e647ddbaa6f90"
+          }
+        },
+        {
+          "client_id": "328842559224-r483dqs4eulcopedis1eptsdv831ocea.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.profedisneyNew",
+            "certificate_hash": "6b7dd6220657045efc5a848c6dcc64b6f4009624"
+          }
+        },
+        {
+          "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
@@ -77,7 +205,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "328842559224-1oufa3usthhum7r9elft730ka4thqs16.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.algoriza.disney"
+              }
+            }
+          ]
         }
       }
     }

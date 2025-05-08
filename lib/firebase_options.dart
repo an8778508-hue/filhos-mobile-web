@@ -60,6 +60,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '328842559224',
     projectId: 'disney-d2bd5',
     storageBucket: 'disney-d2bd5.firebasestorage.app',
+    androidClientId: '328842559224-4nbo0hasum6mk5o6por53heuh3ooinb6.apps.googleusercontent.com',
+    iosClientId: '328842559224-h5603ru66f13lgcfavj5pg4rd8fmc7rg.apps.googleusercontent.com',
     iosBundleId: 'com.algoriza.profedisneyNew',
   );
 
