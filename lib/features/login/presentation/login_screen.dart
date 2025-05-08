@@ -211,47 +211,51 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(
                                   width: 42.csw,
                                 ),
-                                const Spacer(),
-                                GestureDetector(
-                                  behavior: HitTestBehavior.translucent,
-                                  onTap: () {
-                                    rememberMeToggle.value = !rememberMeToggle.value;
-                                  },
-                                  child: Row(
-                                    children: [
-                                      ValueListenableBuilder(
-                                        valueListenable: rememberMeToggle,
-                                        builder: (context, v, child) => SizedBox(
-                                          width: 20.w,
-                                          height: 20.w,
-                                          child: Theme(
-                                            data: Theme.of(context).copyWith(
-                                              unselectedWidgetColor: context.colors.primary,
-                                            ),
-                                            child: Checkbox(
-                                              value: v,
-                                              shape: RoundedRectangleBorder(
-                                                  side: BorderSide(color: context.colors.accent)),
-                                              onChanged: (value) {
-                                                rememberMeToggle.value = !rememberMeToggle.value;
-                                              },
+                                Directionality(
+                                  textDirection: TextDirection.ltr,
+                                  child: GestureDetector(
+                                    behavior: HitTestBehavior.translucent,
+                                    onTap: () {
+                                      rememberMeToggle.value = !rememberMeToggle.value;
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        ValueListenableBuilder(
+                                          valueListenable: rememberMeToggle,
+                                          builder: (context, v, child) => SizedBox(
+                                            width: 20.w,
+                                            height: 20.w,
+                                            child: Theme(
+                                              data: Theme.of(context).copyWith(
+                                                unselectedWidgetColor: context.colors.primary,
+                                              ),
+                                              child: Checkbox(
+                                                value: v,
+                                                shape: RoundedRectangleBorder(
+                                                    side: BorderSide(color: context.colors.accent)),
+                                                onChanged: (value) {
+                                                  rememberMeToggle.value = !rememberMeToggle.value;
+                                                },
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(width: 5.w),
-                                      Text(
-                                        LocalizationKeys.keep_me_logged_in.tr(context),
-                                        style: TextStyle(
-                                          color: context.colors.textColor,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w400,
+                                        SizedBox(width: 5.w),
+                                        Text(
+                                          LocalizationKeys.keep_me_logged_in.tr(context),
+                                          style: TextStyle(
+                                            color: context.colors.textColor,
+                                            fontSize: 14.sp,
+                                            fontWeight: FontWeight.w400,
+                                          ),
                                         ),
-                                      ),
 
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
+                                const Spacer(),
                                 SizedBox(
                                   width: 42.csw,
                                 ),
