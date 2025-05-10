@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               height: context.isProfessors ? 40.h : 98.h,
                             ),
                             Text(
-                              LocalizationKeys.login_title.tr(context),
+                              "${LocalizationKeys.login_title.tr(context)} ${context.isProfessors ? LocalizationKeys.professors.tr(context) : LocalizationKeys.parents.tr(context)}",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
