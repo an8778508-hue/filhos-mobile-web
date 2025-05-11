@@ -63,7 +63,14 @@ class _MyAddressesScreenState extends State<MyAddressesScreen> {
                 return const Center(child: Loading());
               }
               if(addresses.isEmpty){
-                return const EmptyAddress();
+                return  EmptyAddress(onAddNewTapped: () async {
+              final f=   await Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddAddressScreen()));
+              debugPrint('1111111111111111111111111111111111111111111');
+                if(f==true && context.mounted){
+                  BlocProvider.of<MyAddressesBloc>(context).add(const FetchAddresses());
+                  debugPrint('222222222222222222222222222222222222222222');
+                }
+                },);
               }
               return Column(
                 children: [

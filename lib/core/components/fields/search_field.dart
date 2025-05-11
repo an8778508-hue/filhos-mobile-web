@@ -59,7 +59,7 @@ class _SearchFieldState extends State<SearchField> {
           hintColor: Colors.black.withOpacity(0.7),
           onChanged: (value) {
             if (_debounce?.isActive ?? false) _debounce?.cancel();
-            _debounce = Timer(const Duration(seconds: 1), () {
+            _debounce = Timer(const Duration(seconds: 3), () {
               FocusScope.of(context).unfocus();
               widget.onSearch(value.trim());
             });

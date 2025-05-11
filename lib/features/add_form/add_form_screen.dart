@@ -315,6 +315,8 @@ bool validateDependency(FormModel field, Map<FormModel, CreateFormParams> form) 
 }
 
 Widget getField(FormModel field) {
+   // debugPrint('getField ${field.type}');
+   debugPrint('getField ${field.id}');
   switch (field.type) {
     case FormType.counter:
       return CounterWidget(model: field as CounterModel);

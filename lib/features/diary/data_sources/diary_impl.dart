@@ -234,6 +234,29 @@ class DiaryImpl extends DiaryRepo {
       for (final question in category.questions!) {
         final baseKey = 'fields[$fieldIndex]';
 
+    //     formData.fields.addAll([
+    //       MapEntry("$baseKey[timeline_category_id]", category.id.toString()),
+    //       MapEntry("$baseKey[id]", question.id.toString()),
+    //       MapEntry("$baseKey[type]", category.type ?? "question"),
+    //       MapEntry("$baseKey[is_image]",
+    //           question.type == QuestionType.image ? "1" : "0"),
+    //       if (category.statusType != null)
+    //         MapEntry("$baseKey[type_status]", category.statusType!),
+    // if (question.type != QuestionType.image) {
+    // final metadata = question.toJson();
+    // metadata.forEach((key, value) {
+    // formData.fields.add(MapEntry("$baseKey[metadata][$key]", value.toString()));
+    // });
+    // }
+    // // if (question.type != QuestionType.image)
+    // // final metadata = question.toJson() as Map<String, dynamic>;
+    // // metadata.forEach((key, value) {
+    // // formData.fields.add(MapEntry("$baseKey[metadata][$key]", value.toString()));
+    // // });
+    //
+    //       // if (question.type != QuestionType.image)
+    //       //   MapEntry("$baseKey[metadata]", jsonEncode([question.toJson()])),
+    //     ]);
         formData.fields.addAll([
           MapEntry("$baseKey[timeline_category_id]", category.id.toString()),
           MapEntry("$baseKey[id]", question.id.toString()),
@@ -242,10 +265,15 @@ class DiaryImpl extends DiaryRepo {
               question.type == QuestionType.image ? "1" : "0"),
           if (category.statusType != null)
             MapEntry("$baseKey[type_status]", category.statusType!),
-          if (question.type != QuestionType.image)
-            MapEntry("$baseKey[metadata]", jsonEncode([question.toJson()])),
         ]);
 
+        // Process metadata separately
+        if (question.type != QuestionType.image) {
+          final metadata = question.toJson();
+          metadata.forEach((key, value) {
+            formData.fields.add(MapEntry("$baseKey[metadata][$key]", value.toString()));
+          });
+        }
         // Handle value based on question type
         final value = getSelectedItemValue(question);
         if (question.type == QuestionType.image) {

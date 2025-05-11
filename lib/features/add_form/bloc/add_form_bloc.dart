@@ -19,7 +19,7 @@ class AddFormBloc extends Cubit<AddFormState> {
   final AddFormType addFormType;
   final MyChildrenRepo myChildrenRepo;
   final AddMedicineRepo addMedicineRepo;
-
+  int requiredTimeSelections = 1;
   AddFormBloc(this.repo, this.addFormType, this.myChildrenRepo, this.addMedicineRepo) : super(const AddFormState());
 
   final AddFormRepo repo;
@@ -89,6 +89,10 @@ class AddFormBloc extends Cubit<AddFormState> {
       // remove this field
       form.removeWhere((key, value) => key.id == field.key.id);
     }
+     if(key.id == 'dose_number_id'){
+      requiredTimeSelections = value=='3'?2:1;
+      debugPrint('requiredTimeSelectionsFrom Bloc: $requiredTimeSelections');
+     }
     emit(state.updateFormState((s) => s.asSuccess(Map.fromEntries(form.entries.where((e) => validateDependency(e.key, form))))));
     print('AddFormBloc.updateForm');
     print(getPrettyJSONString(state.formState.data?.map((key, value) => MapEntry(key.id, value.value))));

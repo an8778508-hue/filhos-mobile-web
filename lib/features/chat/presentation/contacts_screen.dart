@@ -91,7 +91,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                 inAppBar: true,
                                 hint: searchHint(widget.groupType==GroupType.internals),
                                 showClearButton: globalSearchResult != null,
-                                onClearSearch: () => toggleSearch(context),
+                                onClearSearch: () => toggleSearch(context, isFromSearch: true),
                                 onSearch: (value) => _onSearch(context, value,widget.groupType==GroupType.internals),
                                 controller: _searchController,
                               )
@@ -144,8 +144,9 @@ class _ContactsScreenState extends State<ContactsScreen> {
     }
   }
 
-  void toggleSearch(BuildContext context) {
+  void toggleSearch(BuildContext context, {bool isFromSearch = false}) {
     if (showSearchAppBar) {
+      if (isFromSearch) return;
       context.read<SearchBloc>().add(ClearSearch());
     }
     _searchController.clear();

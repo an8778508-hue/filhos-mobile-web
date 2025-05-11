@@ -324,5 +324,7 @@
   "remind_later": "Remind me later",
   "is_featured": "Feature this event?",
   "see_more": "See more",
-"file": "File"
+"file": "File",
+  "choose_at_least_one": "Choose at least one",
+  "choose_at_least_two": "Choose at least two"
 }

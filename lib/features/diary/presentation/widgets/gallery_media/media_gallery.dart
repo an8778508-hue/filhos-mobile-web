@@ -34,7 +34,7 @@ class _MediaGalleryState extends State<MediaGallery> {
 
   @override
   void initState() {
-    setState(() => selectedImagesIndex = List.generate(widget.media.length, (index) => index));
+    // setState(() => selectedImagesIndex = List.generate(widget.media.length, (index) => index));
     super.initState();
   }
 

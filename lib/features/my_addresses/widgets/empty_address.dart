@@ -11,8 +11,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 class EmptyAddress extends StatelessWidget {
   const EmptyAddress({
     super.key,
+    required this.onAddNewTapped,
   });
-
+  final VoidCallback onAddNewTapped;
   @override
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.start, crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -61,7 +62,8 @@ class EmptyAddress extends StatelessWidget {
             CustomButton(
               title: LocalizationKeys.add_address.tr(context),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddAddressScreen()));
+                onAddNewTapped();
+
               },
             )
           ],

@@ -147,5 +147,8 @@
   "video": "فيديو",
   "select_all": "اختر الكل",
   "medicine_notification_title": "ديزنى",
-  "medicine_notification_desc": "الدواء الان"
+  "medicine_notification_desc": "الدواء الان",
+  "choose_at_least": "اختر على الاقل {} عناصر",
+  "choose_at_least_one": "اختر على الاقل واحد",
+  "choose_at_least_two": "اختر على الاقل اثنان"
 }

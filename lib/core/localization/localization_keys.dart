@@ -330,6 +330,10 @@ abstract class LocalizationKeys {
   static const String see_more = "see_more";
   static const String file = "file";
   static const String choose = "choose";
+  static const String choose_at_least_one = "choose_at_least_one";
+  static const String choose_at_least_two = "choose_at_least_two";
+
+
 }
 
 extension LocalizationKeysTr on String {

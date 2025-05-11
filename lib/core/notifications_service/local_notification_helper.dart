@@ -16,6 +16,8 @@ import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'package:escola/flavors/app_flavors.dart';
 
+import '../user/bloc/user_bloc.dart';
+
 class LocalNotificationHelper {
   /// display local notification
   static showLocalNotification(RemoteMessage message) async {
@@ -63,17 +65,33 @@ class LocalNotificationHelper {
         styleInformation:
             _buildBigPictureStyleInformation(notification?.title ?? "", notification?.body ?? "", picturePath, true),
       );
-     final context = navigatorKey.currentContext;
-     String? title = notification?.title;
-      String? body = notification?.body;
-     if(context != null){
-       bool isEnglish = (isRTL(context)==false);
-       debugPrint("isEnglissssssssssssssssh : $isEnglish");
-       final data = message.data;
-        title = isEnglish ? data['title_en'] : data['title_ar'];
-       body = isEnglish ? data['body_en'] : data['body_ar'];
 
-     }
+      // Default to Arabic
+      bool isEnglish = false;
+      String? title= notification?.title;
+      String? body= notification?.body;
+      final data = message.data;
+
+// Get language preference from UserBloc
+      final userLanguage = UserBloc.get.state.language;
+      isEnglish = userLanguage == 'en';
+
+      debugPrint("Language from UserBloc: $userLanguage, isEnglish: $isEnglish");
+
+// Use localized data if available, fallback to notification
+      title = isEnglish ? data['title_en'] ?? notification?.title : data['title_ar'] ?? notification?.title;
+      body = isEnglish ? data['body_en'] ?? notification?.body : data['body_ar'] ?? notification?.body;
+      // final context = navigatorKey.currentContext;
+     // if(context != null){
+     //   bool isEnglish = (isRTL(context)==false);
+     //
+     //
+     //   debugPrint("isEnglissssssssssssssssh : $isEnglish");
+     //   final data = message.data;
+     //    title = isEnglish ? data['title_en'] : data['title_ar'];
+     //   body = isEnglish ? data['body_en'] : data['body_ar'];
+     //
+     // }
       if (notification != null && android != null) {
         flutterLocalNotificationsPlugin.show(
           notification.hashCode,
