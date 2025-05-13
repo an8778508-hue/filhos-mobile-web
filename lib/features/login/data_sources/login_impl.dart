@@ -47,42 +47,51 @@ class LoginImpl extends LoginRepository {
     required Future<void> Function(OTPErrorModel error) onFailed,
     required Future<void> Function() onReady,
   }) async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: phone,
-      forceResendingToken: _resendToken,
-      timeout: const Duration(seconds: 120),
-      verificationCompleted: (credential) async {
-        debugPrint('OTP AUTO VERIFICATION ');
+    try {
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phone,
+        forceResendingToken: _resendToken,
+        timeout: const Duration(seconds: 120),
+        verificationCompleted: (credential) async {
+          debugPrint('OTP AUTO VERIFICATION ');
 
-        final result = await _verifyCredentials(
-          credential: credential,
-          phone: phone,
-        );
-        result.fold(
-          (l) => onFailed(l),
-          (r) => onSuccess(r),
-        );
-      },
-      codeSent: (verificationId, resendToken) async {
-        debugPrint('OTP SENT $verificationId $resendToken');
-        _verificationId = verificationId;
-        _resendToken = resendToken;
-        onReady.call();
-      },
-      verificationFailed: (e) async {
-        debugPrint('OTP AUTO VERIFICATION FAILED ${e.code}\n\t\t${e.message}');
-        await onFailed(
-          OTPErrorModel(
-            code: e.code,
-            message: e.message,
-          ),
-        );
-      },
-      codeAutoRetrievalTimeout: (verificationId) async {
-        debugPrint('OTP TIMEOUT $verificationId');
-        await onFailed(const OTPErrorModel.timeout());
-      },
-    );
+          final result = await _verifyCredentials(
+            credential: credential,
+            phone: phone,
+          );
+          result.fold(
+                (l) => onFailed(l),
+                (r) => onSuccess(r),
+          );
+        },
+        codeSent: (verificationId, resendToken) async {
+          debugPrint('OTP SENT $verificationId $resendToken');
+          _verificationId = verificationId;
+          _resendToken = resendToken;
+          onReady.call();
+        },
+        verificationFailed: (e) async {
+          debugPrint('OTP AUTO VERIFICATION FAILED ${e.code}\n\t\t${e.message}');
+          await onFailed(
+            OTPErrorModel(
+              code: e.code,
+              message: e.message,
+            ),
+          );
+        },
+        codeAutoRetrievalTimeout: (verificationId) async {
+          debugPrint('OTP TIMEOUT $verificationId');
+          await onFailed(const OTPErrorModel.timeout());
+        },
+      );
+    } catch (e) {
+      debugPrint('Unexpected error during OTP request: $e');
+      await onFailed(OTPErrorModel(
+        code: 'unexpected_error',
+        message: e.toString(),
+      ));
+    }
+
   }
 
   @override

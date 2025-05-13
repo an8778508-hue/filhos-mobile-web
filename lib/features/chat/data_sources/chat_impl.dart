@@ -239,7 +239,7 @@ class ChatImpl extends ChatRepo {
 
   Future<void> _setMessageToMessagesCollection({required DocumentReference document, required Message message}) async {
     final timeInMillis = _getTimeInMillis(message);
-
+    debugPrint("timeInMillis: $timeInMillis");
     await document.collection(messagesCollection).doc(timeInMillis).set(message.toJson());
   }
 
