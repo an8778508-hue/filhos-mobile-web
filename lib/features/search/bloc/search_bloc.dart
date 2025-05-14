@@ -28,6 +28,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         emit(SearchSucceed());
       }
     });
+    on<ShowEmptySearch>((event, emit) {
+      emit(EmptySearchState());
+    });
   }
 
   _globalSearch(GlobalSearch event, Emitter<SearchState> emit) async {

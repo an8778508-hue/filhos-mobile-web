@@ -104,6 +104,7 @@ class ChatImpl extends ChatRepo {
 
     return await arrangeRequestResult(
       request: () async {
+        debugPrint('mark messages as seen:  222222222222222222222 ${lastMessage.toJson()} eeeend');
         // sender receiver document
         final String? childId = lastMessage.child == null ? null : lastMessage.child!.id.toString();
         final userContactDocument = _getContactDocument(userId, childId ?? contactId);

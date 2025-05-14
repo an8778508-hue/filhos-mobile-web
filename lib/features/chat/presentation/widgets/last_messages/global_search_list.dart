@@ -21,6 +21,15 @@ class GlobalSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    searchResult.parents.forEach((element) {
+      debugPrint("Parent: ${element.name}");
+    });
+    searchResult.teachers.forEach((element) {
+      debugPrint("Teacher: ${element.name}");
+    });
+    searchResult.children.forEach((element) {
+      debugPrint("Child: ${element.name}");
+    });
     if (searchResult.teachers.isEmpty &&
         searchResult.parents.isEmpty &&
         searchResult.children.isEmpty &&
@@ -39,7 +48,7 @@ class GlobalSearchList extends StatelessWidget {
             UsersSearchResult(items: searchResult.parents),
           ],
           if (searchResult.children.isNotEmpty) ...[
-            SearchListTitle(title: LocalizationKeys.all_children.tr(context)),
+            // SearchListTitle(title: LocalizationKeys.all_children.tr(context)),
             UsersSearchResult(items: searchResult.children),
           ],
           if (searchResult.levels.isNotEmpty && !forChat) ...[

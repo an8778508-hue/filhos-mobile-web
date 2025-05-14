@@ -11,8 +11,8 @@ class DiaryCalendar extends StatefulWidget {
   final DateTime? currentDate;
   final Function(DateTime)? onPressed;
   final bool nextDaysDisabled;
-
-  const DiaryCalendar({super.key, this.onPressed, this.currentDate, required this.nextDaysDisabled});
+  final bool isLoading;
+  const DiaryCalendar({super.key, this.onPressed, this.currentDate, required this.nextDaysDisabled, this.isLoading = false});
 
   @override
   State<DiaryCalendar> createState() => _DiaryCalendarState();
@@ -124,8 +124,12 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
                         ),
                       ),
                       onDaySelected: (selectedDay, focusedDay) {
-                        setState(() => _selectedDay = selectedDay);
-                        widget.onPressed?.call(selectedDay);
+                        if (!widget.isLoading) { // Only process selection if not loading
+                          setState(() => _selectedDay = selectedDay);
+                          widget.onPressed?.call(selectedDay);
+                        }
+                        // setState(() => _selectedDay = selectedDay);
+                        // widget.onPressed?.call(selectedDay);
                       },
                     ),
                   ),

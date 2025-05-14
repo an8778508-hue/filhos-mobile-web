@@ -44,6 +44,7 @@ class ParentDiaryScreen extends StatelessWidget {
                         children: [
                           DiaryCalendar(
                             nextDaysDisabled: true,
+                            isLoading: context.select((DiaryBloc bloc) => bloc.state is DiaryActivitiesLoading),
                             onPressed: (selectedDay) {
                               if (selectedDay.isAfter(DateTime.now()) && !isSameDay(selectedDay, DateTime.now())) {
                                 return;

@@ -27,3 +27,5 @@ class ProfessorSearch extends SearchEvent {
 }
 
 class ClearSearch extends SearchEvent {}
+
+class ShowEmptySearch extends SearchEvent {}

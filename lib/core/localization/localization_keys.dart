@@ -205,6 +205,7 @@ abstract class LocalizationKeys {
   static const String no_children = 'no_children';
   static const String search_by_parent_name = 'search_by_parent_name';
   static const String search_by_professor_name = 'search_by_professor_name';
+  static const String search_by_professor_chat = 'search_by_professor_chat';
   static const String no_more_data = 'no_more_data';
   static const String loading_more = 'loading_more';
   static const String no_addresses = 'no_addresses';

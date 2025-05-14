@@ -18,3 +18,4 @@ final class SearchFailed extends SearchState {
 
   const SearchFailed({required this.failure});
 }
+class EmptySearchState extends SearchState {}

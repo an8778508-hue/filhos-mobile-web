@@ -101,6 +101,8 @@ class _ContactsScreenState extends State<ContactsScreen> {
                                 color: Colors.white,
                                 child: searchState is SearchLoading
                                     ? const Center(child: CircularProgressIndicator())
+                                    : searchState is EmptySearchState
+                                    ? const EmptySearchResult() // Show empty search result
                                     : globalSearchResult != null
                                         ? GlobalSearchList(searchResult: globalSearchResult)
                                         : lastMessages.isEmpty && chidrenWithNoMessages.isEmpty
@@ -134,7 +136,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
 
   String searchHint(bool isInternal) {
     return context.isParents
-        ? LocalizationKeys.search_by_professor_name.tr(context)
+        ? LocalizationKeys.search_by_professor_chat.tr(context)
         : isInternal ? LocalizationKeys.search_by_professor_name.tr(context) : LocalizationKeys.search_by_child_name.tr(context);
   }
 
@@ -144,12 +146,28 @@ class _ContactsScreenState extends State<ContactsScreen> {
     }
   }
 
+  // void toggleSearch(BuildContext context, {bool isFromSearch = false}) {
+  //   if (showSearchAppBar) {
+  //     if (isFromSearch) return;
+  //     context.read<SearchBloc>().add(ClearSearch());
+  //   }
+  //   _searchController.clear();
+  //   setState(() => showSearchAppBar = !showSearchAppBar);
+  // }
   void toggleSearch(BuildContext context, {bool isFromSearch = false}) {
+    _searchController.clear();
+
     if (showSearchAppBar) {
-      if (isFromSearch) return;
+      if (isFromSearch) {
+        // Clear search results but keep search bar visible
+        context.read<SearchBloc>().add(ClearSearch());
+        context.read<SearchBloc>().add(ShowEmptySearch()); // New event to show empty search result
+        return;
+      }
+      // Regular close button behavior
       context.read<SearchBloc>().add(ClearSearch());
     }
-    _searchController.clear();
+
     setState(() => showSearchAppBar = !showSearchAppBar);
   }
 }

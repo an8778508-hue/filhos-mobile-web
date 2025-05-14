@@ -300,7 +300,9 @@ debugPrint('ChatBloc._sendMessage      1 ${event.message}');
   }
 
   _callMarkMessagesAsSeen(GetMessages getMessagesEvent, String userId, String contactId) {
+    debugPrint('mark messages as seen 00000000000000000');
     if (messages.isNotEmpty) {
+      debugPrint('mark messages as seen 1111111111111111111111');
       add(MarkMessageAsSeen(lastMessage: messages.last, userId: userId, contactId: contactId));
     }
   }

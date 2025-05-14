@@ -150,5 +150,6 @@
   "medicine_notification_desc": "الدواء الان",
   "choose_at_least": "اختر على الاقل {} عناصر",
   "choose_at_least_one": "اختر على الاقل واحد",
-  "choose_at_least_two": "اختر على الاقل اثنان"
+  "choose_at_least_two": "اختر على الاقل اثنان",
+  "search_by_professor_chat": "البحث بأسم الأستاذ"
 }

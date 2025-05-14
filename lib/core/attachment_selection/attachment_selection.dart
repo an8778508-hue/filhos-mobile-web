@@ -4,7 +4,7 @@ import 'package:escola/core/utils/valid_data.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'dart:io' show Platform;
 Future<List<String>> pickAttachments(BuildContext context, {bool multiple = true}) async {
   final result = await showAttachmentSelectionBottomSheet(context);
   if (!context.mounted) {
@@ -31,7 +31,23 @@ Future<List<String>> pickFile(BuildContext context, {bool multiple = true}) asyn
   }
   return [];
 }
-
+// Future<List<String>> pickFile(BuildContext context, {bool multiple = true}) async {
+//   if (Platform.isIOS) {
+//     // For iOS, use ImagePicker to access the gallery
+//     final result = await ImagePicker().pickMultipleMedia(imageQuality: 70);
+//     if (validList(result)) {
+//       return result.map((e) => e.path).where((e) => validString(e)).cast<String>().toList();
+//     }
+//   } else {
+//     // For other platforms, use FilePicker
+//     final result = await FilePicker.platform.pickFiles(allowMultiple: multiple);
+//     final files = result?.files.where((e) => validString(e.path)).toList();
+//     if (validList(files)) {
+//       return files!.map((e) => e.path).where((e) => validString(e)).cast<String>().toList();
+//     }
+//   }
+//   return [];
+// }
 Future<List<String>> pickImage(BuildContext context) async {
   final result = await ImagePicker().pickImage(source: ImageSource.camera);
   if (result != null) {

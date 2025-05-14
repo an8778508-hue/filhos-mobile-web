@@ -93,7 +93,7 @@ Future<void> configSilentNotificationListener(RemoteMessage message) async {
 
   if(message.data?['type'] == 'Teacher' ||message.data?['type'] == 'ParentModel'){
     if (navigatorKey.currentState != null) {
-      navigatorKey.currentState!.pushAndRemoveUntil( MaterialPageRoute(builder: (_) => SplashScreen()),(route) => false,);
+      navigatorKey.currentState!.pushAndRemoveUntil( MaterialPageRoute(builder: (_) => const SplashScreen()),(route) => false,);
       return;
     }
   }

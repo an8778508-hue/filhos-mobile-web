@@ -59,9 +59,17 @@ class _SearchFieldState extends State<SearchField> {
           hintColor: Colors.black.withOpacity(0.7),
           onChanged: (value) {
             if (_debounce?.isActive ?? false) _debounce?.cancel();
-            _debounce = Timer(const Duration(seconds: 3), () {
-              FocusScope.of(context).unfocus();
-              widget.onSearch(value.trim());
+            _debounce = Timer(const Duration(seconds: 1), () {
+              if (value.trim().isEmpty) {
+                widget.onClearSearch?.call();
+              }
+              if (value.trim().length < 3) return;
+              if (value.trim().length >= 3) {
+                FocusScope.of(context).unfocus();
+                widget.onSearch(value.trim());
+              }
+              // FocusScope.of(context).unfocus();
+              // widget.onSearch(value.trim());
             });
           },
           textInputAction: TextInputAction.search,

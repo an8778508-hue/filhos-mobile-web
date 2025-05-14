@@ -9,6 +9,7 @@ import 'package:escola/features/search/models/global_search.dart';
 abstract class SearchRepo {
   final String childSearchEndpoint = "/teacher/timeline/";
   final String globalSearchEndpoint = "/teacher/timeline/";
+  final String parentSearchEndpoint = "/parent/timeline";
   final String professorSearchEndpoint = "teacher/teacher-search";
 
   Future<Either<Failure, List<SchoolItem>>> childSearch(String query);
@@ -78,7 +79,7 @@ class SearchImpl extends SearchRepo {
     final queryParameters = {'q': query};
 
     return await networkClient.handleRequest<GlobalSearchResult>(
-      NetworkRequest(method: HttpMethod.get, url: globalSearchEndpoint, queryParameters: queryParameters),
+      NetworkRequest(method: HttpMethod.get, url:isTeacher? globalSearchEndpoint: parentSearchEndpoint, queryParameters: queryParameters),
       onSuccess: (json) {
         final List<SchoolItem> teachers = [];
         final List<SchoolItem> parents = [];
