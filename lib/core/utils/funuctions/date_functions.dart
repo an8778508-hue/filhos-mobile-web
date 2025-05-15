@@ -41,4 +41,20 @@ abstract class DateFunctions {
     }
     return format;
   }
+  static String formatDetailedTimestamp(DateTime? dateTime) {
+    if (dateTime == null) return '';
+    debugPrint('dateTimeeeeeeeeeeeeeeeeeeeee $dateTime');
+    final localDateTime = dateTime.toLocal();
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final messageDate = DateTime(localDateTime.year, localDateTime.month, localDateTime.day);
+
+    // Use different formats based on date (today, yesterday, other)
+    if (messageDate == today) {
+      return DateFormat('h:mm a').format(localDateTime);  // Today: just time
+    } else {
+      return DateFormat('MMM d, h:mm a').format(localDateTime);  // Other: date and time
+    }
+  }
+
 }

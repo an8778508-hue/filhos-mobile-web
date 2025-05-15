@@ -162,7 +162,6 @@ class ChatImpl extends ChatRepo {
               .doc(childId ?? contactId)
               .collection(messagesCollection)
               .snapshots();
-
           return messagesStream;
         }
       },

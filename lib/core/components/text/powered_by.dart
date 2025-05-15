@@ -49,7 +49,7 @@ class PoweredByWidget extends StatelessWidget {
               ),
             ),
             Text(
-           isRTL(context)? 'تطبيق فالوس'   :' Filhos.app',
+           isRTL(context)? 'تطبيق فيلوس'   :' Filhos.app',
               textAlign: TextAlign.start,
               style: TextStyle(
                 fontWeight: FontWeight.w500,

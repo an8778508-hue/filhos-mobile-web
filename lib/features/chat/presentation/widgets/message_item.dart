@@ -70,7 +70,7 @@ class MessageItem extends StatelessWidget {
                     if (message.dateTime != null)
                       Align(
                         child: Text(
-                          DateFunctions.formatDayMonthYearHourMin((message.dateTime!)),
+                          DateFunctions.formatDetailedTimestamp((message.dateTime!)),
                           style: TextStyle(
                             color: ChatColors.messageDateColor,
                             fontSize: 12.sp,

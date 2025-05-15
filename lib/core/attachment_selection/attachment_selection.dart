@@ -23,31 +23,31 @@ Future<List<String>> pickAttachments(BuildContext context, {bool multiple = true
   return [];
 }
 
-Future<List<String>> pickFile(BuildContext context, {bool multiple = true}) async {
-  final result = await FilePicker.platform.pickFiles(allowMultiple: multiple);
-  final files = result?.files.where((e) => validString(e.path)).toList();
-  if (validList(files)) {
-    return files!.map((e) => e.path).where((e) => validString(e)).cast<String>().toList();
-  }
-  return [];
-}
 // Future<List<String>> pickFile(BuildContext context, {bool multiple = true}) async {
-//   if (Platform.isIOS) {
-//     // For iOS, use ImagePicker to access the gallery
-//     final result = await ImagePicker().pickMultipleMedia(imageQuality: 70);
-//     if (validList(result)) {
-//       return result.map((e) => e.path).where((e) => validString(e)).cast<String>().toList();
-//     }
-//   } else {
-//     // For other platforms, use FilePicker
-//     final result = await FilePicker.platform.pickFiles(allowMultiple: multiple);
-//     final files = result?.files.where((e) => validString(e.path)).toList();
-//     if (validList(files)) {
-//       return files!.map((e) => e.path).where((e) => validString(e)).cast<String>().toList();
-//     }
+//   final result = await FilePicker.platform.pickFiles(allowMultiple: multiple);
+//   final files = result?.files.where((e) => validString(e.path)).toList();
+//   if (validList(files)) {
+//     return files!.map((e) => e.path).where((e) => validString(e)).cast<String>().toList();
 //   }
 //   return [];
 // }
+Future<List<String>> pickFile(BuildContext context, {bool multiple = true}) async {
+  if (Platform.isIOS) {
+    // For iOS, use ImagePicker to access the gallery
+    final result = await ImagePicker().pickMultipleMedia(imageQuality: 70);
+    if (validList(result)) {
+      return result.map((e) => e.path).where((e) => validString(e)).cast<String>().toList();
+    }
+  } else {
+    // For other platforms, use FilePicker
+    final result = await FilePicker.platform.pickFiles(allowMultiple: multiple);
+    final files = result?.files.where((e) => validString(e.path)).toList();
+    if (validList(files)) {
+      return files!.map((e) => e.path).where((e) => validString(e)).cast<String>().toList();
+    }
+  }
+  return [];
+}
 Future<List<String>> pickImage(BuildContext context) async {
   final result = await ImagePicker().pickImage(source: ImageSource.camera);
   if (result != null) {

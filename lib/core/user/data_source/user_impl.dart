@@ -3,6 +3,7 @@ import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/models/user_model.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
+import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/user/data_source/user_repo.dart';
 
 class UserDataImpl extends UserRepo {
@@ -31,6 +32,7 @@ class UserDataImpl extends UserRepo {
         'device_id': uuid,
         'new_device_token': token,
         'old_device_token': old_device_token,
+        'lang': UserBloc.get.state.language,
       }),
     );
   }

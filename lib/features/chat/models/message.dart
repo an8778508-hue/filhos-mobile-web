@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/diary/models/child_model.dart';
+import 'package:flutter/cupertino.dart';
 
 class Message extends Equatable {
   final String id;
@@ -30,6 +31,7 @@ class Message extends Equatable {
   // toJson
   toJson() {
     final utcTime = dateTime?.toUtc();
+    debugPrint('date time: $dateTime  timestamp: $timestamp content: $content  to utc time: $utcTime   to jsonnnn' );
     final utcTimeTimestamp = utcTime?.millisecondsSinceEpoch;
     return {
       'id': id,
@@ -46,7 +48,9 @@ class Message extends Equatable {
   // fromJson
   factory Message.fromJson(Map<String, dynamic> json) {
     Timestamp firestoreTimestamp = json['dateTime'];
-    DateTime localTime = firestoreTimestamp.toDate().toLocal();
+    // DateTime localTime = firestoreTimestamp.toDate().toLocal();
+    DateTime utcTime = firestoreTimestamp.toDate();
+    debugPrint('date time: ${firestoreTimestamp.toDate()}   content: ${json['content']}   to utc time: $utcTime  from jsonnnn ' );
     //todo
     return Message(
       id: json['id'].toString(),
@@ -55,7 +59,7 @@ class Message extends Equatable {
           : json['timestamp'] is int
               ? json['timestamp']
               : json['timestamp'].toInt(),
-      dateTime: localTime,
+      dateTime: utcTime,
       content: json['content'],
       type: json['type'].toString().toMessageType(),
       sender: ChatUser.fromJson(json['sender']),

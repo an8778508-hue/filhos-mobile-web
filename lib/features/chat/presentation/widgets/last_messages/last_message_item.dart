@@ -95,7 +95,7 @@ class LastMessageItem extends StatelessWidget {
                       ],
                       if (message.dateTime != null) ...[
                         Text(
-                          DateFunctions.formatDayMonthYearHourMin(message.dateTime),
+                          DateFunctions.formatDetailedTimestamp(message.dateTime),
                           style: TextStyle(
                               fontSize: 14.sp, fontWeight: FontWeight.w400, color: ChatColors.messageDateColor),
                         ),
