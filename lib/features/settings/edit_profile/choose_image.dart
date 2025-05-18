@@ -30,11 +30,7 @@ chooseImage({
   } catch (e) {}
 }
 
-Future<void> cropResize(
-    {required XFile pickedImage,
-    required BuildContext context,
-    required void Function(Uint8List, XFile) onFinish,
-    source}) async {
+Future<void> cropResize({required XFile pickedImage, required BuildContext context, required void Function(Uint8List, XFile) onFinish, source}) async {
   final _controller = CropController();
   if (pickedImage != null) {
     final _image = await pickedImage.readAsBytes();
@@ -55,11 +51,13 @@ Future<void> cropResize(
                       controller: _controller,
                       image: _image,
                       // aspectRatio: 1 / 1,
-                      onCropped: (Uint8List value) {
-                        print('hhhhhh');
-                        Navigator.of(context).pop();
-
-                        onFinish(value, pickedImage);
+                      onCropped: (CropResult value) {
+                        switch (value) {
+                          case CropSuccess():
+                            Navigator.of(context).pop();
+                            onFinish(value.croppedImage, pickedImage);
+                          case CropFailure():
+                        }
                       },
                     ),
                   ),

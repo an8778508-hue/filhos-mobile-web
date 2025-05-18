@@ -281,7 +281,7 @@ class _FeaturedEventsBodyState extends State<FeaturedEventsBody> {
                     padding: EdgeInsets.symmetric(horizontal: 15.0.w).add(EdgeInsets.only(bottom: 20.h)),
                     child: DotsIndicator(
                       dotsCount: data.length,
-                      position: currentPage,
+                      position: currentPage.toDouble(),
                       decorator: DotsDecorator(
                         size: Size(8.h, 8.h),
                         spacing: EdgeInsets.only(left: 10.w, right: 10.w),

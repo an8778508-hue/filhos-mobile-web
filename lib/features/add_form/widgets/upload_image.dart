@@ -19,7 +19,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:separated_row/separated_row.dart';
 
 class UploadImageWidget extends StatefulWidget {
-  const UploadImageWidget({Key? key, required this.model}) : super(key: key);
+  const UploadImageWidget({super.key, required this.model});
 
   final UploadImageModel model;
 
@@ -65,11 +65,12 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
             onTap: filesController.value.isNotEmpty ? null : () => pickFile(),
             behavior: HitTestBehavior.opaque,
             child: DottedBorder(
-              color: context.colors.disabled,
-              strokeWidth: 1,
-              dashPattern: const [10, 10],
-              radius: Radius.circular(5.r),
-              borderType: BorderType.RRect,
+              options: RoundedRectDottedBorderOptions(
+                color: context.colors.disabled,
+                strokeWidth: 1,
+                dashPattern: const [10, 10],
+                radius: Radius.circular(5.r),
+              ),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.r),
@@ -82,8 +83,7 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
                   children: [
                     Expanded(
                       child: Text(
-                        validateString(
-                            widget.model.label?.tr(context), LocalizationKeys.attach_copy_recipe.tr(context)),
+                        validateString(widget.model.label?.tr(context), LocalizationKeys.attach_copy_recipe.tr(context)),
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16.sp,
@@ -137,9 +137,7 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
                                 child: FileItem(param: filesController.value[index]),
                               ),
                             ),
-                            if (widget.model.limit == null
-                                ? true
-                                : (filesController.value.length < widget.model.limit!))
+                            if (widget.model.limit == null ? true : (filesController.value.length < widget.model.limit!))
                               GestureDetector(
                                 behavior: HitTestBehavior.opaque,
                                 onTap: () => pickFile(),
@@ -183,7 +181,7 @@ class _UploadImageWidgetState extends State<UploadImageWidget> {
     if (validList(files)) {
       filesController.value = [
         ...filesController.value,
-        ...files.map((path) => UploadFileParam(url: path)).toList(),
+        ...files.map((path) => UploadFileParam(url: path)),
       ];
     }
   }
@@ -220,9 +218,10 @@ class FileItem extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: DottedBorder(
-          color: context.colors.disabled,
-          borderType: BorderType.RRect,
-          radius: Radius.circular(10.r),
+          options: RoundedRectDottedBorderOptions(
+            color: context.colors.disabled,
+            radius: Radius.circular(10.r),
+          ),
           child: Center(
             child: Stack(
               alignment: Alignment.center,
@@ -302,9 +301,10 @@ class NewFileItem extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: DottedBorder(
-          color: context.colors.disabled,
-          borderType: BorderType.RRect,
-          radius: Radius.circular(10.r),
+          options: RoundedRectDottedBorderOptions(
+            color: context.colors.disabled,
+            radius: Radius.circular(10.r),
+          ),
           child: Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.r),

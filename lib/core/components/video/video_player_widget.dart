@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class VideoPlayerWidget extends StatefulWidget {
   final String url;
   final bool showJustImage;
+
   const VideoPlayerWidget({super.key, required this.url, this.showJustImage = false});
 
   @override
@@ -11,15 +12,16 @@ class VideoPlayerWidget extends StatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController videoPlayerController;
+  late CachedVideoPlayerController videoPlayerController;
   late CustomVideoPlayerController _customVideoPlayerController;
 
   @override
   void initState() {
     super.initState();
-    videoPlayerController =
-        VideoPlayerController.networkUrl(Uri.parse(widget.url), videoPlayerOptions: VideoPlayerOptions())
-          ..initialize().then((value) => setState(() {}));
+    videoPlayerController = CachedVideoPlayerController.network(
+      widget.url,
+      videoPlayerOptions: VideoPlayerOptions(),
+    )..initialize().then((value) => setState(() {}));
     _customVideoPlayerController = CustomVideoPlayerController(
         context: context,
         videoPlayerController: videoPlayerController,
@@ -40,11 +42,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.url);
     return !videoPlayerController.value.isInitialized
         ? const Center(child: CircularProgressIndicator())
-        : AbsorbPointer(
-            absorbing: widget.showJustImage,
-            child: CustomVideoPlayer(customVideoPlayerController: _customVideoPlayerController));
+        : AbsorbPointer(absorbing: widget.showJustImage, child: CustomVideoPlayer(customVideoPlayerController: _customVideoPlayerController));
   }
 }

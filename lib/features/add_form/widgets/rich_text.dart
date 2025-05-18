@@ -15,7 +15,7 @@ import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/features/add_form/bloc/add_form_state.dart';
 
 class RichTextFieldWidget extends StatefulWidget {
-  const RichTextFieldWidget({Key? key, required this.model}) : super(key: key);
+  const RichTextFieldWidget({super.key, required this.model});
 
   final RichTextModel model;
 

@@ -1,6 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:escola/core/components/fields/error_field.dart';
-import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/theme/custom_theme.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
@@ -15,7 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CommentsWidget extends StatefulWidget {
-  const CommentsWidget({Key? key, required this.model}) : super(key: key);
+  const CommentsWidget({super.key, required this.model});
 
   final CommentsModel model;
 
@@ -144,11 +143,12 @@ class _CommentsWidgetState extends State<CommentsWidget> {
                 ? Padding(
                     padding: EdgeInsets.only(top: 10.csh),
                     child: DottedBorder(
-                      color: context.colors.disabled,
-                      strokeWidth: 1,
-                      dashPattern: const [10, 10],
-                      radius: Radius.circular(5.r),
-                      borderType: BorderType.RRect,
+                      options: RoundedRectDottedBorderOptions(
+                        color: context.colors.disabled,
+                        strokeWidth: 1,
+                        dashPattern: const [10, 10],
+                        radius: Radius.circular(5.r),
+                      ),
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.csw),
                         child: TextFormField(

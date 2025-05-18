@@ -58,7 +58,7 @@ class _HomeCardsListState extends State<HomeCardsList> {
                   child: PageView.builder(
                     controller: pageController,
                     onPageChanged: (pageIndex) => setState(
-                          () {
+                      () {
                         this.pageIndex = pageIndex;
                       },
                     ),
@@ -72,8 +72,7 @@ class _HomeCardsListState extends State<HomeCardsList> {
                 SizedBox(height: 31.csh),
                 DotsIndicator(
                   dotsCount: cards.length,
-                  position:
-                  pageIndex >= cards.length ? cards.length - 1 : pageIndex,
+                  position: (pageIndex >= cards.length ? cards.length - 1 : pageIndex).toDouble(),
                   decorator: DotsDecorator(
                     size: Size(8.csw, 8.csh),
                     activeSize: Size(8.csw, 8.csh),

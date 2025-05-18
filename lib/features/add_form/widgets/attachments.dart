@@ -13,10 +13,9 @@ import 'package:escola/features/add_form/models/params.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:separated_row/separated_row.dart';
 
 class AttachmentsWidget extends StatefulWidget {
-  const AttachmentsWidget({Key? key, required this.model}) : super(key: key);
+  const AttachmentsWidget({super.key, required this.model});
 
   final AttachmentsModel model;
 
@@ -34,8 +33,7 @@ class _AttachmentsWidgetState extends State<AttachmentsWidget> {
     super.initState();
     filesController = ValueNotifier([]);
     filesController.addListener(() {
-      AddFormBloc.get(context)
-          .updateForm(widget.model, filesController.value.map((file) => UploadFileParam(url: file.path)).toList());
+      AddFormBloc.get(context).updateForm(widget.model, filesController.value.map((file) => UploadFileParam(url: file.path)).toList());
     });
   }
 
@@ -54,11 +52,12 @@ class _AttachmentsWidgetState extends State<AttachmentsWidget> {
         GestureDetector(
           onTap: filesController.value.isNotEmpty ? null : () => pickFile(),
           child: DottedBorder(
-            color: context.colors.disabled,
-            strokeWidth: 1,
-            dashPattern: const [10, 10],
-            radius: Radius.circular(0.r),
-            borderType: BorderType.RRect,
+            options: RoundedRectDottedBorderOptions(
+              color: context.colors.disabled,
+              strokeWidth: 1,
+              radius: Radius.circular(0.r),
+              dashPattern: const [10, 10],
+            ),
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(0.r),
@@ -109,15 +108,10 @@ class _AttachmentsWidgetState extends State<AttachmentsWidget> {
                           filesController.value.length,
                           (index) => GestureDetector(
                             onTap: () => removeFile(index),
-                            child: Container(
-                                margin: EdgeInsetsDirectional.only(end: 10.csw, bottom: 10.csh),
-                                height: 70.h,
-                                child: FileItem(file: filesController.value[index])),
+                            child: Container(margin: EdgeInsetsDirectional.only(end: 10.csw, bottom: 10.csh), height: 70.h, child: FileItem(file: filesController.value[index])),
                           ),
                         ),
-                        if (widget.model.limit == null
-                            ? true
-                            : (filesController.value.length < widget.model.limit!)) ...[
+                        if (widget.model.limit == null ? true : (filesController.value.length < widget.model.limit!)) ...[
                           GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: () {
@@ -161,7 +155,7 @@ class _AttachmentsWidgetState extends State<AttachmentsWidget> {
       if (validList(files)) {
         filesController.value = [
           ...filesController.value,
-          ...files.map((e) => File(e)).toList(),
+          ...files.map((e) => File(e)),
         ];
       }
     } catch (e) {
@@ -195,9 +189,10 @@ class FileItem extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: DottedBorder(
-          color: context.colors.disabled,
-          borderType: BorderType.RRect,
-          radius: Radius.circular(10.r),
+          options: RoundedRectDottedBorderOptions(
+            radius: Radius.circular(10.r),
+            color: context.colors.disabled,
+          ),
           child: Center(
             child: Stack(
               alignment: Alignment.center,
@@ -263,9 +258,10 @@ class NewFileItem extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1,
         child: DottedBorder(
-          color: context.colors.disabled,
-          borderType: BorderType.RRect,
-          radius: Radius.circular(10.r),
+          options: RoundedRectDottedBorderOptions(
+            color: context.colors.disabled,
+            radius: Radius.circular(10.r),
+          ),
           child: Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.r),

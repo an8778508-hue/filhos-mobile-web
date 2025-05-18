@@ -15,10 +15,10 @@ import 'package:path_provider/path_provider.dart';
 
 bool clearCache = false;
 
-Future initDependecies() async {
+Future initDependencies() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  HydratedBloc.storage = await HydratedStorage.build(storageDirectory: await getApplicationDocumentsDirectory());
+  HydratedBloc.storage = await HydratedStorage.build(storageDirectory: HydratedStorageDirectory((await getApplicationDocumentsDirectory()).path));
 
   if (clearCache) {
     await HydratedBloc.storage.clear();

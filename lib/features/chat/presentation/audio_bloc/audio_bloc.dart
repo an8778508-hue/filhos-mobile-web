@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:equatable/equatable.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/chat/models/message.dart';
@@ -10,7 +11,6 @@ import 'package:escola/features/diary/models/child_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
@@ -28,7 +28,7 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
   RecordingState recordingState = RecordingState.noRecording;
   Timer? recordTimer;
 
-  final Record _audioRecorder = Record();
+  final AudioRecorder _audioRecorder = AudioRecorder();
   String? outputFile;
 
   final Map<String, AudioPlayer> messagesAudioPlayers = {};
@@ -209,12 +209,7 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
     if (outputFile != null && chatBloc.currentUser != null && contactUser != null) {
       emit(UpdateValuesLoading());
       await stopRecordAction(emit);
-      final tempMessage = await ChatHelper.buildMessageFromContent(
-          content: outputFile!,
-          sender: chatBloc.currentUser!,
-          reciever: contactUser!,
-          child: child,
-          type: MessageType.audio);
+      final tempMessage = await ChatHelper.buildMessageFromContent(content: outputFile!, sender: chatBloc.currentUser!, reciever: contactUser!, child: child, type: MessageType.audio);
 
       // _setUrlToMessage(tempMessage, emit);
       // _setListenerToMessage(tempMessage);
@@ -230,9 +225,7 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
       if (chatBloc.currentUser != null && outputFile != null) {
         final dateInMilliseconds = DateTime.now().millisecondsSinceEpoch;
 
-        final audioRef = storageRef
-            .child("chat/${chatBloc.currentUser?.id}/${contactUser?.id ?? "reciever"}/audios")
-            .child("$dateInMilliseconds.aac");
+        final audioRef = storageRef.child("chat/${chatBloc.currentUser?.id}/${contactUser?.id ?? "reciever"}/audios").child("$dateInMilliseconds.aac");
 
         final File file = File(outputFile!);
 
@@ -255,12 +248,7 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
 
   void uploadToFirestore(String recordUrl, Emitter<AudioState> emit) async {
     if (chatBloc.currentUser == null || contactUser == null) return;
-    final uploadedMessage = await ChatHelper.buildMessageFromContent(
-        content: recordUrl,
-        sender: chatBloc.currentUser!,
-        reciever: contactUser!,
-        child: child,
-        type: MessageType.audio);
+    final uploadedMessage = await ChatHelper.buildMessageFromContent(content: recordUrl, sender: chatBloc.currentUser!, reciever: contactUser!, child: child, type: MessageType.audio);
     await _setUrlToMessage(uploadedMessage);
     await _setListenerToMessage(uploadedMessage);
     chatBloc.add(SendMessage(message: uploadedMessage));
@@ -274,17 +262,20 @@ class AudioBloc extends Bloc<AudioEvent, AudioState> {
       outputFile = '${tempDir.path}/recording${DateTime.now().millisecondsSinceEpoch}.aac';
       recordingState = RecordingState.recording;
       if (await _audioRecorder.hasPermission()) {
-        await _audioRecorder.start(
-          path: outputFile,
-          encoder: AudioEncoder.aacLc,
-        );
+        if (outputFile != null) {
+          await _audioRecorder.start(
+            RecordConfig(
+              encoder: AudioEncoder.aacLc,
+            ),
+            path: outputFile!,
+          );
+        }
         recordTimer?.cancel();
         recordTimer = Timer.periodic(const Duration(seconds: 1), (timer) => add(AddTick()));
       }
       emit(UpdateValuesSucceed());
     } catch (e) {
       debugPrint("Error : $e");
-      ;
     }
   }
 

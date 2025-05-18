@@ -147,7 +147,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
                   if (Config.get.onBoards.isNotEmpty) ...[
                     DotsIndicator(
                       dotsCount: Config.get.onBoards.length,
-                      position: index,
+                      position: index.toDouble(),
                       decorator: DotsDecorator(
                         size: Size(8.h, 8.h),
                         spacing: EdgeInsets.only(left: 10.w, right: 10.w),

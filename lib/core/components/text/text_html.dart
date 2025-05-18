@@ -1,4 +1,3 @@
-import 'package:escola/core/components/fader.dart';
 import 'package:escola/core/components/image/photo_viewer.dart';
 import 'package:escola/core/components/loading/loading.dart';
 import 'package:escola/core/utils/valid_data.dart';
@@ -58,16 +57,16 @@ class CustomHTMLFactory extends WidgetFactory {
   });
 
   @override
-  Widget buildText(BuildMetadata meta, TextStyleHtml tsh, InlineSpan text) {
-    final def = super.buildText(meta, tsh, text) ?? const SizedBox();
+  Widget? buildText(BuildTree tree, InheritedProperties resolved, InlineSpan text) {
+    final def = super.buildText(tree, resolved, text) ?? const SizedBox();
     if (text is! TextSpan) {
       return def;
     }
     return SelectableText.rich(
       text,
-      style: tsh.style,
-      textAlign: textAlign ?? tsh.textAlign,
-      textDirection: tsh.textDirection,
+      style: resolved.prepareTextStyle(),
+      textAlign: textAlign ?? resolved.get<TextAlign>(),
+      textDirection: resolved.get<TextDirection>(),
     );
   }
 }

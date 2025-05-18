@@ -79,13 +79,14 @@ class AlarmManager {
           assetAudioPath: 'assets/sounds/alarm.mp3',
           loopAudio: false,
           vibrate: true,
-          stopOnNotificationOpen: true,
           androidFullScreenIntent: true,
-          volumeMax: false,
-          fadeDuration: 3.0,
-          notificationTitle: title,
-          notificationBody: description,
-          enableNotificationOnKill: true,
+          volumeSettings: VolumeSettings.fade(
+            fadeDuration: Duration(seconds: 3),
+          ),
+          notificationSettings: NotificationSettings(
+            title: title,
+            body: description,
+          ),
         );
         await Alarm.set(alarmSettings: alarmSettings);
       }

@@ -21,11 +21,12 @@ class UploadImage extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 25.csw, vertical: 10.csh),
         height: 64.csh,
         child: DottedBorder(
-          color: context.colors.greyLight,
-          strokeWidth: 1.0,
-          dashPattern: const [10, 10],
-          radius: const Radius.circular(10),
-          borderType: BorderType.RRect,
+          options: RoundedRectDottedBorderOptions(
+            color: context.colors.greyLight,
+            strokeWidth: 1.0,
+            dashPattern: const [10, 10],
+            radius: const Radius.circular(10),
+          ),
           child: Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
