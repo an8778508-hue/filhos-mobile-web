@@ -75,7 +75,7 @@ class _DiaryCalendarState extends State<DiaryCalendar> {
                           ? {CalendarFormat.week: LocalizationKeys.week.tr(context)}
                           : {CalendarFormat.month: LocalizationKeys.month.tr(context)},
                       startingDayOfWeek: StartingDayOfWeek.monday,
-                      weekendDays: const [],
+                      // weekendDays: const [],
                       headerStyle: HeaderStyle(
                         headerPadding: EdgeInsets.zero,
                         titleTextFormatter: (date, locale) => DateFormat.yMMM(UserBloc.get.state.languageWithCode).format(date),

@@ -91,7 +91,7 @@ class _EventsCalendarState extends State<EventsCalendar> {
                                       LocalizationKeys.month.tr(context)
                                 },
                       startingDayOfWeek: StartingDayOfWeek.sunday,
-                      weekendDays: const [],
+                      // weekendDays: const [],
                       eventLoader: (day) {
                         final List<EventGenericModel> events = [];
                         for (var event in professorEvents) {
