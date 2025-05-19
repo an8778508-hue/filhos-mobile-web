@@ -2,11 +2,11 @@ import 'package:escola/core/components/icons/avatar.dart';
 import 'package:escola/core/models/gender.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/funuctions/date_functions.dart';
+import 'package:escola/core/utils/lang_utils.dart';
 import 'package:escola/features/diary/models/activities.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:intl/intl.dart';
 
 class ProfessorWidget extends StatelessWidget {
@@ -56,7 +56,7 @@ class ProfessorWidget extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Text(
-                      adjustDate(),
+                      adjustDate(context),
                       style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w300,
@@ -72,11 +72,30 @@ class ProfessorWidget extends StatelessWidget {
       ),
     );
   }
-
-  String adjustDate() {
+  //
+  // String adjustDate() {
+  //   if (activity.date != null) {
+  //     return "${DateFormat('dd MMMM yyyy','en').format(activity.date!)} ${DateFunctions.formatTimeTo12HourFormat(activity.date)}";
+  //   }
+  //   return "${DateFormat('dd MMMM yyyy','en').format(activity.fromDate!)} De ${DateFunctions.formatTimeTo12HourFormat(activity.fromDate)} Para ${DateFunctions.formatTimeTo12HourFormat(activity.toDate)}";
+  // }
+  String adjustDate(BuildContext context) {
+    final locale =  isRTL(context) ? 'ar' : 'en';
+  debugPrint('locale $locale');
     if (activity.date != null) {
-      return "${DateFormat('dd MMMM yyyy').format(activity.date!)} ${DateFunctions.formatTimeTo12HourFormat(activity.date)}";
+      if (locale == 'ar') {
+        debugPrint ('activity.date ${activity.date}');
+        // For Arabic, use a pattern that works with RTL languages
+        return "${DateFormat('d MMMM yyyy', locale).format(activity.date!)} ${DateFunctions.formatTimeTo12HourFormat(activity.date,local: locale)}";
+      } else {
+        return "${DateFormat('dd MMMM yyyy', locale).format(activity.date!)} ${DateFunctions.formatTimeTo12HourFormat(activity.date,local: locale)}";
+      }
     }
-    return "${DateFormat('dd MMMM yyyy').format(activity.fromDate!)} De ${DateFunctions.formatTimeTo12HourFormat(activity.fromDate)} Para ${DateFunctions.formatTimeTo12HourFormat(activity.toDate)}";
+
+    if (locale == 'ar') {
+      return "${DateFormat('d MMMM yyyy', locale).format(activity.fromDate!)} De ${DateFunctions.formatTimeTo12HourFormat(activity.fromDate,local: locale)} Para ${DateFunctions.formatTimeTo12HourFormat(activity.toDate)}";
+    } else {
+      return "${DateFormat('dd MMMM yyyy', locale).format(activity.fromDate!)} De ${DateFunctions.formatTimeTo12HourFormat(activity.fromDate,local: locale)} Para ${DateFunctions.formatTimeTo12HourFormat(activity.toDate)}";
+    }
   }
 }

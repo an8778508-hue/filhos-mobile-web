@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/features/login/presentation/login_screen.dart';
 import 'package:escola/flavors/app_flavors.dart';

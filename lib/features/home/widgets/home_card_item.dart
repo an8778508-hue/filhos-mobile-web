@@ -32,24 +32,30 @@ class HomeCardItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomSelectableText(
-                  cardModel.title ?? "",
-                  style: TextStyle(
-                    fontSize: 25.sp,
-                    fontWeight: FontWeight.w500,
-                    color: context.colors.primary,
+                Expanded(
+                  flex: 1,
+                  child: CustomSelectableText(
+                    cardModel.title ?? "",
+                    style: TextStyle(
+                      fontSize: 25.sp,
+                      fontWeight: FontWeight.w500,
+                      color: context.colors.primary,
+                    ),
                   ),
                 ),
                 SizedBox(
-                  height: 16.csh,
+                  height: 10.csh,
                 ),
-                CustomSelectableText(
-                  cardModel.description ?? "",
-                  maxLines: 2,
-                  style: TextStyle(
-                    overflow: TextOverflow.ellipsis,
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
+                Expanded(
+                  flex: 2,
+                  child: CustomSelectableText(
+                    cardModel.description ?? "",
+                    maxLines: 2,
+                    style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ],

@@ -1,18 +1,18 @@
+import 'dart:convert';
+
 import 'package:escola/core/components/fields/error_field.dart';
-import 'package:escola/core/components/loading/loading.dart';
+import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/add_form/bloc/add_form_bloc.dart';
+import 'package:escola/features/add_form/bloc/add_form_state.dart';
 import 'package:escola/features/add_form/models/rich_text_model.dart';
 import 'package:escola/features/add_form/utils/utils.dart';
 import 'package:escola/features/add_form/widgets/forms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_quill/flutter_quill.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:quill_html_editor_v2/quill_html_editor_v2.dart';
-import 'package:escola/core/localization/localization_keys.dart';
-
-import 'package:escola/features/add_form/bloc/add_form_state.dart';
 
 class RichTextFieldWidget extends StatefulWidget {
   const RichTextFieldWidget({super.key, required this.model});
@@ -24,29 +24,51 @@ class RichTextFieldWidget extends StatefulWidget {
 }
 
 class _RichTextFieldWidgetState extends State<RichTextFieldWidget> {
-  late final QuillEditorController textController;
+  late QuillController _controller;
   String rawText = '';
+  final FocusNode _focusNode = FocusNode();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+    _controller = QuillController.basic();
+
     final initial = widget.model.initial;
-    textController = QuillEditorController();
     if (validString(initial)) {
+      try {
+        // Try to load initial content as Delta JSON
+        _controller = QuillController(
+          document: Document.fromJson(jsonDecode(initial!)),
+          selection: const TextSelection.collapsed(offset: 0),
+        );
+      } catch (e) {
+        // If not valid JSON, set as plain text
+        final doc = Document();
+        doc.insert(0, initial);
+        _controller = QuillController(
+          document: doc,
+          selection: const TextSelection.collapsed(offset: 0),
+        );
+      }
       AddFormBloc.get(context).updateForm(widget.model, initial);
     }
-    textController.onTextChanged((raw) async {
-      final text = await textController.getText();
-      rawText = text;
+
+    _controller.addListener(() {
+      final plainText = _controller.document.toPlainText();
+      final json = jsonEncode(_controller.document.toDelta().toJson());
+      rawText = plainText;
       if (mounted) {
-        AddFormBloc.get(context).updateForm(widget.model, text);
+        AddFormBloc.get(context).updateForm(widget.model, json);
       }
     });
   }
 
   @override
   void dispose() {
-    textController.dispose();
+    _controller.dispose();
+    _focusNode.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -54,11 +76,20 @@ class _RichTextFieldWidgetState extends State<RichTextFieldWidget> {
   Widget build(BuildContext context) {
     return BlocListener<AddFormBloc, AddFormState>(
       listenWhen: updateWhen(widget.model),
-      listener: (context, state) async {
-        final data = await textController.getText();
+      listener: (context, state) {
         final formData = validateString(getData(state, widget.model));
-        if (validString(formData) && data != formData) {
-          await textController.replaceText(formData);
+        if (validString(formData)) {
+          try {
+            final newDoc = Document.fromJson(jsonDecode(formData));
+            final currentJson = jsonEncode(_controller.document.toDelta().toJson());
+            final newJson = jsonEncode(newDoc.toDelta().toJson());
+
+            if (mounted && currentJson != newJson) {
+              _controller.document = newDoc;
+            }
+          } catch (e) {
+            // Handle invalid JSON
+          }
         }
       },
       child: Column(
@@ -66,40 +97,29 @@ class _RichTextFieldWidgetState extends State<RichTextFieldWidget> {
           FormCard(
             child: Column(
               children: [
-                ToolBar(
-                  toolBarColor: context.colors.background,
-                  activeIconColor: context.colors.primary,
-                  padding: EdgeInsets.all(8.w),
-                  controller: textController,
-                  iconSize: 20.sp,
-                ),
-                QuillHtmlEditor(
-                  text: widget.model.initial,
-                  hintText: widget.model.hint?.tr(context),
-                  controller: textController,
-                  ensureVisible: true,
-                  isEnabled: true,
-                  minHeight: 200.h,
-                  textStyle: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: context.colors.textColor,
+                // QuillToolbar.basic(
+                //   controller: _controller,
+                //   showAlignmentButtons: true,
+                //   multiRowsDisplay: false,
+                // ),
+                Container(
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                    color: context.colors.background,
+                    border: Border.all(color: context.colors.greyLight.withOpacity(0.5)),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
-                  hintTextStyle: TextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: context.colors.greyLight,
+                  child: QuillEditor.basic(
+                    controller: _controller,
+                    // readOnly: false,
+                    // placeholder: widget.model.hint?.tr(context) ?? '',
+                    // autoFocus: false,
+                    // expands: false,
+                    // padding: EdgeInsets.all(8),
+                    // scrollable: true,
+                    focusNode: _focusNode,
+                    scrollController: _scrollController,
                   ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.w,
-                    vertical: 5.h,
-                  ),
-                  hintTextPadding: EdgeInsets.symmetric(
-                    horizontal: 10.w,
-                    vertical: 5.h,
-                  ),
-                  hintTextAlign: TextAlign.start,
-                  loadingBuilder: (context) => const Center(child: Loading()),
                 ),
               ],
             ),
@@ -107,18 +127,18 @@ class _RichTextFieldWidgetState extends State<RichTextFieldWidget> {
           if (widget.model.required)
             FormField(
               validator: (value) {
-                if (validString(rawText)) {
+                if (validString(rawText.trim())) {
                   return null;
                 }
                 return LocalizationKeys.this_field_cant_be_empty.tr(context);
               },
               builder: (field) => field.hasError && validString(field.errorText)
                   ? Padding(
-                      padding: EdgeInsets.only(top: 10.h),
-                      child: ErrorField(
-                        text: field.errorText!,
-                      ),
-                    )
+                padding: EdgeInsets.only(top: 10.h),
+                child: ErrorField(
+                  text: field.errorText!,
+                ),
+              )
                   : const SizedBox(),
             ),
         ],

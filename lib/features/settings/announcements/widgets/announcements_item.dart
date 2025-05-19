@@ -3,7 +3,6 @@ import 'package:escola/core/components/text/my_text.dart';
 import 'package:escola/core/models/announcements_model.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
-import 'package:escola/features/settings/accept_event/accept_events.dart';
 import 'package:escola/features/settings/announcements/widgets/announcements_container_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -60,23 +59,29 @@ class AnnouncementsItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomSelectableText(
-                        announcement.title,
-                        style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/1.8,
+                        child: CustomSelectableText(
+                          announcement.title,
+                          style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       SizedBox(
                         height: 13.csh,
                       ),
-                      Text(
-                        announcement.content,
-                        maxLines: 2,
-                        style: TextStyle(
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 16.sp,
-                          color: context.colors.greyDarker,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width/1.8,
+                        child: Text(
+                          announcement.content,
+                          maxLines: 3,
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 16.sp,
+                            color: context.colors.greyDarker,
+                          ),
                         ),
                       ),
                       SizedBox(

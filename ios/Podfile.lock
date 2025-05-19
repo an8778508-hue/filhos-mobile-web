@@ -630,8 +630,6 @@ PODS:
     - abseil/meta/type_traits
   - alarm (0.0.1):
     - Flutter
-  - app_tracking_transparency (0.0.1):
-    - Flutter
   - audio_session (0.0.1):
     - Flutter
   - BoringSSL-GRPC (0.0.24):
@@ -939,7 +937,6 @@ PODS:
 
 DEPENDENCIES:
   - alarm (from `.symlinks/plugins/alarm/ios`)
-  - app_tracking_transparency (from `.symlinks/plugins/app_tracking_transparency/ios`)
   - audio_session (from `.symlinks/plugins/audio_session/ios`)
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
@@ -1008,8 +1005,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   alarm:
     :path: ".symlinks/plugins/alarm/ios"
-  app_tracking_transparency:
-    :path: ".symlinks/plugins/app_tracking_transparency/ios"
   audio_session:
     :path: ".symlinks/plugins/audio_session/ios"
   cloud_firestore:
@@ -1074,7 +1069,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
   alarm: 839eba06f468218db1b9f1736e32322db958e857
-  app_tracking_transparency: 697a5a2215d1abd69b5d6420ddef4c91956bade7
   audio_session: 9bdd3bf46960d4322cb8c3cb6138295dcfe84eee
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
   cloud_firestore: c3f4e6ac8953810b02ae240c6878826799c787af

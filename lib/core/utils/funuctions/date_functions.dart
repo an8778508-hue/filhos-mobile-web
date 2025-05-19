@@ -4,11 +4,11 @@ import 'package:table_calendar/table_calendar.dart';
 
 abstract class DateFunctions {
   //09:00 AM
-  static String formatTimeTo12HourFormat(DateTime? dateTime) {
+  static String formatTimeTo12HourFormat(DateTime? dateTime,{String? local}) {
     dateTime = dateTime ?? DateTime.now();
-    String format = DateFormat.jm().format(dateTime);
+    String format = DateFormat.jm(local??'en').format(dateTime);
     if (format.split(":")[0].length == 1) {
-      return "0$format";
+      return format;
     }
     return format;
   }

@@ -1,23 +1,22 @@
-import 'dart:io';
-
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
-import 'package:escola/core/components/icons/common_image.dart';
-import 'package:escola/core/config/widgets/config_builder.dart';
-import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/core/components/buttons/button_with_icon.dart';
+import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/components/widgets/app_bar.dart';
 import 'package:escola/core/config/config.dart';
+import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/login/presentation/login_screen.dart';
 import 'package:escola/features/onboard/presentation/onboard_screen.dart';
-import 'package:escola/my_app.dart';
+import 'package:escola/features/splash/presentation/splash_screen.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../main/bloc/main_bloc.dart';
 
 class ChooseLanguageScreen extends StatefulWidget {
   const ChooseLanguageScreen({super.key, this.fromSettings = false});
@@ -60,16 +59,16 @@ class ChooseLanguageScreen extends StatefulWidget {
 class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with TickerProviderStateMixin {
   @override
   void initState() {
-    WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) => requestTrackingPermission());
+    // WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) => requestTrackingPermission());
     super.initState();
   }
 
-  Future<void> requestTrackingPermission() async {
-    final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
-    if (status == TrackingStatus.notDetermined && mounted && Platform.isIOS) {
-      await AppTrackingTransparency.requestTrackingAuthorization();
-    }
-  }
+  // Future<void> requestTrackingPermission() async {
+  //   final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
+  //   if (status == TrackingStatus.notDetermined && mounted && Platform.isIOS) {
+  //     await AppTrackingTransparency.requestTrackingAuthorization();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +77,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with Ticker
       body: SafeArea(
         child: Column(
           children: [
-            if (widget.fromSettings) MyAppBar(hasNotification: false, color: Colors.transparent),
+            if (widget.fromSettings) const MyAppBar(hasNotification: false, color: Colors.transparent),
             Expanded(
               child: Stack(
                 children: [
@@ -130,6 +129,9 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with Ticker
                                   UserBloc.get.selectLang(Config.get.langs[index].code,Config.get.langs[index].codeWithLocale);
                                   if (widget.fromSettings) {
                                     Navigator.pop(context);
+                                    context.read<MainBloc>().add(ChangePage(id: PageID.home.name));
+                                    Navigator.push(
+                                        context, MaterialPageRoute(builder: (_) => const SplashScreen()));
                                     return;
                                   }
                                   if (mounted) {

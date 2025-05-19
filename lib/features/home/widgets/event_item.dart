@@ -1,6 +1,4 @@
-import 'package:escola/core/components/fader.dart';
 import 'package:escola/core/components/icons/common_image.dart';
-import 'package:escola/core/components/text/text_html.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/models/event_model.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
@@ -54,7 +52,7 @@ class EventItem extends StatelessWidget {
             if (withImage)
               Stack(
                 children: [
-                  Container(
+                  SizedBox(
                     height: 223.csh,
                     width: double.maxFinite,
                     child: ClipRRect(
@@ -98,75 +96,105 @@ class EventItem extends StatelessWidget {
               ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 26.csw),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: 25.csh,
-                  ),
-                  if (eventModel.requireApproval && !withImage)
-                    Container(
-                      width: 177.w,
-                      margin: EdgeInsets.only(bottom: 10.csh),
-                      padding: EdgeInsets.symmetric(vertical: 5.csh),
-                      decoration: BoxDecoration(
-                        color: context.colors.alert,
-                        borderRadius: BorderRadius.circular(20.r),
-                      ),
-                      child: Center(
-                        child: Text(
-                          LocalizationKeys.require_approval.tr(context),
-                          style: TextStyle(
-                            color: context.colors.secondaryTextColor,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w400,
+              child: SizedBox(
+                height: withImage? 180.h:200.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 15.csh,
+                    ),
+                    if (eventModel.requireApproval && !withImage)
+                      Container(
+                        width: 177.w,
+                        margin: EdgeInsets.only(bottom: 10.csh),
+                        padding: EdgeInsets.symmetric(vertical: 5.csh),
+                        decoration: BoxDecoration(
+                          color: context.colors.alert,
+                          borderRadius: BorderRadius.circular(20.r),
+                        ),
+                        child: Center(
+                          child: Text(
+                            LocalizationKeys.require_approval.tr(context),
+                            style: TextStyle(
+                              color: context.colors.secondaryTextColor,
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
                       ),
+                    Text(
+                      eventModel.title ?? '',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  Text(
-                    eventModel.title ?? '',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.bold,
+                    SizedBox(
+                      height: 8.csh,
                     ),
-                  ),
-                  SizedBox(
-                    height: 8.csh,
-                  ),
-                  SizedBox(
-                    height: 50,
-                    child: Fader(
-                      height: 0,
-                      cut: true,
-                      child: TextHtml(
-                        eventModel.description,
+                    Expanded(
+                      child: Text(
+                        eventModel.description ?? '',
                         style: TextStyle(
                           overflow: TextOverflow.ellipsis,
                           fontSize: 16.sp,
                           color: context.colors.greyDarker,
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 13.csh,
-                  ),
-                  if (eventModel.startDate != null)
-                    Text(
-                      DateFormat('dd-MM-yyyy hh:mm a').format(eventModel.startDate!),
-                      maxLines: 2,
-                      style: TextStyle(
+                        maxLines: withImage ? 3:2,
                         overflow: TextOverflow.ellipsis,
-                        fontSize: 13.sp,
-                        color: context.colors.greyDark,
                       ),
                     ),
-                  SizedBox(
-                    height: 15.h,
-                  ),
-                ],
+                    // SizedBox(
+                    //   height: 80.h,
+                    //   child: Fader(
+                    //     height: 0,
+                    //     cut: true,
+                    //     child: TextHtml(
+                    //       eventModel.description,
+                    //       style: TextStyle(
+                    //         overflow: TextOverflow.ellipsis,
+                    //         fontSize: 16.sp,
+                    //         color: context.colors.greyDarker,
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 80.h,
+                    //   child: Padding(
+                    //     padding: EdgeInsets.zero,
+                    //     child: Text(
+                    //       eventModel.description ?? '',
+                    //       style: TextStyle(
+                    //         fontSize: 16.sp,
+                    //         color: context.colors.greyDarker,
+                    //       ),
+                    //       maxLines: 3,
+                    //       overflow: TextOverflow.ellipsis,
+                    //     ),
+                    //   ),
+                    // ),
+                    SizedBox(
+                      height: 13.csh,
+                    ),
+                    if (eventModel.startDate != null)
+                      Text(
+                        DateFormat('dd-MM-yyyy hh:mm a').format(eventModel.startDate!),
+                        maxLines: 2,
+                        style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 13.sp,
+                          color: context.colors.greyDark,
+                        ),
+                      ),
+                    SizedBox(
+                      height: 5.h,
+                    ),
+                  ],
+                ),
               ),
             )
           ],

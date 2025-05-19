@@ -53,8 +53,6 @@
 		<string>This app needs microphone access to record audio and play audios in the chat between the users</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>This app uses your photo library to pick a photo or the ID so that they can used as profile avatar or in chat screens</string>
-		<key>NSUserTrackingUsageDescription</key>
-		<string>This identifier will be used to deliver personalized ads to you.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UIBackgroundModes</key>

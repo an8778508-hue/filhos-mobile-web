@@ -156,7 +156,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                     ),
                                   ),
                                   SizedBox(
-                                    height: 410.csh,
+                                    height: 430.csh,
                                     width: double.maxFinite,
                                     child: ListView.separated(
                                       separatorBuilder: (context, index) => SizedBox(
@@ -165,6 +165,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                       padding: EdgeInsetsDirectional.symmetric(horizontal: 18.w),
                                       scrollDirection: Axis.horizontal,
                                       itemCount: events.length,
+                                      shrinkWrap: true ,
                                       itemBuilder: (context, index) => EventItem(
                                         width: 353.csw,
                                         eventModel: events[index],

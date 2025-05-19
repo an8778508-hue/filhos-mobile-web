@@ -7,7 +7,7 @@ class OnBoardModel {
 
   String get title => validateString(json['title']);
 
-  String get subTitle => validateString(json['subtitle']);
+  String get subTitle => validateString(json['description']);
 
   String get image => validateString(json['image']);
 
