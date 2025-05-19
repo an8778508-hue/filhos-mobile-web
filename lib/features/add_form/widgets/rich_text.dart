@@ -9,7 +9,7 @@ import 'package:escola/features/add_form/widgets/forms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:quill_html_editor/quill_html_editor.dart';
+import 'package:quill_html_editor_v2/quill_html_editor_v2.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 
 import 'package:escola/features/add_form/bloc/add_form_state.dart';
