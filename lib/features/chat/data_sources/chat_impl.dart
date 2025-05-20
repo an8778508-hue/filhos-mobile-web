@@ -13,9 +13,9 @@ import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/chat/models/last_message.dart';
 import 'package:escola/features/chat/models/message.dart';
 import 'package:escola/features/chat/presentation/bloc/chat_helper.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/my_app.dart';
 import 'package:flutter/material.dart';
-import 'package:escola/flavors/app_flavors.dart';
 
 class ChatImpl extends ChatRepo {
   final NetworkClientRepository networkClient;
@@ -100,7 +100,10 @@ class ChatImpl extends ChatRepo {
     required String userId,
     required Message lastMessage,
   }) async {
-    if (lastMessage.sender.id == userId) return Right(() {});
+    debugPrint('mark messages as seen:  5555555555555555555555 ${lastMessage.toJson()} eeeend');
+    // if (lastMessage.sender.id == userId) return Right(() {
+    //   debugPrint('mark messages as seen:  666666666666666666666666666666666 ${lastMessage.toJson()} eeeend');
+    // });
 
     return await arrangeRequestResult(
       request: () async {

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -187,10 +188,11 @@ debugPrint('ChatBloc._sendMessage      1 ${event.message}');
 
   // mark as seen
   Future<void> _markMessageAsSeen(MarkMessageAsSeen event, Emitter<ChatState> emit) async {
+    debugPrint('mark messages as seen: 3333333333333333333333');
     if (messages.isNotEmpty) {
       emit(MarkMassgesAsReadLoading());
-      final String? childId = event.lastMessage.child == null ? null : event.lastMessage.child!.id.toString();
-
+      final String? childId = event.lastMessage.child?.id.toString();
+      debugPrint('mark messages as seen: 44444444444444444444');
       final result = await chatRepo.markMessageAsSeen(
         lastMessage: event.lastMessage,
         userId: event.userId,
