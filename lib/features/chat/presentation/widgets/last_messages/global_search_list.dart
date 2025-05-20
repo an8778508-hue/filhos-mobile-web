@@ -1,14 +1,14 @@
+import 'package:escola/core/components/fields/search_field.dart';
+import 'package:escola/core/components/icons/avatar.dart';
+import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/models/user_model.dart';
 import 'package:escola/core/utils/funuctions/widget_functions.dart';
 import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/chat/presentation/chat_screen.dart';
 import 'package:escola/features/diary/models/child_model.dart';
-import 'package:escola/flavors/app_flavors.dart';
-import 'package:escola/core/components/fields/search_field.dart';
-import 'package:escola/core/components/icons/avatar.dart';
-import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/search/models/global_search.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,18 +22,20 @@ class GlobalSearchList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     searchResult.parents.forEach((element) {
-      debugPrint("Parent: ${element.name}");
+      debugPrint("Parentttttttttt: ${element.name}");
     });
     searchResult.teachers.forEach((element) {
-      debugPrint("Teacher: ${element.name}");
+      debugPrint("Teacherrrrrrrrrrr: ${element.name}");
     });
     searchResult.children.forEach((element) {
-      debugPrint("Child: ${element.name}");
+      debugPrint("Childddddddddddddddd: ${element.name}");
     });
     if (searchResult.teachers.isEmpty &&
         searchResult.parents.isEmpty &&
         searchResult.children.isEmpty &&
-        searchResult.levels.isEmpty) return const EmptySearchResult();
+        searchResult.levels.isEmpty) {
+      return const EmptySearchResult();
+    }
 
     return SingleChildScrollView(
       child: Column(

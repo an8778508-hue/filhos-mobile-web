@@ -13,7 +13,8 @@ import 'package:table_calendar/table_calendar.dart';
 class EventsCalendar extends StatefulWidget {
   final Function(DateTime)? onPressed;
   final DateTime? initial;
-  const EventsCalendar({super.key, this.onPressed, this.initial});
+  final bool isLoading;
+  const EventsCalendar({super.key, this.onPressed, this.initial, this.isLoading = false});
 
   @override
   State<EventsCalendar> createState() => _EventsCalendarState();
@@ -166,8 +167,12 @@ class _EventsCalendarState extends State<EventsCalendar> {
                         // if (selectedDay.isAfter(DateTime.now()) && !isSameDay(selectedDay, DateTime.now())) {
                         //   return;
                         // }
-                        setState(() => _selectedDay = selectedDay);
-                        widget.onPressed?.call(selectedDay);
+                        // setState(() => _selectedDay = selectedDay);
+                        // widget.onPressed?.call(selectedDay);
+                        if (!widget.isLoading) { // Only process selection if not loading
+                          setState(() => _selectedDay = selectedDay);
+                          widget.onPressed?.call(selectedDay);
+                        }
                       },
                     ),
                   ),

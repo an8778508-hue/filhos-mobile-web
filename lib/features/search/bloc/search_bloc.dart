@@ -4,6 +4,7 @@ import 'package:escola/core/errors/failures.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/search/data_sources/search_dc.dart';
 import 'package:escola/features/search/models/global_search.dart';
+import 'package:flutter/cupertino.dart';
 
 part 'search_event.dart';
 part 'search_state.dart';
@@ -39,6 +40,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       result.fold(
         (failure) => emit(SearchFailed(failure: failure)),
         (results) {
+          debugPrint('sssssssssssssssssssssssssssss');
           globalSearchResult = results;
           emit(SearchSucceed());
         },

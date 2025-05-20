@@ -2,9 +2,9 @@ import 'package:dartz/dartz.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
-import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/search/models/global_search.dart';
+import 'package:flutter/cupertino.dart';
 
 abstract class SearchRepo {
   final String childSearchEndpoint = "/teacher/timeline/";
@@ -90,7 +90,20 @@ class SearchImpl extends SearchRepo {
         if (json['data'] is List) {
           // Assuming these are children based on the response structure
           for (final item in json['data']) {
-            children.add(SchoolItem.fromJson(item, SchoolItemType.childType));
+
+            if(isTeacher==false){
+              if (item['type'] == 'Parent') {
+                parents.add(SchoolItem.fromJson(item, SchoolItemType.parentType));
+              } else if (item['type'] == 'professor') {
+                debugPrint('dddddddddddddddddddddddddddddddddd');
+                teachers.add(SchoolItem.fromJson(item, SchoolItemType.teacherType));
+              } else if (item['type'] == 'Level') {
+                levels.add(SchoolItem.fromJson(item, SchoolItemType.level));
+              }
+            }else{
+              children.add(SchoolItem.fromJson(item, SchoolItemType.childType));
+            }
+
           }
         } else if (json['data'] is Map) {
           // Handle the case where data might be an object with categorized arrays
@@ -101,6 +114,7 @@ class SearchImpl extends SearchRepo {
             parents.add(SchoolItem.fromJson(item, SchoolItemType.parentType));
           }
           for (final item in json['data']?['children'] ?? []) {
+
             children.add(SchoolItem.fromJson(item, SchoolItemType.childType));
           }
           for (final item in json['data']?['levels'] ?? []) {
