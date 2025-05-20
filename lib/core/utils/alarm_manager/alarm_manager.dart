@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:alarm/alarm.dart';
+import 'package:alarm/model/volume_settings.dart';
 import 'package:escola/core/custom_packages/native_alarm/native_alarm.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';

@@ -92,7 +92,7 @@ dependencies:
 #  quill_html_editor_v2: ^2.2.10
   flutter_quill: ^11.4.1
 #  html_editor_enhanced: ^2.6.0
-  alarm: ^5.1.3
+#  alarm: ^5.1.3
   search_cep: ^4.0.2
   device_info_plus: ^11.4.0
   flutter_local_notifications: ^19.2.1
@@ -111,6 +111,8 @@ dependencies:
   firebase_app_check: ^0.3.2+5
 
 dependency_overrides:
+  alarm:
+    path: lib/alarm_package/alarm-5.1.3
   http: ^1.4.0
   package_info_plus: ^8.3.0
 #  cached_video_player:

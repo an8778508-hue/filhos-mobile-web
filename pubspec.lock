@@ -23,12 +23,11 @@ packages:
     source: sdk
     version: "0.3.3"
   alarm:
-    dependency: "direct main"
+    dependency: "direct overridden"
     description:
-      name: alarm
-      sha256: "262d2ee4f9f3d4731db5f0531fa55807455b37c5362a6012af5445b41e16c26a"
-      url: "https://pub.dev"
-    source: hosted
+      path: "lib/alarm_package/alarm-5.1.3"
+      relative: true
+    source: path
     version: "5.1.3"
   analyzer:
     dependency: transitive

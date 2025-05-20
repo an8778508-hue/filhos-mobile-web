@@ -12,18 +12,18 @@ import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
-import 'package:escola/features/add_form/add_form_screen.dart';
 import 'package:escola/features/home/widgets/event_item.dart';
 import 'package:escola/features/settings/events/bloc/events_bloc.dart';
 import 'package:escola/features/settings/events/bloc/events_event.dart';
 import 'package:escola/features/settings/events/widgets/event_review_button.dart';
 import 'package:escola/features/settings/events/widgets/events_calendar.dart';
-import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+
+import 'bloc/events_state.dart';
 
 class EventsScreen extends StatefulWidget {
   const EventsScreen({super.key});
@@ -72,7 +72,7 @@ class _EventsScreenState extends State<EventsScreen> {
                 //   Navigator.of(context)
                 //       .push(MaterialPageRoute(builder: (context) => const AddFormScreen(type: AddFormType.event)));
                 // },
-                filterButton: context.isParents,
+                filterButton: false,
                 filterFunction: () async {
                   final bloc = BlocProvider.of<EventsBloc>(context);
                   final filterModelResponse = await FilterSheet.openSheet(context, filterModelNotifier.value);
@@ -104,6 +104,7 @@ class _EventsScreenState extends State<EventsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+
                         ValueListenableBuilder(
                           valueListenable: filterModelNotifier,
                           builder: (context, filterModel, child) => Padding(
@@ -148,6 +149,7 @@ class _EventsScreenState extends State<EventsScreen> {
                               valueListenable: dateTime,
                               builder: (context, value, child) => EventsCalendar(
                                 initial: value,
+                                isLoading: context.select((EventsBloc bloc) => bloc.state is EventsLoadingState),
                                 onPressed: (DateTime date) {
                                   dateTime.value = date;
                                   BlocProvider.of<EventsBloc>(context).add(

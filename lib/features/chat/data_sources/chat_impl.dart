@@ -277,6 +277,8 @@ class ChatImpl extends ChatRepo {
         queryParameters: {"child_id": childId.toString()},
       ),
       onSuccess: (date) {
+        debugPrint("dateeeeeeeeee: ${date['data']}");
+        if(date['data'].isEmpty) throw ServerException(message: LocalizationKeys.no_teachers_for_this_child_yet.tr(navigatorKey.currentContext!));
         final list = mainKey.currentContext?.isParents == true ?date['data'][0]['teachers']:date['data'];
         final teachers = (list as List).map((e) => UserModel.fromJson(e)).toList();
         if (teachers.isEmpty) {

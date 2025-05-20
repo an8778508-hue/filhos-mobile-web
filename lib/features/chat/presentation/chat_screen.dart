@@ -1,8 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/single_child_widget.dart';
-
 import 'package:escola/core/components/widgets/app_bar.dart';
 import 'package:escola/core/components/widgets/error_widget.dart';
 import 'package:escola/core/dependency_injection/di.dart';
@@ -15,6 +10,10 @@ import 'package:escola/features/chat/presentation/bloc/text_message_bloc.dart';
 import 'package:escola/features/chat/presentation/widgets/message_actions.dart';
 import 'package:escola/features/chat/presentation/widgets/messages_list.dart';
 import 'package:escola/features/diary/models/child_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/single_child_widget.dart';
 
 class ChatScreen extends StatefulWidget {
   final ChatUser? contact;
@@ -45,7 +44,9 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   void getTeachersAndMessages() {
+
     if (widget.child != null) {
+      debugPrint('${widget.child} widget.child');
       getChildTeachers();
     } else {
       getMessages(_contact);
