@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:escola/core/errors/failures.dart';
@@ -13,7 +11,6 @@ import 'package:escola/features/diary/models/questions_models/question.dart';
 import 'package:escola/features/diary/models/questions_models/select_question.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/diary/models/tamplets/question_category_template.dart';
-import 'package:flutter/cupertino.dart';
 
 class DiaryImpl extends DiaryRepo {
   final NetworkClientRepository networkClient;
@@ -43,6 +40,7 @@ class DiaryImpl extends DiaryRepo {
         //
         for (final activity in json['data']) {
           activities.add(Activity.fromJson(activity));
+          activities.sort((a, b) => b.date!.compareTo(a.date!));
         }
 
         return activities;

@@ -28,7 +28,7 @@ class Activity extends Equatable {
 
   // from Json
   factory Activity.fromJson(Map<String, dynamic> json) {
-    print('Activity.fromJson ${json['answers'][0]}');
+    // print('Activity.fromJson ${json['answers'][0]}');
     return Activity(
       // id: json['id'],
       childModel: json['child'] != null ? ChildModel.fromJson(json['child']) : null,
