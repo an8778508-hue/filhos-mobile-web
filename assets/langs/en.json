@@ -327,5 +327,9 @@
 "file": "File",
   "choose_at_least_one": "Choose at least one",
   "choose_at_least_two": "Choose at least two",
-  "search_by_professor_chat": "Search by professor Name"
+  "search_by_professor_chat": "Search by professor Name",
+  "home_title": "Home",
+  "diary_title": "Diary",
+  "events_title": "Events",
+  "settings_title": "Settings"
 }
