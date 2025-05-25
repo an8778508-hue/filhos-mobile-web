@@ -151,5 +151,9 @@
   "choose_at_least": "اختر على الاقل {} عناصر",
   "choose_at_least_one": "اختر على الاقل واحد",
   "choose_at_least_two": "اختر على الاقل اثنان",
-  "search_by_professor_chat": "البحث بأسم الأستاذ"
+  "search_by_professor_chat": "البحث بأسم الأستاذ",
+  "home_title": "الرئيسية",
+  "diary_title": "اليوميات",
+  "events_title": "الأحداث",
+  "settings_title": "الاعدادات"
 }
