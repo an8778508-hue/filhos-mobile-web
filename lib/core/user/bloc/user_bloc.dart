@@ -89,12 +89,13 @@ class UserBloc extends HydratedCubit<UserState> {
     emit(state.copyWith(user: null, userNullable: true));
   }
 
-  selectLang(String code,String codeWithLocale) {
+  selectLang(String code,String codeWithLocale) async {
     final oldLang = state.language;
     emit(state.copyWith(language: code,languageWithCode: codeWithLocale));
 
     if (oldLang != code) {
-      ConfigCubit.get.init(lang: codeWithLocale);
+     await ConfigCubit.get.init(lang: codeWithLocale);
+     await Future.delayed(const Duration(milliseconds: 150));
     }
   }
 

@@ -126,12 +126,17 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with Ticker
                                 firstIconHeight: 25.csw,
                                 firstIconWidth: 25.csw,
                                 onPressed: () async {
-                                  UserBloc.get.selectLang(Config.get.langs[index].code,Config.get.langs[index].codeWithLocale);
+                                 await UserBloc.get.selectLang(Config.get.langs[index].code,Config.get.langs[index].codeWithLocale);
                                   if (widget.fromSettings) {
-                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
                                     context.read<MainBloc>().add(ChangePage(id: PageID.home.name));
-                                    Navigator.push(
-                                        context, MaterialPageRoute(builder: (_) => const SplashScreen()));
+                                    // Navigator.push(
+                                    //     context, MaterialPageRoute(builder: (_) => const SplashScreen()));
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => const SplashScreen()),
+                                          (route) => false,
+                                    );
                                     return;
                                   }
                                   if (mounted) {

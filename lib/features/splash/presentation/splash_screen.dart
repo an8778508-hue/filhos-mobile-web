@@ -1,19 +1,16 @@
 import 'dart:async';
-import 'dart:io';
-import 'package:escola/core/config/widgets/config_builder.dart';
-import 'package:escola/features/login/presentation/login_screen.dart';
-import 'package:escola/flavors/app_flavors.dart';
+
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/components/text/powered_by.dart';
-import 'package:escola/core/config/config.dart';
+import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/features/choose_language/presentation/choose_language_screen.dart';
 import 'package:escola/features/main/presentation/main_screen.dart';
 import 'package:escola/features/splash/presentation/bloc/splash_bloc.dart';
 import 'package:escola/features/your_account_under_review/presentation/your_account_under_review_screen.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,7 +35,10 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       child: BlocListener<SplashBloc, SplashState>(
         listener: (BuildContext context, SplashState state) {
           if (state is SplashFailure) {
-            // showToast(state.error, false);
+            // Handle failure state, e.g., show a dialog or a snackbar
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.failure.message)),
+            );
           }
           if (state is SplashSuccess) {
             Timer(const Duration(seconds: 2), () async {
