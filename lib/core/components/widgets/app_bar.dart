@@ -51,7 +51,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         currentId == PageID.settings.name ||
         currentId == PageID.events.name;
     final hasBackButton = canPop || !isMainPage ;
-
+    final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
     return Container(
         color: color ?? context.colors.primary,
         child: Column(children: [
@@ -181,8 +181,8 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
                       children: [
                         ClipOval(
                           child: Container(
-                            width: 35.w,
-                            height: 35.w,
+                            width: isTablet? 20.w: 35.w,
+                            height: isTablet? 20.w: 35.w,
                             color: context.colors.background,
                             child: Icon(
                               Icons.notifications,
