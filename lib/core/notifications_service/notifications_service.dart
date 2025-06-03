@@ -116,7 +116,7 @@ class NotificationService {
     }
   }
 }
-
+@pragma('vm:entry-point')
 Future<void> notificationBackgroundHandler(RemoteMessage message) async {
   configSilentNotificationListener(message);
 
