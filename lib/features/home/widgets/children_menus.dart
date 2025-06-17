@@ -48,6 +48,7 @@ class ChildrenMenus extends StatelessWidget {
         ..add(const GetMenus()),
       child: BlocBuilder<DiaryBloc, DiaryState>(
         builder: (context, DiaryState state) {
+          final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
           if (state is MenusLoading) {
             return Padding(
               padding: EdgeInsets.symmetric(vertical: 40.0.h),
@@ -90,8 +91,9 @@ class ChildrenMenus extends StatelessWidget {
                 DefaultTabController(
                   length: childrenMenus.length,
                   child: Builder(
-                    builder: (context) =>
-                        Padding(
+                    builder: (context) {
+                      final isTablet = MediaQuery.of(context).size.shortestSide >= 600;
+                      return Padding(
                           padding: EdgeInsets.symmetric(horizontal: 17.w),
                           child: Container(
                             decoration: BoxDecoration(
@@ -120,7 +122,11 @@ class ChildrenMenus extends StatelessWidget {
                                         tabs: [
                                           for (int i = 0; i < childrenMenus.length; i++)
                                             Tab(
-                                              height: MediaQuery
+                                              height:  isTablet?
+                                                  MediaQuery
+                                                      .sizeOf(context)
+                                                      .height * .18
+                                                  : MediaQuery
                                                   .sizeOf(context)
                                                   .height * .14,
                                               child: Container(
@@ -193,7 +199,8 @@ class ChildrenMenus extends StatelessWidget {
                               ],
                             ),
                           ),
-                        ),
+                        );
+                    },
                   ),
                 ),
               ],
