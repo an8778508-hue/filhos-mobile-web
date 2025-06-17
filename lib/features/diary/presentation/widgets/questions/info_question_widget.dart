@@ -13,31 +13,57 @@ class InfoQuestionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.h, vertical: 20.h),
+      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 20.h),
       decoration: BoxDecoration(color: context.colors.lightBackground),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            question.title ?? "",
-            style: TextStyle(
-                fontSize: 20.sp,
-                fontWeight: FontWeight.w500,
-                color: Colors.black),
+          // Text(
+          //   question.title ?? "",
+          //   style: TextStyle(
+          //       fontSize: 20.sp,
+          //       fontWeight: FontWeight.w500,
+          //       color: Colors.black),
+          // ),
+          // Row(
+          //   children: [
+          //     if(questionCategory?.answer != null)
+          //       Text(
+          //         questionCategory?.answer?.map((e) => e).join(",") ?? "",
+          //         style: TextStyle(
+          //             fontSize: 20.sp,
+          //             fontWeight: FontWeight.w500,
+          //             color: Colors.black),
+          //       ),
+          //     SizedBox(width: 10.w),
+          //   ],
+          // ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              question.title ?? "",
+              style: TextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black),
+            ),
           ),
-          Row(
-            children: [
-              if(questionCategory?.answer != null)
-                Text(
-                  questionCategory?.answer?.map((e) => e).join(",") ?? "",
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black),
-                ),
-              SizedBox(width: 10.w),
-            ],
-          ),
+          SizedBox(width: 5.w),
+          if(questionCategory?.answer != null)
+            Expanded(
+              flex: 3,
+              child: Text(
+                questionCategory?.answer?.map((e) => e).join(",") ?? "",
+                style: TextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black),
+                textAlign: TextAlign.end,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+              ),
+            ),
+
         ],
       ),
     );
