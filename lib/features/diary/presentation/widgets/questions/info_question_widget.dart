@@ -43,7 +43,7 @@ class InfoQuestionWidget extends StatelessWidget {
             child: Text(
               question.title ?? "",
               style: TextStyle(
-                  fontSize: 20.sp,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
             ),
@@ -55,12 +55,12 @@ class InfoQuestionWidget extends StatelessWidget {
               child: Text(
                 questionCategory?.answer?.map((e) => e).join(",") ?? "",
                 style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 18.sp,
                     fontWeight: FontWeight.w500,
                     color: Colors.black),
-                textAlign: TextAlign.end,
+                textAlign: TextAlign.start,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 2,
+                maxLines: 30,
               ),
             ),
 
