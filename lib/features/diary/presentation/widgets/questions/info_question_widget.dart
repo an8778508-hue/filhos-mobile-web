@@ -13,10 +13,12 @@ class InfoQuestionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 20.h),
+      width: double.infinity ,
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
       decoration: BoxDecoration(color: context.colors.lightBackground),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Text(
           //   question.title ?? "",
@@ -38,34 +40,37 @@ class InfoQuestionWidget extends StatelessWidget {
           //     SizedBox(width: 10.w),
           //   ],
           // ),
-          Expanded(
-            flex: 1,
-            child: Text(
-              question.title ?? "",
+          Text(
+            question.title ?? "",
+            style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: Colors.black),
+          ),
+          SizedBox(height: 5.h),
+          if(questionCategory?.answer != null)
+            Text(
+                (questionCategory?.answer?.map((e) => e.toString()).join(", ") ?? "").replaceAll(RegExp(r'[\[\]"]'), ''),
               style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w500,
                   color: Colors.black),
-            ),
-          ),
-          SizedBox(width: 5.w),
-          if(questionCategory?.answer != null)
-            Expanded(
-              flex: 3,
-              child: Text(
-                questionCategory?.answer?.map((e) => e).join(",") ?? "",
-                style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black),
-                textAlign: TextAlign.start,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 30,
-              ),
+              textAlign: TextAlign.start,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 30,
             ),
 
         ],
       ),
     );
+  }
+  int _getFlexValue(List<dynamic>? answer) {
+    if (answer == null) return 1;
+
+    String text = answer.map((e) => e.toString()).join(", ").replaceAll(RegExp(r'[\[\]"]'), '');
+
+    // Check if text is likely to span multiple lines
+    // This assumes text longer than 40 characters will wrap
+    return (text.length > 40 || text.contains('\n')) ? 3 : 1;
   }
 }

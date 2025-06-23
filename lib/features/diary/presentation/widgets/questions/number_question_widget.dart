@@ -1,5 +1,4 @@
 import 'package:escola/core/utils/extensions/colors_ext.dart';
-import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/diary/models/question_category.dart';
 import 'package:escola/features/diary/models/questions_models/number_question.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,7 @@ class NumberQuestionWidget extends StatelessWidget {
             // stringNotNullOrEmpty(question.number.toString())
             //     ? question.number.toString()
             //     : "",
-            questionCategory?.answer?.map((e) => e).join(",") ?? "",
+            questionCategory?.answer?.map((e) => e).join(",").replaceAll(RegExp(r'[\[\]"]'), '') ?? "",
             style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.w500,

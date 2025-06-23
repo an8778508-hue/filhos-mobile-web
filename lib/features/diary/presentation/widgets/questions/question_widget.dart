@@ -5,7 +5,6 @@ import 'package:escola/features/diary/models/questions_models/image_question.dar
 import 'package:escola/features/diary/models/questions_models/info_question.dart';
 import 'package:escola/features/diary/models/questions_models/number_question.dart';
 import 'package:escola/features/diary/models/questions_models/question.dart';
-import 'package:escola/features/diary/models/questions_models/rating_question.dart';
 import 'package:escola/features/diary/models/questions_models/select_question.dart';
 import 'package:escola/features/diary/presentation/widgets/questions/check_question_widget.dart';
 import 'package:escola/features/diary/presentation/widgets/questions/duration_question_widget.dart';
@@ -15,6 +14,8 @@ import 'package:escola/features/diary/presentation/widgets/questions/number_ques
 import 'package:escola/features/diary/presentation/widgets/questions/rating_question_widget.dart';
 import 'package:escola/features/diary/presentation/widgets/questions/select_question_widget.dart';
 import 'package:flutter/material.dart';
+
+import '../../../models/questions_models/rating_question.dart';
 
 class QuestionWidget extends StatelessWidget {
   final Question? question;
@@ -47,7 +48,9 @@ class QuestionWidget extends StatelessWidget {
       return NumberQuestionWidget(question: currentQuestion, questionCategory: questionCategory);
     } else if (question!.type == QuestionType.select) {
       final currentQuestion = question as SelectQuestion;
-      return SelectQuestionWidget(question: currentQuestion, questionCategory: questionCategory);
+      final bool ? isRating = questionCategory?.answer?.any((item) =>
+          item.toString().contains(RegExp(r'\[.+:\d+\]')));
+      return SelectQuestionWidget(question: currentQuestion, questionCategory: questionCategory,isRating: isRating ??false,);
     }
     return const SizedBox();
   }
