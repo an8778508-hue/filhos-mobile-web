@@ -9,13 +9,38 @@ class SelectMenuItem extends StatelessWidget {
   final SelectItem? item;
   final QuestionTemplate question;
   const SelectMenuItem({super.key, this.item, required this.question});
+  /// Extract text part before colon
+  String _extractText(String? value) {
+    if (value == null || !value.contains(":")) {
+      return value ?? "";
+    }
+    return value.split(":")[0].trim();
+  }
+
+  /// Extract star count from number after colon
+  int? _extractStarCount(String? value) {
+    if (value == null || !value.contains(":")) {
+      return null;
+    }
+
+    try {
+      final numberPart = value.split(":")[1].trim();
+      return int.parse(numberPart);
+    } catch (e) {
+      return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    print('CheckQuestionWidget.build ${item?.icon_value}');
+    print('CheckQuestionWidget.build22 ${item?.icon_value}');
     final iconIsSizedBox =
         CommonImage(imageUrl: item?.icon, size: 20.w).runtimeType == SizedBox;
-
+    final text = _extractText(item?.value);
+    final starCount = _extractStarCount(item?.value);
+    debugPrint('iconIsSizedBox: $iconIsSizedBox');
+    debugPrint('text: $text');
+    debugPrint('starCount: $starCount');
     return Row(
       children: [
         if (item?.icon != null) ...[
@@ -24,7 +49,9 @@ class SelectMenuItem extends StatelessWidget {
         ]else getDynamicQuestionValue( icon_value:  item?.icon_value, context: context, isAnswer: false),
         Flexible(
           child: Text(
-            (item?.value ?? ""),
+            text ,
+            textAlign: TextAlign.start ,
+            // (item?.value ?? ""),
             style: TextStyle(
               fontSize: 20.sp,
               fontWeight: FontWeight.w400,
@@ -32,6 +59,30 @@ class SelectMenuItem extends StatelessWidget {
             ),
           ),
         ),
+          if (starCount != null && starCount >= 0)
+          SizedBox(width: 10.w),
+            if (starCount != null && starCount >= 0)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: starCount >0?
+            List.generate(
+              starCount,
+                  (index) =>  Icon(
+                Icons.star,
+                color: Colors.amber,
+                size: 18.sp,
+              ),
+            ):
+            List.generate(
+              1,
+                  (index) =>  Icon(
+                Icons.star,
+                color: Colors.grey,
+                size: 18.sp,
+              ),
+            )
+            ,
+          ),
       ],
     );
   }

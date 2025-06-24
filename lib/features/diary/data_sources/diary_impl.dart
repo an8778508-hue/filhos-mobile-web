@@ -11,6 +11,7 @@ import 'package:escola/features/diary/models/questions_models/question.dart';
 import 'package:escola/features/diary/models/questions_models/select_question.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/diary/models/tamplets/question_category_template.dart';
+import 'package:flutter/cupertino.dart';
 
 class DiaryImpl extends DiaryRepo {
   final NetworkClientRepository networkClient;
@@ -286,7 +287,18 @@ class DiaryImpl extends DiaryRepo {
         fieldIndex++;
       }
     }
-
+    debugPrint('===== SENDING QUESTIONS REQUEST =====');
+    debugPrint('URL: $sendQuestionsEndpoint');
+    debugPrint('Method: POST');
+    debugPrint('Fields:');
+    formData.fields.forEach((field) {
+      debugPrint('  ${field.key}: ${field.value}');
+    });
+    debugPrint('Files:');
+    formData.files.forEach((file) {
+      debugPrint('  ${file.key}: ${file.value.filename} (${file.value.contentType})');
+    });
+    debugPrint('======================================');
     return await networkClient.handleRequest(
       NetworkRequest(
         method: HttpMethod.post,
