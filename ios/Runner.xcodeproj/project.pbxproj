@@ -555,7 +555,7 @@
 				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.15;
+				FLUTTER_BUILD_NAME = 1.0.16;
 				FLUTTER_BUILD_NUMBER = 1;
 				FLUTTER_TARGET = "/Users/osz/StudioProjects/disney-mobile/lib/main_professores.dart";
 				INFOPLIST_FILE = "Runner/Info-professores.plist";
@@ -566,7 +566,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.profedisneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -666,7 +666,7 @@
 				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.15;
+				FLUTTER_BUILD_NAME = 1.0.16;
 				FLUTTER_BUILD_NUMBER = 1;
 				FLUTTER_TARGET = "/Users/osz/StudioProjects/disney-mobile/lib/main_professores.dart";
 				INFOPLIST_FILE = "Runner/Info-professores.plist";
@@ -677,7 +677,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.profedisneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -772,7 +772,7 @@
 				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.15;
+				FLUTTER_BUILD_NAME = 1.0.16;
 				FLUTTER_BUILD_NUMBER = 1;
 				FLUTTER_TARGET = "/Users/osz/StudioProjects/disney-mobile/lib/main_professores.dart";
 				INFOPLIST_FILE = "Runner/Info-professores.plist";
@@ -783,7 +783,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.profedisneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -878,7 +878,7 @@
 				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.15;
+				FLUTTER_BUILD_NAME = 1.0.16;
 				FLUTTER_BUILD_NUMBER = 1;
 				FLUTTER_TARGET = "/Users/osz/StudioProjects/disney-mobile/lib/main.dart";
 				INFOPLIST_FILE = "Runner/Info-parents.plist";
@@ -889,7 +889,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.disneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1075,7 +1075,7 @@
 				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.15;
+				FLUTTER_BUILD_NAME = 1.0.16;
 				FLUTTER_BUILD_NUMBER = 1;
 				FLUTTER_TARGET = "/Users/osz/StudioProjects/disney-mobile/lib/main.dart";
 				INFOPLIST_FILE = "Runner/Info-parents.plist";
@@ -1086,7 +1086,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.disneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1115,7 +1115,7 @@
 				DEVELOPMENT_TEAM = DLFS87R8G8;
 				DONT_GENERATE_INFOPLIST_FILE = YES;
 				ENABLE_BITCODE = NO;
-				FLUTTER_BUILD_NAME = 1.0.15;
+				FLUTTER_BUILD_NAME = 1.0.16;
 				FLUTTER_BUILD_NUMBER = 1;
 				FLUTTER_TARGET = "/Users/osz/StudioProjects/disney-mobile/lib/main.dart";
 				INFOPLIST_FILE = "Runner/Info-parents.plist";
@@ -1126,7 +1126,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.15;
+				MARKETING_VERSION = 1.0.16;
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoriza.disneyNew;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

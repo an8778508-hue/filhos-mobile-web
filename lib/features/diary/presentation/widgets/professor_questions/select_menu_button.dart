@@ -37,7 +37,7 @@ class SelectMenuButton extends StatelessWidget {
       child: Row(
         children: [
           Container(
-            constraints: BoxConstraints(maxWidth: 100.w),
+            constraints: BoxConstraints(maxWidth: 130.w),
             child: Text(
               getValue(questionValue,context),
               overflow: TextOverflow.ellipsis,
@@ -59,14 +59,43 @@ class SelectMenuButton extends StatelessWidget {
     );
   }
 
-  String getValue(dynamic questionValue,BuildContext context) {
+  // String getValue(dynamic questionValue,BuildContext context) {
+  //   try {
+  //     if (questionValue != null && question.type == QuestionType.checkbox) {
+  //       return questionValue.toString();
+  //     } else if (questionValue != null &&
+  //         question.type == QuestionType.select) {
+  //       final selectItem = questionValue as List<SelectItem>;
+  //       return selectItem[0].value ?? "N/D";
+  //     }
+  //     return LocalizationKeys.choose.tr(context);
+  //   } catch (e) {
+  //     print("error: $e");
+  //     return LocalizationKeys.choose.tr(context);
+  //   }
+  // }
+  String getValue(dynamic questionValue, BuildContext context) {
     try {
       if (questionValue != null && question.type == QuestionType.checkbox) {
         return questionValue.toString();
-      } else if (questionValue != null &&
-          question.type == QuestionType.select) {
+      } else if (questionValue != null && question.type == QuestionType.select) {
         final selectItem = questionValue as List<SelectItem>;
-        return selectItem[0].value ?? "N/D";
+        final value = selectItem[0].value ?? "N/D";
+
+        // Check if the value contains a star rating format (text: number)
+        if (value.contains(":")) {
+          try {
+            final textPart = value.split(":")[0].trim();
+            final starPart = value.split(":")[1].trim();
+            final starCount = int.parse(starPart);
+
+            // Return formatted text with star representation
+            return "$textPart ${starCount > 0 ? '★' * starCount : '☆'}";
+          } catch (e) {
+            return value;
+          }
+        }
+        return value;
       }
       return LocalizationKeys.choose.tr(context);
     } catch (e) {
