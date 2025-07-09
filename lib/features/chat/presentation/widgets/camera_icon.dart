@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/attachment_selection/attachment_selection.dart';
+
 class CameraIcon extends StatelessWidget {
   const CameraIcon({super.key});
 
@@ -18,10 +20,16 @@ class CameraIcon extends StatelessWidget {
       child: Icon(Icons.camera_alt_outlined,
           color: ChatColors.actionIconsColor, size: 25.w),
     ).splash(onPressed: () async {
-      final XFile? file =
-          await ImagePicker().pickImage(source: ImageSource.camera);
-      if (file != null) {
-        context.read<ImagesMessageBloc>().add(AddImages(images: [file]));
+      // final XFile? file =
+      //     await ImagePicker().pickImage(source: ImageSource.camera);
+      // if (file != null) {
+      //   context.read<ImagesMessageBloc>().add(AddImages(images: [file]));
+      // }
+      final List<String> files = await pickAttachments(context);
+      if (files.isNotEmpty) {
+        context.read<ImagesMessageBloc>().add(
+          AddImages(images: files.map((path) => XFile(path)).toList()),
+        );
       }
     });
   }
