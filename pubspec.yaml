@@ -109,6 +109,7 @@ dependencies:
   appinio_video_player_plus: ^1.0.7
   event_bus: ^2.0.1
   firebase_app_check: ^0.3.2+5
+  google_sign_in: ^6.3.0
 
 dependency_overrides:
   alarm:

@@ -4,14 +4,13 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
+import 'package:escola/core/models/user_model.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
 import 'package:escola/features/login/models/login_requset.dart';
-import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
 import 'package:flutter/foundation.dart';
 
 part 'login_event.dart';
-
 part 'login_state.dart';
 
 class LoginBloc extends Cubit<LoginState> {
@@ -100,5 +99,17 @@ class LoginBloc extends Cubit<LoginState> {
 
   clearError() {
     emit(LoginInitial());
+  }
+
+  Future<void> loginWithGoogle() async {
+    // emit(LoginLoading());
+    final result = await loginRepository.signInWithGoogle();
+    result.fold(
+          (failure) => emit(LoginFailure(failure)),
+          (userModel) async {
+            debugPrint('LoginBloc.loginWithGoogle userModel: $userModel');
+            emit(LoginGoogleSuccess(userModel ));
+          },
+    );
   }
 }

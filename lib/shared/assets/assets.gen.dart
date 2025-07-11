@@ -3,13 +3,13 @@
 ///  FlutterGen
 /// *****************************************************
 
+import 'package:flutter/services.dart';
 // coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: directives_ordering,unnecessary_import,implicit_dynamic_list_literal,deprecated_member_use
 
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter/services.dart';
 
 class $AssetsAppIconGen {
   const $AssetsAppIconGen();
@@ -308,6 +308,14 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/wow.svg
   SvgGenImage get wow => const SvgGenImage('assets/icons/wow.svg');
+  // file path: assets/icons/google.svg
+  SvgGenImage get google => const SvgGenImage('assets/icons/google.svg');
+
+  // file path: assets/icons/facebook.svg
+  SvgGenImage get facebook => const SvgGenImage('assets/icons/facebook.svg');
+
+  // file path: assets/icons/apple.svg
+  SvgGenImage get apple => const SvgGenImage('assets/icons/apple.svg');
 
   /// List of all assets
   List<dynamic> get values => [
@@ -395,7 +403,10 @@ class $AssetsIconsGen {
         unchecked,
         uploadImage,
         verfied,
-        wow
+        wow,
+        google,
+        facebook,
+        apple,
       ];
 }
 
@@ -432,6 +443,8 @@ class $AssetsImagesGen {
 
   /// File path: assets/images/pdf.png
   AssetGenImage get pdf => const AssetGenImage('assets/images/pdf.png');
+  /// File path: assets/app_icon/appleIcon.png
+  AssetGenImage get apple => const AssetGenImage('assets/images/apple.png');
 
   /// List of all assets
   List<dynamic> get values => [
@@ -444,7 +457,8 @@ class $AssetsImagesGen {
         errorIcon,
         filhosLogo,
         image,
-        pdf
+        pdf,
+        apple,
       ];
 }
 

@@ -14,3 +14,4 @@ class LoginByPhone extends LoginEvent {
   List<Object> get props => [loginRequest];
 }
 
+class LoginWithGoogle extends LoginEvent {}

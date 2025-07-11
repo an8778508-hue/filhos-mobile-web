@@ -10,6 +10,7 @@ sealed class LoginState extends Equatable {
 final class LoginInitial extends LoginState {}
 
 final class LoginLoading extends LoginState {}
+
 final class LoginReady extends LoginState {}
 
 final class CodeSentVerifyPhoneState extends LoginState {}
@@ -18,7 +19,16 @@ final class LoginSuccess extends LoginState {}
 
 final class LoginFailure extends LoginState {
   final Failure failure;
+
   const LoginFailure(this.failure);
+
   @override
   List<Object> get props => [failure];
+}
+final class LoginGoogleSuccess extends LoginState {
+  final UserModel userModel;
+  const LoginGoogleSuccess(this.userModel);
+
+  @override
+  List<Object> get props => [userModel];
 }

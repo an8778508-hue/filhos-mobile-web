@@ -12,6 +12,7 @@ import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/login/presentation/bloc/login_bloc.dart';
+import 'package:escola/features/login/presentation/widget/social_login_widget.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/presentation/otp_screen.dart';
 import 'package:escola/features/privacy_policy/privacy_policy_screen.dart';
@@ -21,6 +22,10 @@ import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../core/user/bloc/user_bloc.dart';
+import '../../main/presentation/main_screen.dart';
+import '../../your_account_under_review/presentation/your_account_under_review_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key, this.hasBackButton = false});
@@ -83,6 +88,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             );
+          }
+          if( state is LoginGoogleSuccess){
+            if (UserBloc.get.state.user?.isApproval == true) {
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) =>const MainScreen()),(route) => false,);
+            }else{
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) =>const YourAccountUnderReviewScreen()),(route) => false,);
+            }
           }
         },
         child: Scaffold(
@@ -250,7 +262,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                             fontWeight: FontWeight.w400,
                                           ),
                                         ),
-
                                       ],
                                     ),
                                   ),
@@ -366,21 +377,24 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             SizedBox(
-                              height: 20.csh,
+                              height: 50.csh,
                             ),
-                            // ButtonWithIcon(
-                            //   mainAxisAlignment: MainAxisAlignment.center,
-                            //   onPressed: () {
-                            //     // Navigator.push(context, MaterialPageRoute(builder: (_) => const NewVisitorScreen()));
-                            //   },
-                            //   buttonBackgroundColor: context.colors.disabled,
-                            //   textColor: context.colors.divider,
-                            //   padding: EdgeInsets.symmetric(vertical: 10.h),
-                            //   text: LocalizationKeys.new_visitor.tr(context),
-                            //   borderRadius: 30.r,
-                            //   fontSize: 16.sp,
-                            //   fontWeight: FontWeight.bold,
-                            // ),
+                            BlocBuilder<LoginBloc, LoginState>(
+                              builder: (context, state) {
+                                return SocialLoginButtons(
+                                  onGoogleLogin: () {
+                                    BlocProvider.of<LoginBloc>(context).loginWithGoogle();
+                                    // Add Google login logic here
+                                  },
+                                  onFacebookLogin: () {
+                                    // Add Facebook login logic here
+                                  },
+                                  onAppleLogin: () {
+                                    // Add Apple login logic here
+                                  },
+                                );
+                              },
+                            )
                           ],
                         ),
                       ),

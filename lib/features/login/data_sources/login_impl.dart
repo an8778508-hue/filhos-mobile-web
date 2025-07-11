@@ -3,21 +3,24 @@ import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/models/user_model.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
+import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/utils/constants/static_config.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
 import 'package:escola/features/login/models/login_requset.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/my_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:escola/flavors/app_flavors.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginImpl extends LoginRepository {
   final NetworkClientRepository networkClient;
 
   LoginImpl(this.networkClient);
+
   @override
   Future<Either<Failure, UserModel>> login(LoginRequest request) async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -60,8 +63,8 @@ class LoginImpl extends LoginRepository {
             phone: phone,
           );
           result.fold(
-                (l) => onFailed(l),
-                (r) => onSuccess(r),
+            (l) => onFailed(l),
+            (r) => onSuccess(r),
           );
         },
         codeSent: (verificationId, resendToken) async {
@@ -91,7 +94,6 @@ class LoginImpl extends LoginRepository {
         message: e.toString(),
       ));
     }
-
   }
 
   @override
@@ -132,6 +134,88 @@ class LoginImpl extends LoginRepository {
           message: e.message,
         ));
       }
+    }
+  }
+
+  // Send the token to your backend
+  Future<Either<Failure, UserModel>> sendSocialTokenToApi({required String idToken, required String provider}) async {
+    try {
+      return networkClient.handleRequest(
+        NetworkRequest(
+          method: HttpMethod.post,
+          url: socialLoginEndpoint,
+          body: {
+            'token': idToken,
+            'provider': provider,
+            'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent'
+          },
+        ),
+        onSuccess: (json) {
+          // Extract user data from response and create UserModel
+          final userData = json?['user'] ?? {};
+          // Combine access token with user data
+          userData['access_token'] = json?['access_token'];
+
+          // Create UserModel from the combined data
+          return UserModel.fromJson(userData);
+        },
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> signInWithGoogle() async {
+    try {
+      // Create a GoogleSignIn instance with the web client ID
+      final GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: ['email', 'profile'],
+        // This is the crucial part - you need to provide your web client ID
+        serverClientId: "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+      );
+
+      // Ensure a fresh sign-in by signing out first
+      await googleSignIn.signOut();
+
+      // Begin the sign-in process
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+      if (googleUser == null) {
+        return left(ServerFailure(message: 'Sign in aborted by user'));
+      }
+
+      // Get authentication details
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Log the tokens for debugging
+      debugPrint('Google User Email: ${googleUser.email}');
+      debugPrint('Google User ID: ${googleUser.id}');
+      debugPrint('Google Auth idToken: ${googleAuth.idToken}');
+      debugPrint('Google Auth accessToken: ${googleAuth.accessToken}');
+
+      if (googleAuth.idToken == null) {
+        throw Exception('No ID token returned - check serverClientId configuration');
+      }
+
+      // Send token to your backend
+      final result = await sendSocialTokenToApi(idToken: googleAuth.accessToken!, provider: 'google');
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      return result.fold(
+        (failure) => Left(failure),
+        (r) async {
+          UserBloc.get.loggedIn(r);
+          return Right(r);
+        },
+      );
+      // Create OAuth credential
+
+      // Sign in to Firebase with the credential
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
     }
   }
 }

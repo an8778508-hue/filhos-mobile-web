@@ -7,7 +7,9 @@ import 'package:escola/features/otp/models/otp_requset.dart';
 
 abstract class LoginRepository {
   final String loginEndpoint = "auth/login";
+  final String socialLoginEndpoint = "auth/social-login";
   Future<Either<Failure, UserModel>> login(LoginRequest request);
+  Future <Either<Failure, UserModel>> signInWithGoogle();
 
   Future requestOTP({
     required String phone,
