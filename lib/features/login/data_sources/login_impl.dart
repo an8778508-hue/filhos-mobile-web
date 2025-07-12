@@ -14,6 +14,7 @@ import 'package:escola/my_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginImpl extends LoginRepository {
@@ -190,8 +191,6 @@ class LoginImpl extends LoginRepository {
 
       // Log the tokens for debugging
       debugPrint('Google User Email: ${googleUser.email}');
-      debugPrint('Google User ID: ${googleUser.id}');
-      debugPrint('Google Auth idToken: ${googleAuth.idToken}');
       debugPrint('Google Auth accessToken: ${googleAuth.accessToken}');
 
       if (googleAuth.idToken == null) {
@@ -214,6 +213,54 @@ class LoginImpl extends LoginRepository {
       // Create OAuth credential
 
       // Sign in to Firebase with the credential
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> signInWithFacebook() async {
+    try {
+      // Initialize Facebook login
+      final LoginResult result = await FacebookAuth.instance.login(
+        permissions: ['public_profile'],
+      );
+
+      if (result.status != LoginStatus.success) {
+        return Left(ServerFailure(message: 'Facebook login failed or was cancelled'));
+      }
+
+      // Get the access token
+      final AccessToken? accessToken = result.accessToken;
+
+      if (accessToken == null || accessToken.tokenString.isEmpty) {
+        return Left(ServerFailure(message: 'Failed to get Facebook access token'));
+      }
+
+      // Log token for debugging
+      debugPrint('Facebook Auth AccessToken: ${accessToken.tokenString}');
+
+      // Get user data if needed
+      final userData = await FacebookAuth.instance.getUserData();
+      debugPrint('Facebook User Email: ${userData['email']}');
+      debugPrint('Facebook User ID: ${userData['id']}');
+
+      // Send token to your backend
+      final result2 = await sendSocialTokenToApi(
+          idToken: accessToken.tokenString,
+          provider: 'facebook'
+      );
+
+      // Create OAuth credential for Firebase
+      final credential = FacebookAuthProvider.credential(accessToken.tokenString);
+
+      return result2.fold(
+            (failure) => Left(failure),
+            (r) async {
+          UserBloc.get.loggedIn(r);
+          return Right(r);
+        },
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }

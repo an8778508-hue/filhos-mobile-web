@@ -10,6 +10,7 @@ abstract class LoginRepository {
   final String socialLoginEndpoint = "auth/social-login";
   Future<Either<Failure, UserModel>> login(LoginRequest request);
   Future <Either<Failure, UserModel>> signInWithGoogle();
+  Future <Either<Failure, UserModel>> signInWithFacebook();
 
   Future requestOTP({
     required String phone,

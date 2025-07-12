@@ -102,13 +102,24 @@ class LoginBloc extends Cubit<LoginState> {
   }
 
   Future<void> loginWithGoogle() async {
-    // emit(LoginLoading());
+    emit(LoginLoading());
     final result = await loginRepository.signInWithGoogle();
     result.fold(
           (failure) => emit(LoginFailure(failure)),
           (userModel) async {
             debugPrint('LoginBloc.loginWithGoogle userModel: $userModel');
-            emit(LoginGoogleSuccess(userModel ));
+            emit(LoginSocialSuccess(userModel ));
+          },
+    );
+  }
+  Future<void> loginWithFacebook() async {
+    emit(LoginLoading());
+    final result = await loginRepository.signInWithFacebook();
+    result.fold(
+          (failure) => emit(LoginFailure(failure)),
+          (userModel) async {
+            debugPrint('LoginBloc.loginWithFacebook userModel: $userModel');
+            emit(LoginSocialSuccess(userModel));
           },
     );
   }

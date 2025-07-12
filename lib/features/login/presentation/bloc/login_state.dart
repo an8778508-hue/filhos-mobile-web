@@ -25,9 +25,9 @@ final class LoginFailure extends LoginState {
   @override
   List<Object> get props => [failure];
 }
-final class LoginGoogleSuccess extends LoginState {
+final class LoginSocialSuccess extends LoginState {
   final UserModel userModel;
-  const LoginGoogleSuccess(this.userModel);
+  const LoginSocialSuccess(this.userModel);
 
   @override
   List<Object> get props => [userModel];

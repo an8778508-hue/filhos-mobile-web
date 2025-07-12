@@ -89,6 +89,7 @@ android {
         
         parents {
             dimension "flavors"
+            applicationId "com.algoriza.disneyNew"
         }
     }
 }

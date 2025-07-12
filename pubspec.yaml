@@ -110,6 +110,7 @@ dependencies:
   event_bus: ^2.0.1
   firebase_app_check: ^0.3.2+5
   google_sign_in: ^6.3.0
+  flutter_facebook_auth: ^7.1.2
 
 dependency_overrides:
   alarm:

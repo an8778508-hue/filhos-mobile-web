@@ -89,7 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
           }
-          if( state is LoginGoogleSuccess){
+          if( state is LoginSocialSuccess){
             if (UserBloc.get.state.user?.isApproval == true) {
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) =>const MainScreen()),(route) => false,);
             }else{
@@ -388,6 +388,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                   onFacebookLogin: () {
                                     // Add Facebook login logic here
+                                    BlocProvider.of<LoginBloc>(context).loginWithFacebook();
                                   },
                                   onAppleLogin: () {
                                     // Add Apple login logic here
