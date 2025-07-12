@@ -30,6 +30,8 @@
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<string>app-1-328842559224-ios-54f23af5b3ec1ec806c50d</string>
+		            <!-- Google Sign-In URL scheme -->
+                    <string>com.googleusercontent.apps.328842559224-93vu01p6fftccel2hs7klt5b2n72mq7o</string>
 				</array>
 			</dict>
 		</array>
