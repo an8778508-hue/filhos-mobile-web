@@ -10,7 +10,7 @@ String getPrettyJSONString(jsonObject) {
 
 T printR<T>(String tag, T object) {
   if (kDebugMode) {
-    log('$tag $object');
+    print('$tag $object');
   }
   return object;
 }

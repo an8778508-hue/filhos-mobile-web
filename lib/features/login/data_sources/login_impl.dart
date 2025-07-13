@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/models/user_model.dart';
@@ -169,11 +171,17 @@ class LoginImpl extends LoginRepository {
   @override
   Future<Either<Failure, UserModel>> signInWithGoogle() async {
     try {
+      final String iosClientId =
+      // Use the correct client ID based on your app flavor
+      (mainKey.currentContext?.isProfessors ?? false)
+          ? "328842559224-h5603ru66f13lgcfavj5pg4rd8fmc7rg.apps.googleusercontent.com" // prof
+          : "328842559224-hdbup6e2enp5cidaeh7oqua8220pflpf.apps.googleusercontent.com"; // parent
+
       // Create a GoogleSignIn instance with the web client ID
       final GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: ['email', 'profile'],
         // This is the crucial part - you need to provide your web client ID
-        serverClientId: "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
+        serverClientId: Platform.isAndroid?"328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com":iosClientId,
       );
 
       // Ensure a fresh sign-in by signing out first
