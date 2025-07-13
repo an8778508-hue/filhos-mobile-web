@@ -150,17 +150,19 @@ class LoginImpl extends LoginRepository {
           body: {
             'token': idToken,
             'provider': provider,
-            'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent'
+            'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent',
+            'platform': Platform.isAndroid ? 'android' : 'ios',
           },
         ),
         onSuccess: (json) {
           // Extract user data from response and create UserModel
-          final userData = json?['user'] ?? {};
-          // Combine access token with user data
-          userData['access_token'] = json?['access_token'];
-
-          // Create UserModel from the combined data
-          return UserModel.fromJson(userData);
+          // final userData = json?['user'] ?? {};
+          // // Combine access token with user data
+          // userData['access_token'] = json?['access_token'];
+          //
+          // // Create UserModel from the combined data
+          // return UserModel.fromJson(userData);
+          return UserModel.fromJson(json?['data'] ?? {});
         },
       );
     } catch (e) {
@@ -231,7 +233,7 @@ class LoginImpl extends LoginRepository {
     try {
       // Initialize Facebook login
       final LoginResult result = await FacebookAuth.instance.login(
-        permissions: ['public_profile'],
+        permissions: ['public_profile', 'email'],
       );
 
       if (result.status != LoginStatus.success) {
