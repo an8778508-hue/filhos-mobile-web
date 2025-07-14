@@ -11,6 +11,7 @@ abstract class LoginRepository {
   Future<Either<Failure, UserModel>> login(LoginRequest request);
   Future <Either<Failure, UserModel>> signInWithGoogle();
   Future <Either<Failure, UserModel>> signInWithFacebook();
+  Future <Either<Failure, UserModel>> signInWithApple();
 
   Future requestOTP({
     required String phone,

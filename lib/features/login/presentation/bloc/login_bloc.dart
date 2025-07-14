@@ -123,4 +123,17 @@ class LoginBloc extends Cubit<LoginState> {
           },
     );
   }
+
+
+  Future<void> loginWithApple() async {
+    emit(LoginLoading());
+    final result = await loginRepository.signInWithApple();
+    result.fold(
+          (failure) => emit(LoginFailure(failure)),
+          (userModel) async {
+            debugPrint('LoginBloc.loginWithApple userModel: $userModel');
+            emit(LoginSocialSuccess(userModel));
+          },
+    );
+  }
 }

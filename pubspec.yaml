@@ -111,6 +111,7 @@ dependencies:
   firebase_app_check: ^0.3.2+5
   google_sign_in: ^6.3.0
   flutter_facebook_auth: ^7.1.2
+  sign_in_with_apple: ^7.0.1
 
 dependency_overrides:
   alarm:

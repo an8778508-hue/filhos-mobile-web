@@ -18,6 +18,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginImpl extends LoginRepository {
   final NetworkClientRepository networkClient;
@@ -267,6 +268,48 @@ class LoginImpl extends LoginRepository {
       return result2.fold(
             (failure) => Left(failure),
             (r) async {
+          UserBloc.get.loggedIn(r);
+          return Right(r);
+        },
+      );
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> signInWithApple() async {
+    if (kIsWeb||Platform.isAndroid) {
+      return Future.value(Left(ServerFailure(message: 'Apple Sign-In is not supported on android or web platforms')));
+    }
+
+    try {
+      // Use the AppleSignIn package to initiate sign-in
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      // Get the ID token from the credential
+      final idToken = appleCredential.identityToken; // Send this to your backend
+      //print email and full name if needed
+      // Log available info for debugging
+      debugPrint('Apple User Email: ${appleCredential.email ?? "Not provided"}');
+      debugPrint('Apple User Name: ${appleCredential.givenName ?? ""} ${appleCredential.familyName ?? ""}');
+      debugPrint('Apple User ID: ${appleCredential.userIdentifier}');
+
+
+      if (idToken == null) {
+        return Left(ServerFailure(message: 'No ID token returned from Apple Sign-In'));
+      }
+
+      // Send token to your backend
+      final result = await sendSocialTokenToApi(idToken: idToken, provider: 'apple');
+      return result.fold(
+        (failure) => Left(failure),
+        (r) async {
           UserBloc.get.loggedIn(r);
           return Right(r);
         },

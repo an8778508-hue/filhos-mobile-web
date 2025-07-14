@@ -392,6 +392,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                   onAppleLogin: () {
                                     // Add Apple login logic here
+                                    BlocProvider.of<LoginBloc>(context).loginWithApple();
                                   },
                                 );
                               },
