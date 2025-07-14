@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Disney Professores</string>
+    <string name="facebook_app_id">9607230456047470</string>
 </resources> 

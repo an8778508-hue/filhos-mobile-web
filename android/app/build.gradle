@@ -85,11 +85,13 @@ android {
         professores {
             dimension "flavors"
             applicationId "com.algoriza.profedisneyNew"
+            resValue "string", "facebook_app_id", "9607230456047470"
         }
         
         parents {
             dimension "flavors"
             applicationId "com.algoriza.disneyNew"
+            resValue "string", "facebook_app_id", "761815839741629"
         }
     }
 }

@@ -1,22 +1,23 @@
 import 'package:escola/core/config/cubit/cubit.dart';
 import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/dependency_injection/di.dart';
-import 'package:escola/core/theme/custom_theme.dart';
-import 'package:escola/features/background_services/bloc/background_services_bloc.dart';
-import 'package:escola/features/chat/presentation/bloc/chat_bloc.dart';
-import 'package:escola/features/featured_events/bloc/featured_events_bloc.dart';
-import 'package:escola/features/main/bloc/main_bloc.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_custom_theme/flutter_custom_theme.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'core/user/bloc/user_bloc.dart';
 import 'package:escola/core/localization/localization_helper.dart';
+import 'package:escola/core/theme/custom_theme.dart';
 import 'package:escola/core/theme/theme.dart';
 import 'package:escola/core/user/widgets/user_builder.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/size_config.dart';
+import 'package:escola/features/background_services/bloc/background_services_bloc.dart';
+import 'package:escola/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:escola/features/featured_events/bloc/featured_events_bloc.dart';
+import 'package:escola/features/main/bloc/main_bloc.dart';
 import 'package:escola/features/splash/presentation/splash_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_custom_theme/flutter_custom_theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'core/user/bloc/user_bloc.dart';
 import 'core/user/bloc/user_state.dart';
 import 'core/utils/print.dart';
 
