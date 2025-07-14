@@ -15,7 +15,24 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>escola</string>
+		<string>Dizney</string>
+		 <key>com.apple.developer.applesignin</key>
+         <array>
+         <string>Default</string>
+          </array>
+		<key>FacebookAppID</key>
+         <string>9607230456047470</string>
+         <key>FacebookClientToken</key>
+          <string>3ec6415a22ea252a5177a7f610ce628d</string>
+           <key>FacebookDisplayName</key>
+           <string>Disney professors</string>
+           <key>LSApplicationQueriesSchemes</key>
+                <array>
+                    <string>fbapi</string>
+                    <string>fb-messenger-share-api</string>
+                    <string>fbauth2</string>
+                    <string>fbshareextension</string>
+                </array>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
@@ -35,6 +52,10 @@
 		            <!-- Google Sign-In URL scheme -->
                     <string>com.googleusercontent.apps.328842559224-93vu01p6fftccel2hs7klt5b2n72mq7o</string>
                      <string>com.googleusercontent.apps.328842559224-h5603ru66f13lgcfavj5pg4rd8fmc7rg</string>
+                        <!-- Facebook URL scheme -->
+                     <string>fb9607230456047470</string>
+                        <!-- Add Apple Sign In scheme -->
+                     <string>com.algoriza.profedisneyNew.signin</string>
 				</array>
 			</dict>
 		</array>
