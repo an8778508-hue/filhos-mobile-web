@@ -331,5 +331,6 @@
   "home_title": "Home",
   "diary_title": "Diary",
   "events_title": "Events",
-  "settings_title": "Settings"
+  "settings_title": "Settings",
+  "or_login_with": "or login with"
 }

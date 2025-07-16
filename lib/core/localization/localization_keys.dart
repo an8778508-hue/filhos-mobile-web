@@ -333,6 +333,7 @@ abstract class LocalizationKeys {
   static const String choose = "choose";
   static const String choose_at_least_one = "choose_at_least_one";
   static const String choose_at_least_two = "choose_at_least_two";
+  static const String or_login_with = "or_login_with";
 
 
 }

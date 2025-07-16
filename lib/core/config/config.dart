@@ -147,6 +147,7 @@ class Config {
   }
 
   List<BottomBarItemModel> get bottomBar => validateDataList(json['bottomBar'], (e) => BottomBarItemModel(e));
+  SocialLoginConfig get socialLogin => SocialLoginConfig(json['social_login']?['data']);
 }
 
 class BottomBarModel {
@@ -173,4 +174,13 @@ class BottomBarItemModel {
   String get activeIcon => validateString(json['activeIcon']);
 
   String get inActiveIcon => validateString(json['inActiveIcon']);
+}
+class SocialLoginConfig {
+  final Map<String, dynamic> json;
+
+  const SocialLoginConfig(this.json);
+
+  bool get googleEnabled => json['providers']?['google'] ?? false;
+  bool get facebookEnabled => json['providers']?['facebook'] ?? false;
+  bool get appleEnabled => json['providers']?['apple'] ?? false;
 }

@@ -389,10 +389,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     BlocProvider.of<LoginBloc>(context).loginWithGoogle();
                                     // Add Google login logic here
                                   },
-                                  // onFacebookLogin: () {
-                                  //   // Add Facebook login logic here
-                                  //   BlocProvider.of<LoginBloc>(context).loginWithFacebook();
-                                  // },
+                                  onFacebookLogin: () {
+                                    // Add Facebook login logic here
+                                    BlocProvider.of<LoginBloc>(context).loginWithFacebook();
+                                  },
                                   onAppleLogin: () {
                                     // Add Apple login logic here
                                     BlocProvider.of<LoginBloc>(context).loginWithApple();
