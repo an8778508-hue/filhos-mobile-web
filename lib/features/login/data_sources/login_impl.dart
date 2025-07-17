@@ -20,6 +20,10 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../../../core/errors/exceptions.dart';
+import '../../register/bloc/register_event.dart';
+import '../models/login_email_paramaters.dart';
+
 class LoginImpl extends LoginRepository {
   final NetworkClientRepository networkClient;
 
@@ -175,16 +179,18 @@ class LoginImpl extends LoginRepository {
   Future<Either<Failure, UserModel>> signInWithGoogle() async {
     try {
       final String iosClientId =
-      // Use the correct client ID based on your app flavor
-      (mainKey.currentContext?.isProfessors ?? false)
-          ? "328842559224-h5603ru66f13lgcfavj5pg4rd8fmc7rg.apps.googleusercontent.com" // prof
-          : "328842559224-hdbup6e2enp5cidaeh7oqua8220pflpf.apps.googleusercontent.com"; // parent
+          // Use the correct client ID based on your app flavor
+          (mainKey.currentContext?.isProfessors ?? false)
+              ? "328842559224-h5603ru66f13lgcfavj5pg4rd8fmc7rg.apps.googleusercontent.com" // prof
+              : "328842559224-hdbup6e2enp5cidaeh7oqua8220pflpf.apps.googleusercontent.com"; // parent
 
       // Create a GoogleSignIn instance with the web client ID
       final GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: ['email', 'profile'],
         // This is the crucial part - you need to provide your web client ID
-        serverClientId: Platform.isAndroid?"328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com":iosClientId,
+        serverClientId: Platform.isAndroid
+            ? "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com"
+            : iosClientId,
       );
 
       // Ensure a fresh sign-in by signing out first
@@ -257,17 +263,14 @@ class LoginImpl extends LoginRepository {
       debugPrint('Facebook User ID: ${userData['id']}');
 
       // Send token to your backend
-      final result2 = await sendSocialTokenToApi(
-          idToken: accessToken.tokenString,
-          provider: 'facebook'
-      );
+      final result2 = await sendSocialTokenToApi(idToken: accessToken.tokenString, provider: 'facebook');
 
       // Create OAuth credential for Firebase
       final credential = FacebookAuthProvider.credential(accessToken.tokenString);
 
       return result2.fold(
-            (failure) => Left(failure),
-            (r) async {
+        (failure) => Left(failure),
+        (r) async {
           UserBloc.get.loggedIn(r);
           return Right(r);
         },
@@ -279,7 +282,7 @@ class LoginImpl extends LoginRepository {
 
   @override
   Future<Either<Failure, UserModel>> signInWithApple() async {
-    if (kIsWeb||Platform.isAndroid) {
+    if (kIsWeb || Platform.isAndroid) {
       return Future.value(Left(ServerFailure(message: 'Apple Sign-In is not supported on android or web platforms')));
     }
 
@@ -300,7 +303,6 @@ class LoginImpl extends LoginRepository {
       debugPrint('Apple User Name: ${appleCredential.givenName ?? ""} ${appleCredential.familyName ?? ""}');
       debugPrint('Apple User ID: ${appleCredential.userIdentifier}');
 
-
       if (idToken == null) {
         return Left(ServerFailure(message: 'No ID token returned from Apple Sign-In'));
       }
@@ -316,6 +318,71 @@ class LoginImpl extends LoginRepository {
       );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> register({
+   required RegisterParamaters event,
+  }) async {
+    try {
+      return networkClient.handleRequest(
+        NetworkRequest(
+          method: HttpMethod.post,
+          url: registerEndpoint,
+          body: {
+            'name': event.name,
+            'email': event.email,
+            'password': event.password,
+            'password_confirmation': event.confirmPassword,
+            'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent',
+          },
+        ),
+        onSuccess: (json) {
+
+          final userData = json?['data'];
+          debugPrint('Register success: $userData');
+          // UserBloc.get.loggedIn(userData);
+          return UserModel.fromJson(json?['data'] ?? {});
+        },
+      );
+    } catch (e) {
+      debugPrint('Register error: $e');
+      return Left(ServerFailure(message: 'Registration failed'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel>> loginWithEmail({
+    required LoginEmailParamaters parameters,
+  }) async {
+    try {
+      final NetworkRequest request = NetworkRequest(
+        url: loginWithEmailEndpoint,
+        method: HttpMethod.post,
+        body: {
+          'email': parameters.email,
+          'password': parameters.password,
+          'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent',
+        },
+      );
+
+      return await networkClient.handleRequest<UserModel>(
+        request,
+        onSuccess: (data) {
+          // Check if error is true or data is null first
+          if (data['error'] == true || data['data'] == null) {
+            throw ServerException(message: data['message'] ?? 'Login failed');
+          }
+
+          return UserModel.fromJson(data['data']);
+        },
+      );
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      debugPrint('LoginImpl.loginWithEmail error: $e');
+      return const Left(ServerFailure());
     }
   }
 }

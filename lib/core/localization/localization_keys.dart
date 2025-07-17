@@ -64,6 +64,7 @@ abstract class LocalizationKeys {
   static const String login_title = 'login_title';
   static const String this_field_cant_be_empty = 'this_field_cant_be_empty';
   static const String this_is_not_a_valid_mobile = 'this_is_not_a_valid_mobile';
+  static const String this_is_not_a_valid_email = 'this_is_not_a_valid_email';
   static const String this_field_cant_be_empty_or_less_than = 'this_field_cant_be_empty_or_less_than';
   static const String password_doesnot_match = 'password_doesnot_match';
   static const String character = 'character';
@@ -334,8 +335,8 @@ abstract class LocalizationKeys {
   static const String choose_at_least_one = "choose_at_least_one";
   static const String choose_at_least_two = "choose_at_least_two";
   static const String or_login_with = "or_login_with";
-
-
+  static const String dont_have_account = "don't_have_an_account";
+  static const String create_account = "create_account";
 }
 
 extension LocalizationKeysTr on String {

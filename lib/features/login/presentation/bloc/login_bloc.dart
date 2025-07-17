@@ -10,6 +10,9 @@ import 'package:escola/features/login/models/login_requset.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/user/bloc/user_bloc.dart';
+import '../../models/login_email_paramaters.dart';
+
 part 'login_event.dart';
 part 'login_state.dart';
 
@@ -136,4 +139,22 @@ class LoginBloc extends Cubit<LoginState> {
           },
     );
   }
+  Future<void> loginWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    emit(LoginLoading());
+    final result = await loginRepository.loginWithEmail(
+      parameters: LoginEmailParamaters(email: email, password: password),
+    );
+    result.fold(
+      (failure) => emit(LoginFailure(failure)),
+      (userModel) async {
+        debugPrint('LoginBloc.loginWithEmail userModel: $userModel');
+        UserBloc.get.loggedIn(userModel);
+        emit(LoginWithEmailSuccess(userModel));
+      },
+    );
+  }
+
 }

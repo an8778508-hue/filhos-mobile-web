@@ -4,6 +4,7 @@ import 'package:escola/core/network/network_client.dart';
 import 'package:escola/features/login/data_sources/login_impl.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
 import 'package:escola/features/login/presentation/bloc/login_bloc.dart';
+import 'package:escola/features/register/bloc/register_bloc.dart';
 
 class LoginInjection implements DependencyInjection {
   @override
@@ -17,5 +18,9 @@ class LoginInjection implements DependencyInjection {
           di<LoginRepository>(),
           di<LocalDatabaseRepo>(),
         ));
+
+    di.registerFactory<RegisterBloc>(() => RegisterBloc(
+      di<LoginRepository>(),
+    ));
   }
 }

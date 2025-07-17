@@ -32,3 +32,11 @@ final class LoginSocialSuccess extends LoginState {
   @override
   List<Object> get props => [userModel];
 }
+
+final class LoginWithEmailSuccess extends LoginState {
+  final UserModel userModel;
+  const LoginWithEmailSuccess(this.userModel);
+
+  @override
+  List<Object> get props => [userModel];
+}

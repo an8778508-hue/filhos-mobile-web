@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/localization/localization_keys.dart';
+import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -9,12 +10,15 @@ import '../../../../core/components/icons/common_image.dart';
 
 class SocialLoginButtons extends StatelessWidget {
   final VoidCallback onGoogleLogin;
-
   final VoidCallback onFacebookLogin;
   final VoidCallback onAppleLogin;
+  final VoidCallback onToggleLoginMethod;
   final String googleButtonImage;
   final String facebookButtonImage;
   final String appleButtonImage;
+  final String loginWithEmailImage;
+  final String phoneButtonImage;
+  final bool isEmail; // Add flag to track current mode
 
   const SocialLoginButtons({
     super.key,
@@ -24,6 +28,10 @@ class SocialLoginButtons extends StatelessWidget {
     required this.googleButtonImage,
     required this.facebookButtonImage,
     required this.appleButtonImage,
+    required this.onToggleLoginMethod,
+    required this.loginWithEmailImage,
+    required this.phoneButtonImage,
+    required this.isEmail, // Default to false for social login
   });
 
   @override
@@ -59,7 +67,6 @@ class SocialLoginButtons extends StatelessWidget {
                     ),
                   ),
                 if (state.googleEnabled && state.facebookEnabled) SizedBox(width: 30.w),
-                SizedBox(width: 30.w),
                 if (state.facebookEnabled)
                   InkWell(
                     onTap: onFacebookLogin,
@@ -81,6 +88,17 @@ class SocialLoginButtons extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                   ),
+                SizedBox(width: 30.w),
+                InkWell(
+                  onTap: onToggleLoginMethod,
+                  child: CommonImage(
+                    imageUrl: isEmail ? loginWithEmailImage : phoneButtonImage,
+                    width: 40.w,
+                    height: 40.h,
+                    color: context.colors.primary,
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ],
             ),
           ],

@@ -156,5 +156,8 @@
   "diary_title": "اليوميات",
   "events_title": "الأحداث",
   "settings_title": "الاعدادات",
-  "or_login_with": "او تسجيل الدخول بواسطة"
+  "or_login_with": "او تسجيل الدخول بواسطة",
+  "don't_have_an_account": "ليس لديك حساب؟",
+  "create_account": "إنشاء حساب",
+  "this_is_not_a_valid_email": "هذا ليس بريد الكتروني صالح"
 }

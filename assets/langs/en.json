@@ -332,5 +332,8 @@
   "diary_title": "Diary",
   "events_title": "Events",
   "settings_title": "Settings",
-  "or_login_with": "or login with"
+  "or_login_with": "or login with",
+  "don't_have_an_account": "Don't have an account?",
+  "create_account": "Create account",
+  "this_is_not_a_valid_email": "This is not a valid email"
 }
