@@ -61,7 +61,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   late final ValueNotifier<bool> rememberMeToggle;
   late final ValueNotifier<bool> obscurePasswordController;
   late final ValueNotifier<Uint8List?> imageFile;
-  late final ValueNotifier<int> gender;
+  late final ValueNotifier<int?> gender;
   // late final ValueNotifier<List<ClassModel>> selectedClassModels;
   late final ValueNotifier<TitleModel?> selectedTitle;
   late final ValueNotifier<Country> secondaryCountry;
@@ -71,7 +71,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   XFile? pickedImage;
 
-  bool get isBrazil => isBrazilCountry(country.value.countryCode);
+  // bool get isBrazil => isBrazilCountry(country.value.countryCode);
 
   bool get isProfessors => context.isProfessors;
 
@@ -272,9 +272,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                     strokeWidth: 0.0,
                                                     strokeColor: Colors.transparent,
                                                     marginErrorWidthPercentage: 0.0,
-                                                    readOnly: true,
+                                                    readOnly: false,
+                                                    isCountryValid: (value){
+
+                                                    },
                                                     onCountrySelected: (Country value) {
-                                                      // country.value = value;
+                                                      country.value = value;
                                                     },
                                                     country: country.value,
                                                   ),
@@ -360,23 +363,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                   SizedBox(
                                                     height: getHeightByNumber(20),
                                                   ),
-                                                  ValueListenableBuilder(
-                                                    valueListenable: country,
-                                                    builder: (context, value, child) => Column(
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                      children: [
-                                                        if (isBrazil) const FieldTitle(textKey: LocalizationKeys.cpf),
-                                                        if (isBrazil)
-                                                          RowFormatters(
-                                                            controller: cpfController,
-                                                            label: '',
-                                                            formatter: CpfInputFormatter(),
-                                                          ),
-                                                        if (isBrazil) SizedBox(height: getHeightByNumber(18)),
-                                                      ],
-                                                    ),
-                                                  ),
+                                                  // ValueListenableBuilder(
+                                                  //   valueListenable: country,
+                                                  //   builder: (context, value, child) => Column(
+                                                  //     mainAxisSize: MainAxisSize.min,
+                                                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                                                  //     children: [
+                                                  //       if (isBrazil) const FieldTitle(textKey: LocalizationKeys.cpf),
+                                                  //       if (isBrazil)
+                                                  //         RowFormatters(
+                                                  //           controller: cpfController,
+                                                  //           label: '',
+                                                  //           formatter: CpfInputFormatter(),
+                                                  //         ),
+                                                  //       if (isBrazil) SizedBox(height: getHeightByNumber(18)),
+                                                  //     ],
+                                                  //   ),
+                                                  // ),
                                                   //todo
                                                   if (isProfessors ) ...[
                                                     const FieldTitle(textKey: LocalizationKeys.title),
@@ -566,14 +569,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                         if (formKey.currentState!.validate()) {
                                                           BlocProvider.of<EditProfileBloc>(context).add(
                                                             SubmitEditProfileEvent(
-                                                              phone: UserBloc.get.state.user!.phone,
+                                                              phone: phoneController.text,
                                                               name: nameController.text,
                                                               email: emailController.text,
                                                               cpf: cpfController.text,
                                                               avatar: pickedImage,
                                                               phones: externalPhones.value,
                                                               emails: externalEmails.value,
-                                                              gender: gender.value,
+                                                              gender:  gender.value   ,
                                                               // classes: selectedClassModels.value.map((e) => e.id).toList(),
                                                               title: selectedTitle.value?.id,
                                                             ),
@@ -669,12 +672,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   void initValueNotifiers() {
-    country = ValueNotifier(Country.parse(validateString(UserBloc.get.state.user?.countryCode,AppConstants.brazilCountryCode)));
+    country = ValueNotifier(Country.parse(validateString(UserBloc.get.state.user?.countryCode,AppConstants.egCountryCode)));
     secondaryCountry = ValueNotifier(country.value);
     // selectedClassModels = ValueNotifier(UserBloc.get.state.user?.classes ?? []);
     selectedTitle = ValueNotifier(UserBloc.get.state.user?.title);
     imageFile = ValueNotifier(null);
-    gender = ValueNotifier((int.tryParse(UserBloc.get.state.user?.genderId ?? '') ?? maleGenderId));
+    gender =(UserBloc.get.state.user?.genderId !=null?
+        ValueNotifier((int.tryParse(UserBloc.get.state.user?.genderId??"2" ))):null) ?? ValueNotifier(null);
     rememberMeToggle = ValueNotifier(false);
     obscurePasswordController = ValueNotifier(true);
     externalEmails = ValueNotifier((UserBloc.get.state.user?.emails ?? []).map((e) => e.email).toList());

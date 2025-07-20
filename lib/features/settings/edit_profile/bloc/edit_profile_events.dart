@@ -36,19 +36,19 @@ class SubmitEditProfileEvent extends EditProfileEvents {
   final String email;
   final String? title;
   final String cpf;
-  final int gender;
+   int ?gender;
   final XFile? avatar;
   final List<String> phones;
   final List<String> emails;
   // final List<String> classes;
 
-  const SubmitEditProfileEvent({
+   SubmitEditProfileEvent({
     required this.phone,
     required this.name,
     required this.email,
     required this.title,
     required this.phones,
-    required this.gender,
+     this.gender,
     required this.emails,
     // required this.classes,
     required this.cpf,
