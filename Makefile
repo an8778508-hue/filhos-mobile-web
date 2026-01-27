@@ -5,6 +5,7 @@
 
 # Default Flutter command (uses FVM if available)
 FLUTTER := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm flutter" || echo "flutter")
+DART := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm dart" || echo "dart")
 
 # Build flags (--no-tree-shake-icons required due to dynamic IconData in my_icon.dart)
 BUILD_FLAGS := --no-tree-shake-icons
@@ -47,10 +48,10 @@ deps:
 	$(FLUTTER) pub get
 
 codegen:
-	$(FLUTTER) pub run build_runner build --delete-conflicting-outputs
+	$(DART) run build_runner build --delete-conflicting-outputs
 
 codegen-watch:
-	$(FLUTTER) pub run build_runner watch --delete-conflicting-outputs
+	$(DART) run build_runner watch --delete-conflicting-outputs
 
 clean:
 	$(FLUTTER) clean

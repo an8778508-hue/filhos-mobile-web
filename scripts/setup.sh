@@ -176,18 +176,18 @@ install_dependencies() {
 run_code_generation() {
     print_header "Running Code Generation"
 
-    # Determine Flutter command
+    # Determine Dart command
     if command_exists fvm && fvm list | grep -q "$REQUIRED_FLUTTER_VERSION"; then
-        FLUTTER_CMD="fvm flutter"
-    elif command_exists flutter; then
-        FLUTTER_CMD="flutter"
+        DART_CMD="fvm dart"
+    elif command_exists dart; then
+        DART_CMD="dart"
     else
-        print_error "Flutter is not available. Please install Flutter first."
+        print_error "Dart is not available. Please install Flutter/Dart first."
         exit 1
     fi
 
     print_info "Running build_runner..."
-    $FLUTTER_CMD pub run build_runner build --delete-conflicting-outputs
+    $DART_CMD run build_runner build --delete-conflicting-outputs
 
     print_success "Code generation complete!"
 }

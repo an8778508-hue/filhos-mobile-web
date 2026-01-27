@@ -11,7 +11,7 @@ Before setting up the project, ensure you have the following installed:
 - **Dart SDK** - Version >= 3.0.5 < 4.0.0 (included with Flutter)
 - **Java JDK** - Version 11
 - **Android Studio** - Latest version with:
-  - Android SDK (API 35)
+  - Android SDK (API 36)
   - Android SDK Build-Tools
   - Android Emulator
 - **Xcode** (macOS only) - Version 14+ for iOS development
@@ -53,7 +53,7 @@ cd filhos-mobile
 fvm flutter pub get
 
 # Generate code (assets, etc.)
-fvm flutter pub run build_runner build --delete-conflicting-outputs
+fvm dart run build_runner build --delete-conflicting-outputs
 
 # iOS only - Install pods
 cd ios && pod install && cd ..
@@ -135,28 +135,36 @@ fvm flutter run -t lib/main_professores.dart --flavor professores
 
 ### Building the App
 
+> **Note:** Release builds require `--no-tree-shake-icons` flag due to dynamic icon loading in the app.
+
 ```bash
 # Build Parents APK
-fvm flutter build apk -t lib/main.dart --flavor parents
+fvm flutter build apk -t lib/main.dart --flavor parents --release --no-tree-shake-icons
 
 # Build Professors APK
-fvm flutter build apk -t lib/main_professores.dart --flavor professores
+fvm flutter build apk -t lib/main_professores.dart --flavor professores --release --no-tree-shake-icons
 
 # Build Parents iOS (requires macOS)
-fvm flutter build ios -t lib/main.dart --flavor parents
+fvm flutter build ios -t lib/main.dart --flavor parents --release --no-tree-shake-icons
 
 # Build Professors iOS (requires macOS)
-fvm flutter build ios -t lib/main_professores.dart --flavor professores
+fvm flutter build ios -t lib/main_professores.dart --flavor professores --release --no-tree-shake-icons
+```
+
+Or use the Makefile which includes these flags automatically:
+```bash
+make build-parents-apk
+make build-professors-apk
 ```
 
 ### Code Generation
 
 ```bash
 # Generate assets and other code
-fvm flutter pub run build_runner build --delete-conflicting-outputs
+fvm dart run build_runner build --delete-conflicting-outputs
 
 # Watch mode (auto-regenerate on changes)
-fvm flutter pub run build_runner watch --delete-conflicting-outputs
+fvm dart run build_runner watch --delete-conflicting-outputs
 ```
 
 ### Maintenance Commands
@@ -230,8 +238,9 @@ fvm flutter pub get
 **Build runner fails:**
 ```bash
 fvm flutter clean
+rm -rf .dart_tool
 fvm flutter pub get
-fvm flutter pub run build_runner build --delete-conflicting-outputs
+fvm dart run build_runner build --delete-conflicting-outputs
 ```
 
 **iOS build fails:**
@@ -260,7 +269,7 @@ fvm flutter pub get
 | Flutter SDK | 3.29.3 |
 | Dart SDK | >= 3.0.5 < 4.0.0 |
 | Java JDK | 11 |
-| Android SDK | API 35 (min 23) |
+| Android SDK | API 36 (min 23) |
 | iOS | 13.0+ |
 | Kotlin | 2.1.21 |
 
