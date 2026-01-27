@@ -125,7 +125,7 @@ class MyIcon extends StatelessWidget {
       final iconData = int.tryParse(iconName);
       if (iconData != null) {
         return Icon(
-          IconData(iconData),
+          IconData(iconData, fontFamily: 'MaterialIcons'),
           color: color,
           size: size,
         );
