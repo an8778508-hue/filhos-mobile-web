@@ -135,23 +135,20 @@ fvm flutter run -t lib/main_professores.dart --flavor professores
 
 ### Building the App
 
-> **Note:** Release builds require `--no-tree-shake-icons` flag due to dynamic icon loading in the app.
-
 ```bash
-# Build Parents APK
-fvm flutter build apk -t lib/main.dart --flavor parents --release --no-tree-shake-icons
+# Build Parents APK (Debug)
+fvm flutter build apk -t lib/main.dart --flavor parents --debug
 
-# Build Professors APK
-fvm flutter build apk -t lib/main_professores.dart --flavor professores --release --no-tree-shake-icons
-
-# Build Parents iOS (requires macOS)
-fvm flutter build ios -t lib/main.dart --flavor parents --release --no-tree-shake-icons
-
-# Build Professors iOS (requires macOS)
-fvm flutter build ios -t lib/main_professores.dart --flavor professores --release --no-tree-shake-icons
+# Build Professors APK (Debug)
+fvm flutter build apk -t lib/main_professores.dart --flavor professores --debug
 ```
 
-Or use the Makefile which includes these flags automatically:
+For release builds, add `--release --no-tree-shake-icons` flags:
+```bash
+fvm flutter build apk -t lib/main.dart --flavor parents --release --no-tree-shake-icons
+```
+
+Or use the Makefile:
 ```bash
 make build-parents-apk
 make build-professors-apk

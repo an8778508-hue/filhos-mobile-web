@@ -25,9 +25,13 @@ help:
 	@echo "  make run-parents    - Run Parents app in debug mode"
 	@echo "  make run-professors - Run Professors app in debug mode"
 	@echo ""
+	@echo "Build (Debug):"
+	@echo "  make build-parents-debug    - Build Parents debug APK"
+	@echo "  make build-professors-debug - Build Professors debug APK"
+	@echo ""
 	@echo "Build (Release):"
-	@echo "  make build-parents-apk    - Build Parents APK"
-	@echo "  make build-professors-apk - Build Professors APK"
+	@echo "  make build-parents-apk    - Build Parents release APK"
+	@echo "  make build-professors-apk - Build Professors release APK"
 	@echo "  make build-parents-ios    - Build Parents iOS (macOS only)"
 	@echo "  make build-professors-ios - Build Professors iOS (macOS only)"
 	@echo ""
@@ -63,6 +67,13 @@ run-parents:
 
 run-professors:
 	$(FLUTTER) run -t lib/main_professores.dart --flavor professores
+
+# Build targets (Debug APK)
+build-parents-debug:
+	$(FLUTTER) build apk -t lib/main.dart --flavor parents --debug
+
+build-professors-debug:
+	$(FLUTTER) build apk -t lib/main_professores.dart --flavor professores --debug
 
 # Build targets (Release APK)
 build-parents-apk:
