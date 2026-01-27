@@ -6,6 +6,9 @@
 # Default Flutter command (uses FVM if available)
 FLUTTER := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm flutter" || echo "flutter")
 
+# Build flags (--no-tree-shake-icons required due to dynamic IconData in my_icon.dart)
+BUILD_FLAGS := --no-tree-shake-icons
+
 # Help target
 help:
 	@echo "Escola Flutter Project - Available Commands"
@@ -62,24 +65,24 @@ run-professors:
 
 # Build targets (Release APK)
 build-parents-apk:
-	$(FLUTTER) build apk -t lib/main.dart --flavor parents --release
+	$(FLUTTER) build apk -t lib/main.dart --flavor parents --release $(BUILD_FLAGS)
 
 build-professors-apk:
-	$(FLUTTER) build apk -t lib/main_professores.dart --flavor professores --release
+	$(FLUTTER) build apk -t lib/main_professores.dart --flavor professores --release $(BUILD_FLAGS)
 
 # Build targets (Release iOS)
 build-parents-ios:
-	$(FLUTTER) build ios -t lib/main.dart --flavor parents --release
+	$(FLUTTER) build ios -t lib/main.dart --flavor parents --release $(BUILD_FLAGS)
 
 build-professors-ios:
-	$(FLUTTER) build ios -t lib/main_professores.dart --flavor professores --release
+	$(FLUTTER) build ios -t lib/main_professores.dart --flavor professores --release $(BUILD_FLAGS)
 
 # Build targets (App Bundle for Play Store)
 build-parents-aab:
-	$(FLUTTER) build appbundle -t lib/main.dart --flavor parents --release
+	$(FLUTTER) build appbundle -t lib/main.dart --flavor parents --release $(BUILD_FLAGS)
 
 build-professors-aab:
-	$(FLUTTER) build appbundle -t lib/main_professores.dart --flavor professores --release
+	$(FLUTTER) build appbundle -t lib/main_professores.dart --flavor professores --release $(BUILD_FLAGS)
 
 # Maintenance targets
 analyze:
