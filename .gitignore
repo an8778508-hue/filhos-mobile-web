@@ -18,9 +18,7 @@ migrate_working_dir/
 *.iws
 .idea/
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
+# VS Code (uncomment if you don't want to share VS Code settings)
 #.vscode/
 
 # Flutter/Dart/Pub related
@@ -33,6 +31,9 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+*.g.dart
+*.freezed.dart
+*.gr.dart
 
 # Symbolication related
 app.*.symbols
@@ -40,11 +41,72 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-# Android Studio will place build artifacts here
+# Android Studio build artifacts
 /android/app/debug
 /android/app/profile
 /android/app/release
 /android/app/.cxx
+/android/.gradle/
+/android/local.properties
+/android/captures/
+/android/**/build/
+
+# Android signing (SECURITY - never commit these)
+**/*.keystore
+**/*.jks
+**/key.properties
+**/keystore.properties
+android/key.keystore
+android/upload-keystore.jks
+
+# iOS build artifacts
+/ios/Pods/
+/ios/.symlinks/
+/ios/Flutter/Flutter.framework
+/ios/Flutter/Flutter.podspec
+/ios/Flutter/Generated.xcconfig
+/ios/Flutter/app.flx
+/ios/Flutter/engine
+/ios/Flutter/flutter_assets
+/ios/ServiceDefinitions.json
+ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings
 
 # FVM Version Cache
 .fvm/
+
+# Environment files (SECURITY - never commit these)
+.env
+.env.*
+!.env.example
+
+# Coverage
+coverage/
+*.lcov
+
+# Test related
+.test_coverage/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Generated files
+lib/shared/assets/assets.gen.dart
+lib/shared/assets/fonts.gen.dart
+lib/shared/assets/colors.gen.dart
