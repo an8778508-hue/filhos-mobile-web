@@ -80,7 +80,7 @@ class NetworkClient implements NetworkClientRepository {
         return Right(onSuccess(json.decode(testJson)));
       }
       final requestResult = await sendRequest(request);
-      if (T is Void || onSuccess == null) return Right(() {} as T);
+      if (onSuccess == null) return Right(() {} as T);
       return Right(onSuccess(json.decode(requestResult.data)));
     } on ServerException catch (e) {
       return Left(ServerFailure(message: e.message));
