@@ -19,7 +19,8 @@ class SelectableField<T> extends StatefulWidget {
   final bool readOnly;
   final double? strokeWidth;
   final double? elevation;
-  final Color? strokeColor, background;
+  final Color? strokeColor;
+  final Color? background;
   final String? value;
   final String hintKey;
   final double marginErrorHeight;
@@ -254,12 +255,15 @@ class _SelectableBottomSheetState<T> extends State<SelectableBottomSheet<T>> {
 
 class _FilledTextFiled extends StatelessWidget {
   final Widget child;
-  final double? width, height;
+  final double? width;
+  final double? height;
   final double? strokeWidth;
   final double? borderRadius;
   final double? elevation;
   final EdgeInsetsGeometry? padding;
-  final Color? strokeColor, background, shadowColor;
+  final Color? strokeColor;
+  final Color? background;
+  final Color? shadowColor;
 
   const _FilledTextFiled(
       {Key? key,
