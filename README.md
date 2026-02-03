@@ -165,6 +165,20 @@ fvm dart run build_runner build --delete-conflicting-outputs
 fvm dart run build_runner watch --delete-conflicting-outputs
 ```
 
+### Regenerate App Icons and Splash Screens
+
+After updating logo or splash assets, regenerate them:
+
+```bash
+# Generate app icons for both flavors
+fvm dart run flutter_launcher_icons -f flutter_launcher_icons-parents.yaml
+fvm dart run flutter_launcher_icons -f flutter_launcher_icons-professores.yaml
+
+# Generate splash screens for both flavors
+fvm dart run flutter_native_splash:create --flavor parents
+fvm dart run flutter_native_splash:create --flavor professores
+```
+
 ### Maintenance Commands
 
 ```bash
