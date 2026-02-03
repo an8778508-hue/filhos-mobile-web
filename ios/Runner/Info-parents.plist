@@ -15,7 +15,7 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>Dizney</string>
+		<string>AABAR</string>
         <key>com.apple.developer.applesignin</key>
         <array>
           <string>Default</string>
@@ -25,7 +25,7 @@
         <key>FacebookClientToken</key>
         <string>d8709d865117130d4e4f94b2d400c800</string>
         <key>FacebookDisplayName</key>
-        <string>Disney parent</string>
+        <string>AABAR Parents</string>
         <key>LSApplicationQueriesSchemes</key>
         <array>
             <string>fbapi</string>

@@ -120,38 +120,54 @@ class StylingColors {
 //   static const Color secondaryGrey = Color(0xffe8e8e8);
 // }
 
+// AABAR Brand Colors
+// Primary Navy Blue: #1E3A5F
+// Accent Orange: #E87722
 abstract class DefaultColors {
-  static const Color primary = Color(0xffff9c00);
-  static const Color primaryLight = Color(0xffffe8c4);
-  static const Color primaryBackground = Color(0xfffff5e5);
-  static const Color primaryDark = Color(0xffff9c00);
-  static const Color selectedButtonColor = Color(0xfffff5e5);
-  static const Color secondary = Color(0xffff9c00);
-  static const Color secondaryVariant = Color(0xffff9c00);
-  static const Color accent = Color(0xffffc501);
-  static const Color accentDark = Color(0xffD39401);
+  // Primary colors (Navy Blue)
+  static const Color primary = Color(0xff1E3A5F);
+  static const Color primaryLight = Color(0xff3D5A80);
+  static const Color primaryBackground = Color(0xffE8EEF4);
+  static const Color primaryDark = Color(0xff152A45);
+  static const Color selectedButtonColor = Color(0xffE8EEF4);
+
+  // Secondary/Accent colors (Orange)
+  static const Color secondary = Color(0xffE87722);
+  static const Color secondaryVariant = Color(0xffD66A1B);
+  static const Color accent = Color(0xffE87722);
+  static const Color accentDark = Color(0xffC45F15);
+  static const Color accentLight = Color(0xffFFF0E5);
+
+  // Background colors
   static const Color background = Color(0xffffffff);
-  static const Color lightBackground = Color(0xfffff5e5);
-  static const Color disabled = Color(0xffdfe2e6);
-  static const Color divider = Color(0xff8f8f8f);
-  static const Color error = Color(0xffe35462);
-  static const Color errorLighter = Color(0xffFFDBDB);
-  static const Color alert = Color(0xffff9c00);
-  static const Color scaffold = Color(0xfff8f8f8);
+  static const Color lightBackground = Color(0xffF5F7FA);
+  static const Color scaffold = Color(0xfff8f9fa);
   static const Color secondaryScaffold = Color(0xfff5f5f5);
+  static const Color inputBackground = Color(0xfff9f9f9);
+
+  // Status colors
   static const Color success = Color(0xff42a648);
   static const Color successLight = Color(0xff53d468);
   static const Color successLighter = Color(0xffE5F9D4);
-  static const Color accentLight = Color(0xfffff5d2);
+  static const Color error = Color(0xffe35462);
+  static const Color errorLighter = Color(0xffFFDBDB);
+  static const Color alert = Color(0xffE87722);
+
+  // Grey colors
+  static const Color disabled = Color(0xffdfe2e6);
+  static const Color divider = Color(0xff8f8f8f);
   static const Color greyLight = Color(0xffa2a6b2);
   static const Color greyLighter = Color(0xffF2F4F6);
   static const Color greyDarker = Color(0xff6e7482);
   static const Color greyDark = Color(0xff828282);
-  static const Color orangeLight = Color(0xffFFFADB);
-  static const Color inputBackground = Color(0xfff9f9f9);
-  static const Color secondaryTextColor = Color(0xffffffff);
-  static const Color textColor = Color(0xff000000);
-  static const Color labelColor = Color(0xff6b6b6b);
   static const Color warmGray = Color(0xff949494);
   static const Color secondaryGrey = Color(0xffe8e8e8);
+
+  // Text colors
+  static const Color textColor = Color(0xff1E3A5F);
+  static const Color secondaryTextColor = Color(0xffffffff);
+  static const Color labelColor = Color(0xff6b6b6b);
+
+  // Legacy (kept for compatibility)
+  static const Color orangeLight = Color(0xffFFF0E5);
 }
