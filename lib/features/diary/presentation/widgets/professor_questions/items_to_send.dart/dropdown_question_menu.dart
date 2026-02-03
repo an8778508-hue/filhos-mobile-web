@@ -23,9 +23,9 @@ class DropDownQuestionMenu extends StatefulWidget {
   final QuestionTemplate question;
 
   const DropDownQuestionMenu({
-    Key? key,
+    super.key,
     required this.question,
-  }) : super(key: key);
+  });
 
   @override
   State<DropDownQuestionMenu> createState() => _DropDownQuestionMenuState();
@@ -239,10 +239,10 @@ Widget getDynamicQuestionValue({
 
 class RatingGenericIcon extends StatelessWidget {
   const RatingGenericIcon({
-    Key? key,
+    super.key,
     required this.rating,
     required this.isAnswer,
-  }) : super(key: key);
+  });
   final double rating;
   final bool isAnswer;
 

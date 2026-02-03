@@ -4,7 +4,6 @@ import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/models/generic_state.dart';
 import 'package:escola/features/add_form/models/add_form_model.dart';
 import 'package:escola/features/add_form/models/dropdown_model.dart';
-import 'package:escola/features/add_form/models/multiselect_model.dart';
 import 'package:escola/features/add_form/models/params.dart';
 import 'package:escola/features/add_form/models/period_of_time_model.dart';
 import 'package:escola/features/add_form/models/segmented_control_model.dart';
@@ -195,11 +194,11 @@ class AddMedicineFieldsState {
     final List<Map<String, dynamic>> doseMapped =
     doseMap != null ? (doseMap['dose'] as List).cast<Map<String, dynamic>>() : [];
 
-    final Map? number_of_dosesMap = data.firstWhereOrNull(
+    final Map? numberOfDosesmap = data.firstWhereOrNull(
           (element) => element.containsKey('number_of_doses'),
     );
-    final List<Map<String, dynamic>> number_of_dosesMapped =
-    number_of_dosesMap != null ? (number_of_dosesMap['number_of_doses'] as List).cast<Map<String, dynamic>>() : [];
+    final List<Map<String, dynamic>> numberOfDosesmapped =
+    numberOfDosesmap != null ? (numberOfDosesmap['number_of_doses'] as List).cast<Map<String, dynamic>>() : [];
 
     final Map? periodOfTimeMap = data.firstWhereOrNull(
           (element) => element.containsKey('periodOfTime'),
@@ -224,7 +223,7 @@ class AddMedicineFieldsState {
       doseModels: doseMapped
               .map((e) => DropDownValueModel(id: e['id'].toString(), title: e['title']))
               .toList(),
-      number_of_dosesModels: number_of_dosesMapped
+      number_of_dosesModels: numberOfDosesmapped
               .map((e) => DropDownValueModel(id: e['id'].toString(), title: e['title']))
               .toList(),
       periodOfTimeModels: periodOfTimeMapped

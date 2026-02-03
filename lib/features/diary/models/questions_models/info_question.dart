@@ -7,17 +7,15 @@ class InfoQuestion extends Question {
   final String? icon_value;
 
   const InfoQuestion({
-    required int id,
+    required super.id,
     String? label,
-    String? subtitle,
+    super.subtitle,
     required this.info,
     this.mainCategory,
     this.icon_value,
   }) : super(
-            id: id,
             type: QuestionType.textarea,
             title: label,
-            subtitle: subtitle,
             // mainCategory: mainCategory,
       // icon_value: icon_value,
             value: info);

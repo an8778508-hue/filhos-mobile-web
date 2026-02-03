@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:escola/core/components/buttons/button_with_icon.dart';
 import 'package:escola/core/components/icons/common_image.dart';
-import 'package:escola/core/components/loading/loading.dart';
 import 'package:escola/core/components/loading/loading_overlay.dart';
 import 'package:escola/core/components/text/my_text.dart';
 import 'package:escola/core/components/text/powered_by.dart';
@@ -229,7 +228,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                             width: 16.w,
                                           ),
                                           Text(
-                                            LocalizationKeys.email.tr(context) + ': ',
+                                            '${LocalizationKeys.email.tr(context)}: ',
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w400,
@@ -267,7 +266,7 @@ class _AboutScreenState extends State<AboutScreen> {
                                             width: 16.w,
                                           ),
                                           Text(
-                                            LocalizationKeys.phone.tr(context) + ': ',
+                                            '${LocalizationKeys.phone.tr(context)}: ',
                                             textAlign: TextAlign.start,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w400,
@@ -383,7 +382,7 @@ class _AboutScreenState extends State<AboutScreen> {
     final packageName = (await PackageInfo.fromPlatform()).packageName;
     if (Platform.isAndroid) {
       launchUrl(
-        Uri.parse("market://details?id=" + packageName),
+        Uri.parse("market://details?id=$packageName"),
         mode: LaunchMode.externalApplication,
       );
     } else {

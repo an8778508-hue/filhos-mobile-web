@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ErrorField extends StatelessWidget {
-  const ErrorField({Key? key, required this.text}) : super(key: key);
+  const ErrorField({super.key, required this.text});
   final String text;
 
   @override

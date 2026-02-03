@@ -66,10 +66,10 @@ export 'add_form_type.dart';
 
 class AddFormScreen extends StatelessWidget {
   const AddFormScreen({
-    Key? key,
+    super.key,
     required this.type,
     this.id,
-  }) : super(key: key);
+  });
 
   final AddFormType type;
   final String? id;
@@ -125,10 +125,10 @@ String getSuccessMessage(AddFormType type) {
 
 class AddFormBody extends StatefulWidget {
   const AddFormBody({
-    Key? key,
+    super.key,
     required this.id,
     required this.addFormType,
-  }) : super(key: key);
+  });
 
   final String? id;
   final AddFormType addFormType;
@@ -416,7 +416,7 @@ class SaveButton extends StatelessWidget {
 }
 
 class ErrorSaveSection extends StatelessWidget {
-  const ErrorSaveSection({Key? key, required this.type}) : super(key: key);
+  const ErrorSaveSection({super.key, required this.type});
 
   final AddFormType type;
 
@@ -455,7 +455,7 @@ class ErrorSaveSection extends StatelessWidget {
 }
 
 class ErrorFetchSection extends StatelessWidget {
-  const ErrorFetchSection({Key? key}) : super(key: key);
+  const ErrorFetchSection({super.key});
 
   @override
   Widget build(BuildContext context) {

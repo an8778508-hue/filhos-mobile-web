@@ -13,7 +13,7 @@ import 'package:escola/core/localization/localization_keys.dart';
 import '../bloc/add_form_state.dart';
 
 class NumberFormFieldWidget extends StatefulWidget {
-  const NumberFormFieldWidget({Key? key, required this.model}) : super(key: key);
+  const NumberFormFieldWidget({super.key, required this.model});
 
   final NumberModel model;
 

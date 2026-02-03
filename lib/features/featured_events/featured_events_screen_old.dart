@@ -23,7 +23,7 @@ import '../../core/utils/funuctions/global_functions.dart';
 import 'bloc/featured_events_state.dart';
 
 class FeaturedEventsScreen extends StatefulWidget {
-  const FeaturedEventsScreen({Key? key}) : super(key: key);
+  const FeaturedEventsScreen({super.key});
 
   static open(BuildContext context) => showDialog(
         context: context,

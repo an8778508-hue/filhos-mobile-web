@@ -1,6 +1,5 @@
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/components/video/video_player_widget.dart';
-import 'package:escola/core/components/reactions/reactions_widget.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:flutter/material.dart';

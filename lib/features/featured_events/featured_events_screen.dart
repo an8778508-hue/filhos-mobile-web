@@ -19,7 +19,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'bloc/featured_events_state.dart';
 
 class FeaturedEventsScreen extends StatefulWidget {
-  const FeaturedEventsScreen({Key? key}) : super(key: key);
+  const FeaturedEventsScreen({super.key});
 
   static open(BuildContext context) => showDialog(
         context: context,

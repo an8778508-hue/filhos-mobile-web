@@ -125,7 +125,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
 
 class LogoBackGround extends StatelessWidget {
   final Color iconColor;
-  const LogoBackGround({Key? key, required this.iconColor}) : super(key: key);
+  const LogoBackGround({super.key, required this.iconColor});
 
   @override
   Widget build(BuildContext context) {

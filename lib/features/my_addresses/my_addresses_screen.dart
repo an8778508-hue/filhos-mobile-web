@@ -10,7 +10,6 @@ import 'package:escola/features/my_addresses/bloc/my_addresses_events.dart';
 import 'package:escola/features/my_addresses/bloc/my_addresses_states.dart';
 import 'package:escola/features/my_addresses/widgets/address_item.dart';
 import 'package:escola/features/my_addresses/widgets/empty_address.dart';
-import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

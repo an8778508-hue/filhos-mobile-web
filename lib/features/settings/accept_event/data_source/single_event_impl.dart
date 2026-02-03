@@ -4,12 +4,10 @@ import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/localization/localization_keys.dart';
-import 'package:escola/core/models/event_for_user_model.dart';
 import 'package:escola/core/models/single_event_model.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
 import 'package:escola/features/settings/accept_event/data_source/single_event_repo.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SingleEventImpl extends SingleEventRepo {

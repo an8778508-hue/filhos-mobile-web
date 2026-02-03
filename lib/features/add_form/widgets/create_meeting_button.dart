@@ -17,9 +17,9 @@ import '../bloc/add_form_state.dart';
 
 class CreateMeetingButton extends StatefulWidget {
   const CreateMeetingButton({
-    Key? key,
+    super.key,
     required this.model,
-  }) : super(key: key);
+  });
 
   final CreateMeetingButtonModel model;
 
@@ -136,11 +136,11 @@ class _CreateMeetingButtonState extends State<CreateMeetingButton> {
 
 class CreateMeetingForm extends StatelessWidget {
   const CreateMeetingForm({
-    Key? key,
+    super.key,
     required this.model,
     required this.onCancelled,
     required this.textController,
-  }) : super(key: key);
+  });
 
   final CreateMeetingButtonModel model;
   final VoidCallback onCancelled;

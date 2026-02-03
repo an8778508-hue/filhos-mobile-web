@@ -55,7 +55,6 @@ class AddAddressBloc extends Bloc<AddAddressEvents, AddAddressStates> {
                 // add(SelectCountry(r.first));
               }
             }
-            ;
           },
         );
       },

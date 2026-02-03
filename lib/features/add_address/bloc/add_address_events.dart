@@ -48,7 +48,7 @@ class SubmitAddAddressEvent extends AddAddressEvents {
   final String? zip_code;
   final String? complement;
 
-  SubmitAddAddressEvent({
+  const SubmitAddAddressEvent({
     this.id,
     this.name,
     this.country_id,

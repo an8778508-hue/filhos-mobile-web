@@ -12,11 +12,11 @@ class PhotoViewer extends StatelessWidget {
   final bool share;
 
   const PhotoViewer({
-    Key? key,
+    super.key,
     required this.url,
     this.tag,
     this.share = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

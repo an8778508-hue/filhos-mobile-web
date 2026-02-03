@@ -1,8 +1,5 @@
 
 import 'package:escola/core/utils/valid_data.dart';
-import 'package:escola/features/add_address/models/area_model.dart';
-import 'package:escola/features/add_address/models/area_model.dart';
-import 'package:escola/features/add_address/models/area_model.dart';
 import 'package:escola/features/add_address/models/city_model.dart';
 import 'package:escola/features/add_address/models/country_model.dart';
 import 'package:escola/features/add_address/models/region_model.dart';
@@ -39,9 +36,9 @@ class AddressModel {
   });
 
   factory AddressModel.fromJson(Map<String, dynamic> json) => AddressModel(
-    cityModel: json?['state_model']==null ?null:CityModel.fromJson(validateMap(json['state_model'])),
-    regionModel: json?['city_model']==null ?null:RegionModel.fromJson(validateMap(json['city_model'])),
-    countryModel: json?['country_model']==null ?null:CountryModel.fromJson(validateMap(json?['country_model']??{})),
+    cityModel: json['state_model']==null ?null:CityModel.fromJson(validateMap(json['state_model'])),
+    regionModel: json['city_model']==null ?null:RegionModel.fromJson(validateMap(json['city_model'])),
+    countryModel: json['country_model']==null ?null:CountryModel.fromJson(validateMap(json['country_model']??{})),
     id: validateString(json['id']?.toString()),
     name: validateString(json['name']?.toString()),
     country_id: validateString(json['country_id']?.toString()),

@@ -7,7 +7,6 @@ import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/utils/safe_x.dart';
 import 'package:escola/features/diary/data_sources/diary_repo.dart';
 import 'package:escola/features/diary/models/activities.dart';
-import 'package:escola/features/diary/models/category_menu_item.dart';
 import 'package:escola/features/diary/models/child_menu_item.dart';
 import 'package:escola/features/diary/models/question_category.dart';
 import 'package:escola/features/diary/models/questions_models/image_question.dart';

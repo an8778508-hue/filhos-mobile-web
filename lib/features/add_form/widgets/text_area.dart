@@ -1,5 +1,4 @@
 import 'package:escola/core/components/fields/error_field.dart';
-import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/add_form/bloc/add_form_bloc.dart';
@@ -13,7 +12,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 
 class TextAreaFieldWidget extends StatefulWidget {
-  const TextAreaFieldWidget({Key? key, required this.model}) : super(key: key);
+  const TextAreaFieldWidget({super.key, required this.model});
 
   final TextAreaModel model;
 

@@ -8,7 +8,6 @@ import 'package:escola/features/terms_and_condtions/bloc/terms_events.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_widget_from_html_core/flutter_widget_from_html_core.dart';
 
 import 'bloc/terms_states.dart';
 

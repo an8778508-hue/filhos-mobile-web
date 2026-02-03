@@ -4,7 +4,6 @@ import 'package:escola/core/network/network_client.dart';
 import 'package:escola/features/settings/accept_event/bloc/single_event_bloc.dart';
 import 'package:escola/features/settings/accept_event/data_source/single_event_impl.dart';
 import 'package:escola/features/settings/accept_event/data_source/single_event_repo.dart';
-import 'package:escola/features/settings/events/data_source/events_repo.dart';
 
 class SingleEventInjection implements DependencyInjection {
   @override

@@ -28,15 +28,15 @@ class UserDataImpl extends UserRepo {
   }
 
   @override
-  Future<Either<Failure, void>> updateDeviceToken(String token,String? old_device_token, String uuid) async {
-    String device_type = Platform.isIOS ? 'ios' : 'android';
+  Future<Either<Failure, void>> updateDeviceToken(String token,String? oldDeviceToken, String uuid) async {
+    String deviceType = Platform.isIOS ? 'ios' : 'android';
     return await networkClient.handleRequest<void>(
       NetworkRequest(method: HttpMethod.post, url: updateDeviceTokenEndpoint, body: {
         'device_id': uuid,
         'new_device_token': token,
-        'old_device_token': old_device_token,
+        'old_device_token': oldDeviceToken,
         'lang': UserBloc.get.state.language,
-        'device_type': device_type,
+        'device_type': deviceType,
       }),
     );
   }

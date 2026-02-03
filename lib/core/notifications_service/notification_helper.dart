@@ -12,7 +12,7 @@ import 'package:flutter/cupertino.dart';
 
 class NotificationHelper {
   static Future handleNotificationTap({required Map<String, dynamic> data}) async {
-    final type = (data?['type'])??(data['eventable_type']);
+    final type = (data['type'])??(data['eventable_type']);
     final id = (data['id'])?? (data['eventable_id']);
     final eventableId = (data['eventable_id']);
     debugPrint("NotificationHelper.handleNotificationTap: $data");

@@ -20,10 +20,10 @@ bool Function(S previousState, S currentState) compareStates<S>(List<StateExtrac
 
 class ConfigBuilder extends StatelessWidget {
   const ConfigBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     required this.buildWhen,
-  }) : super(key: key);
+  });
 
   final Widget Function(BuildContext context, Config config) builder;
   final BlocBuilderCondition<Config> buildWhen;
@@ -40,12 +40,12 @@ class ConfigBuilder extends StatelessWidget {
 
 class ConfigConsumer extends StatelessWidget {
   const ConfigConsumer({
-    Key? key,
+    super.key,
     required this.builder,
     required this.listener,
     required this.buildWhen,
     required this.listenWhen,
-  }) : super(key: key);
+  });
 
   final Widget Function(BuildContext context, Config config) builder;
   final void Function(BuildContext context, Config config) listener;
@@ -66,10 +66,10 @@ class ConfigConsumer extends StatelessWidget {
 
 class ConfigSelector<T> extends StatelessWidget {
   const ConfigSelector({
-    Key? key,
+    super.key,
     required this.builder,
     required this.selector,
-  }) : super(key: key);
+  });
 
   final BlocWidgetBuilder<T> builder;
   final T Function(Config config) selector;
@@ -86,11 +86,11 @@ class ConfigSelector<T> extends StatelessWidget {
 
 class ConfigListener extends StatelessWidget {
   const ConfigListener({
-    Key? key,
+    super.key,
     required this.listener,
     required this.listenWhen,
     required this.child,
-  }) : super(key: key);
+  });
 
   final void Function(BuildContext context, Config config) listener;
   final BlocListenerCondition<Config> listenWhen;

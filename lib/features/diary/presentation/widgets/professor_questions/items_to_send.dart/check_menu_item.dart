@@ -1,7 +1,4 @@
-import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
-import 'package:escola/core/utils/valid_data.dart';
-import 'package:escola/features/diary/models/tamplets/question_template.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

@@ -13,7 +13,6 @@ import 'package:escola/features/diary/models/category_menu_item.dart';
 import 'package:escola/features/diary/models/child_model.dart';
 import 'package:escola/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:escola/features/diary/presentation/widgets/menu_screen.dart';
-import 'package:escola/features/home/bloc/home_bloc.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +20,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:separated_column/separated_column.dart';
 
 class ChildrenMenusScreen extends StatelessWidget {
-  const ChildrenMenusScreen({Key? key}) : super(key: key);
+  const ChildrenMenusScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class ChildrenMenusScreen extends StatelessWidget {
 }
 
 class ChildrenMenus extends StatelessWidget {
-  const ChildrenMenus({Key? key, this.isScreen = false}) : super(key: key);
+  const ChildrenMenus({super.key, this.isScreen = false});
 
   final bool isScreen;
 
@@ -215,10 +214,10 @@ class ChildrenMenus extends StatelessWidget {
 
 class ChildMenuPage extends StatelessWidget {
   const ChildMenuPage({
-    Key? key,
+    super.key,
     required this.child,
     required this.menus,
-  }) : super(key: key);
+  });
 
   final ChildModel child;
   final List<Menu> menus;
@@ -272,10 +271,10 @@ class ChildMenuPage extends StatelessWidget {
 
 class ChildMenuBody extends StatefulWidget {
   const ChildMenuBody({
-    Key? key,
+    super.key,
     required this.child,
     required this.menus,
-  }) : super(key: key);
+  });
 
   final ChildModel child;
   final List<Menu> menus;
@@ -375,7 +374,7 @@ class _ChildMenuBodyState extends State<ChildMenuBody> {
                       ],
                     ),
                   );
-                }).toList(),
+                }),
               ],
             ),
             // if (!seeAll)

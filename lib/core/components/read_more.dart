@@ -8,10 +8,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ReadMoreBySize extends StatefulWidget {
   const ReadMoreBySize({
-    Key? key,
+    super.key,
     required this.builder,
     this.customReadMoreBuilder,
-  }) : super(key: key);
+  });
 
   final Widget Function(bool more) builder;
   final Widget Function(bool more)? customReadMoreBuilder;

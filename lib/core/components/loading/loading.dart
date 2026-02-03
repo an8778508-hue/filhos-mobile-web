@@ -6,11 +6,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Loading extends StatelessWidget {
   const Loading({
-    Key? key,
+    super.key,
     this.color,
     this.size,
     this.strokeWidth = 4.0,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final double? size;
@@ -31,11 +31,11 @@ class Loading extends StatelessWidget {
 
 class LoadingMore extends StatelessWidget {
   const LoadingMore({
-    Key? key,
+    super.key,
     this.color,
     this.size,
     this.strokeWidth,
-  }) : super(key: key);
+  });
 
   final Color? color;
   final double? size;
@@ -69,8 +69,8 @@ class LoadingMore extends StatelessWidget {
 
 class NoMore extends StatelessWidget {
   const NoMore({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

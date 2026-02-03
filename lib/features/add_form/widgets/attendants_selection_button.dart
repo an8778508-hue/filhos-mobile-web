@@ -17,9 +17,9 @@ import 'package:escola/core/components/loading/loading.dart';
 
 class AttendantsSelectionButton extends StatefulWidget {
   const AttendantsSelectionButton({
-    Key? key,
+    super.key,
     required this.controller,
-  }) : super(key: key);
+  });
 
   final ValueNotifier<List<SchoolItem>> controller;
 
@@ -97,7 +97,7 @@ class _AttendantsSelectionButtonState extends State<AttendantsSelectionButton> {
                         },
                       ),
                     )
-                    .toList(),
+                    ,
               ],
             ),
           ),

@@ -37,7 +37,7 @@ abstract class ChatHelper {
     try {
       final ext = getFileName(url).split(".").last;
     return isVideo(ext);
-    } on Exception catch (e) {
+    } on Exception {
       return false;
     }
   }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class FieldTitle extends StatelessWidget {
-  const FieldTitle({Key? key, required this.textKey, this.externalButtonKey, this.onTap}) : super(key: key);
+  const FieldTitle({super.key, required this.textKey, this.externalButtonKey, this.onTap});
   final String textKey;
   final String? externalButtonKey;
   final Function? onTap;

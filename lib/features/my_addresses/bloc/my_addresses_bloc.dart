@@ -3,8 +3,6 @@ import 'package:escola/features/add_address/models/region_model.dart';
 import 'package:escola/features/my_addresses/bloc/my_addresses_events.dart';
 import 'package:escola/features/my_addresses/bloc/my_addresses_states.dart';
 import 'package:escola/features/my_addresses/repo/my_addresses_repo.dart';
-import 'package:escola/features/my_addresses/bloc/my_addresses_events.dart';
-import 'package:escola/features/my_addresses/bloc/my_addresses_states.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MyAddressesBloc extends Bloc<MyAddressesEvents, MyAddressesStates> {

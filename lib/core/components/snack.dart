@@ -14,12 +14,11 @@ class Snack extends SnackBar {
   }
 
   Snack({
-    Key? key,
+    super.key,
     required BuildContext context,
     required String content,
     required bool succeed,
   }) : super(
-          key: key,
           duration: const Duration(seconds: 3),
           dismissDirection: DismissDirection.horizontal,
           behavior: SnackBarBehavior.floating,

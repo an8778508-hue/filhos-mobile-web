@@ -10,10 +10,10 @@ import 'package:separated_column/separated_column.dart';
 
 class FormSection extends StatelessWidget {
   const FormSection({
-    Key? key,
+    super.key,
     required this.children,
     this.title,
-  }) : super(key: key);
+  });
 
   final String? title;
   final List<Widget> children;
@@ -55,12 +55,12 @@ class FormSection extends StatelessWidget {
 
 class FormCard extends StatelessWidget {
   const FormCard({
-    Key? key,
+    super.key,
     required this.child,
     this.radius,
     this.forceNested = false,
     this.forceNotNested = false,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final bool forceNested;

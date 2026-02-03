@@ -1,7 +1,5 @@
 import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
-import 'package:escola/core/attachment_selection/attachment_selection.dart';
 import 'package:escola/core/components/buttons/custom_button.dart';
 import 'package:escola/core/components/fields/custom_text_field.dart';
 import 'package:escola/core/components/loading/loading_linear.dart';
@@ -10,13 +8,10 @@ import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/models/generic_state.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
-import 'package:escola/core/utils/valid_data.dart';
-import 'package:escola/features/add_form/widgets/attachments.dart';
 import 'package:escola/features/settings/medicines_professors/widgets/medicine_request/bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 
 class BottomSheetWidget extends StatefulWidget {
   const BottomSheetWidget({

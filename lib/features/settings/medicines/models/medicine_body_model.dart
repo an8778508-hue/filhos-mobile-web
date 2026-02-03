@@ -104,7 +104,7 @@ class TempoTimeModel {
     // } else {
     //   payload = {};
     // }
-    print('TempoTimeModel.fromJson ${json}');
+    print('TempoTimeModel.fromJson $json');
     print('TempoTimeModel.fromJson ${validateString(json['name']?.toString())}');
     return TempoTimeModel(
       id: validateString(json['id']?.toString()),

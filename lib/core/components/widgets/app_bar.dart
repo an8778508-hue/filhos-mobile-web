@@ -14,7 +14,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyAppBar({
-    Key? key,
+    super.key,
     this.title,
     this.image,
     this.hasNotification = true,
@@ -26,7 +26,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.filterFunction,
     this.hasAvatar = false,
     this.isHome = false,
-  }) : super(key: key);
+  });
 
   final String? title;
   final String? image;

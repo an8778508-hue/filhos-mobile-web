@@ -1,4 +1,3 @@
-import 'package:escola/core/models/event_generic_model.dart';
 import 'package:escola/core/models/event_model.dart';
 import 'package:escola/core/models/generic_state.dart';
 

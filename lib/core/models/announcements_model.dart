@@ -29,7 +29,7 @@ class AnnouncementsModel {
       date: json['created_at'] != null ? DateTime.parse(json['created_at']) : null,
       image: json['image'],
       tags: json['tags']== null ?[]:List<TagModel>.from(json['tags']?.map((x) => TagModel.fromJson(x))),
-      attachments:json?['attachments']== null?[]: List<String>.from(json?['attachments']?.map((x) => x)) ?? [],
+      attachments:json['attachments']== null?[]: List<String>.from(json['attachments']?.map((x) => x)) ?? [],
     );
   }
 

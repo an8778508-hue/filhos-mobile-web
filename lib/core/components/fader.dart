@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Fader extends StatelessWidget {
   const Fader({
-    Key? key,
+    super.key,
     required this.child,
     required this.height,
     this.cut = false,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double height;

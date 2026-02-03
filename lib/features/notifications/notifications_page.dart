@@ -20,7 +20,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NotificationsPage extends StatefulWidget {
-  const NotificationsPage({Key? key}) : super(key: key);
+  const NotificationsPage({super.key});
 
   @override
   State<NotificationsPage> createState() => _NotificationsPageState();
@@ -147,9 +147,9 @@ class _NotificationsPageState extends State<NotificationsPage> with AutomaticKee
 
 class NotificationsList extends StatelessWidget {
   const NotificationsList({
-    Key? key,
+    super.key,
     required this.notifications,
-  }) : super(key: key);
+  });
 
   final List<NotificationModel> notifications;
 
@@ -180,7 +180,7 @@ class NotificationsList extends StatelessWidget {
 }
 
 class NoNotifications extends StatelessWidget {
-  const NoNotifications({Key? key}) : super(key: key);
+  const NoNotifications({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -204,9 +204,9 @@ class NoNotifications extends StatelessWidget {
 
 class NotificationItem extends StatelessWidget {
   const NotificationItem({
-    Key? key,
+    super.key,
     required this.notification,
-  }) : super(key: key);
+  });
 
   final NotificationModel notification;
 

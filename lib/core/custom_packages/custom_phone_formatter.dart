@@ -213,9 +213,9 @@ class CustomPhoneFormatter extends TextInputFormatter {
       countryData['altMasks'] = alternativeMasks;
     } else {
       final existingList = countryData['altMasks'];
-      alternativeMasks.forEach((m) {
+      for (var m in alternativeMasks) {
         existingList.add(m);
-      });
+      }
     }
     // if (kDebugMode) {
     //   print('Alternative masks for country "${countryData['country']}"' +
@@ -245,8 +245,7 @@ class CustomPhoneFormatter extends TextInputFormatter {
 
     if (kDebugMode) {
       print(
-        'Phone mask for country "${countryData['country']}"' +
-            ' was replaced from $currentMask to $newMask',
+        'Phone mask for country "${countryData['country']}"' ' was replaced from $currentMask to $newMask',
       );
     }
 
@@ -627,8 +626,7 @@ class PhoneCountryData {
 
   @override
   String toString() {
-    return '[PhoneCountryData(country: $country,' +
-        ' phoneCode: $phoneCode, countryCode: $countryCode)]';
+    return '[PhoneCountryData(country: $country,' ' phoneCode: $phoneCode, countryCode: $countryCode)]';
   }
 }
 
@@ -692,7 +690,7 @@ class PhoneCodes {
   ) {
     phoneCode = phoneCode.replaceAll('+', '');
     var list = <PhoneCountryData>[];
-    _data.forEach((data) {
+    for (var data in _data) {
       var c = toNumericString(
         data['internalPhoneCode'],
         allowAllZeroes: true,
@@ -700,7 +698,7 @@ class PhoneCodes {
       if (c == phoneCode) {
         list.add(PhoneCountryData.fromMap(data));
       }
-    });
+    }
     return list;
   }
 

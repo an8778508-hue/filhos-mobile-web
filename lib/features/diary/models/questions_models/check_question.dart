@@ -2,22 +2,20 @@ import 'package:escola/features/diary/models/main_category.dart';
 import 'package:escola/features/diary/models/questions_models/question.dart';
 
 class CheckQuestion extends Question {
+  @override
   final String? value;
   final MainCategory? mainCategory;
   final String? icon_value;
 
   const CheckQuestion({
-    required int id,
-    required String? title,
-    String? subtitle,
+    required super.id,
+    required super.title,
+    super.subtitle,
     required this.value,
     this.mainCategory,
     this.icon_value,
   }) : super(
-          id: id,
           type: QuestionType.checkbox,
-          title: title,
-          subtitle: subtitle,
           // mainCategory: mainCategory,
           // icon_value: icon_value,
           value: value,

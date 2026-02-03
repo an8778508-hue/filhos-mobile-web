@@ -3,7 +3,7 @@ import 'package:escola/features/add_address/models/city_model.dart';
 import 'package:flutter/material.dart';
 
 class AddressCityItem extends StatelessWidget {
-  const AddressCityItem({Key? key, this.selected, required this.model}) : super(key: key);
+  const AddressCityItem({super.key, this.selected, required this.model});
   final CityModel? selected ;
   final CityModel model ;
 

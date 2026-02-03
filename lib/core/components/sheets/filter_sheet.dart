@@ -4,7 +4,6 @@ import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/features/diary/models/school_item.dart';
-import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/search_for_filter/model/search_for_filter_model.dart';
 import 'package:escola/features/search_for_filter/search_for_filter_screen.dart';
 import 'package:flutter/material.dart';

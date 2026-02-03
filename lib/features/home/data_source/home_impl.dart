@@ -1,14 +1,11 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
 import 'package:escola/features/home/data_source/home_repo.dart';
 import 'package:escola/features/home/models/home_model.dart';
-import 'package:escola/my_app.dart';
-import 'package:flutter/services.dart';
 
 class HomeImpl extends HomeRepo {
   final NetworkClientRepository networkClient;

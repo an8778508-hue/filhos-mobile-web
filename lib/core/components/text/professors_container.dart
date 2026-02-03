@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfessorsContainer extends StatelessWidget {
-  const ProfessorsContainer({Key? key, this.paddingHorizontal, this.paddingVertical, this.fontSize}) : super(key: key);
+  const ProfessorsContainer({super.key, this.paddingHorizontal, this.paddingVertical, this.fontSize});
 
   final double? paddingHorizontal ;
   final double? paddingVertical ;

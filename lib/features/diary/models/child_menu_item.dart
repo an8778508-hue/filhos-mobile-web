@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/features/diary/models/category_menu_item.dart';
 import 'package:escola/features/diary/models/child_model.dart';
 

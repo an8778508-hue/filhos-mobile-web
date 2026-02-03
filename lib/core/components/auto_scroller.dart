@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class AutoScroller extends StatefulWidget {
   const AutoScroller({
-    Key? key,
+    super.key,
     required this.child,
     required this.height,
     this.padding,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double height;

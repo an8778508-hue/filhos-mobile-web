@@ -13,7 +13,7 @@ final class ReloadHomeFetchDataEvent extends HomeEvent {
   final bool silent;
   final Completer? completer;
 
-  ReloadHomeFetchDataEvent({this.silent = false, required this.completer});
+  const ReloadHomeFetchDataEvent({this.silent = false, required this.completer});
 }
 
 final class HomeFetchedSuccessfullyEvent extends HomeEvent {}

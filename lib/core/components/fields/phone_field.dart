@@ -302,7 +302,7 @@ class FilledTextFiled extends StatelessWidget {
   final Color? strokeColor, background;
 
   const FilledTextFiled(
-      {Key? key,
+      {super.key,
       required this.child,
       this.width,
       this.strokeWidth,
@@ -310,8 +310,7 @@ class FilledTextFiled extends StatelessWidget {
       this.borderRadius,
       this.strokeColor,
       this.background,
-      this.height})
-      : super(key: key);
+      this.height});
 
   @override
   Widget build(BuildContext context) {

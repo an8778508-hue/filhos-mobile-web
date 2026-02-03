@@ -12,9 +12,9 @@ import 'package:escola/core/components/loading/loading.dart';
 class AudioMessage extends StatefulWidget {
   final Message message;
   const AudioMessage({
-    Key? key,
+    super.key,
     required this.message,
-  }) : super(key: key);
+  });
 
   @override
   State<AudioMessage> createState() => _AudioMessageState();

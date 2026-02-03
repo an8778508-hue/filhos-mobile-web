@@ -8,9 +8,9 @@ import 'package:separated_column/separated_column.dart';
 
 class CollectionWidget extends StatelessWidget {
   const CollectionWidget({
-    Key? key,
+    super.key,
     required this.model,
-  }) : super(key: key);
+  });
 
   final CollectionFormModel model;
 

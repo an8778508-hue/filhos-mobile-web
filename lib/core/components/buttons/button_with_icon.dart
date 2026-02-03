@@ -114,9 +114,9 @@ class ButtonWithIcon extends StatelessWidget {
             ),
             child: TextButton(
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(
+                backgroundColor: WidgetStateProperty.all(
                     hasError ? Colors.grey : buttonBackgroundColor),
-                overlayColor: MaterialStateProperty.all(
+                overlayColor: WidgetStateProperty.all(
                     //todo
                     hasBorder
                         ? (borderColor ?? Theme.of(context).primaryColor)
@@ -140,20 +140,12 @@ class ButtonWithIcon extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsetsDirectional.only(end: 5.0),
                           child: SizedBox(
-                            height: firstIconHeight != null
-                                ? firstIconHeight!.csh
-                                : null,
-                            width: firstIconWidth != null
-                                ? firstIconWidth!.csw
-                                : null,
+                            height: firstIconHeight?.csh,
+                            width: firstIconWidth?.csw,
                             child: Image.asset(
                               firstIconAsset!,
-                              height: firstIconHeight != null
-                                  ? firstIconHeight!.csh
-                                  : null,
-                              width: firstIconWidth != null
-                                  ? firstIconWidth!.csw
-                                  : null,
+                              height: firstIconHeight?.csh,
+                              width: firstIconWidth?.csw,
                               color: firstIconColor,
                             ),
                           ),

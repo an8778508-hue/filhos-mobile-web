@@ -49,7 +49,7 @@ class DiaryActivities extends StatelessWidget {
               itemCount: diaryActivites.length,
               itemBuilder: (context, index) {
                 final activity = diaryActivites[index];
-                print('DiaryActivities.build ${diaryActivites}');
+                print('DiaryActivities.build $diaryActivites');
                 final questionCategories = activity.questionCategories;
 
                 return Container(

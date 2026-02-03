@@ -28,7 +28,7 @@ class SelectableField<T> extends StatefulWidget {
   final EdgeInsetsGeometry? padding;
 
   const SelectableField({
-    Key? key,
+    super.key,
     required this.onSelected,
     required this.whereCondition,
     required this.list,
@@ -45,7 +45,7 @@ class SelectableField<T> extends StatefulWidget {
     this.background,
     this.strokeColor,
     this.readOnly = false,
-  }) : super(key: key);
+  });
 
   @override
   State<SelectableField<T>> createState() => _SelectableFieldState<T>();
@@ -262,8 +262,7 @@ class _FilledTextFiled extends StatelessWidget {
   final Color? strokeColor, background, shadowColor;
 
   const _FilledTextFiled(
-      {Key? key,
-      required this.child,
+      {required this.child,
       this.width,
       this.strokeWidth,
       this.padding,
@@ -271,9 +270,7 @@ class _FilledTextFiled extends StatelessWidget {
       this.elevation,
       this.shadowColor,
       this.strokeColor,
-      this.background,
-      this.height})
-      : super(key: key);
+      this.background});
 
   @override
   Widget build(BuildContext context) {

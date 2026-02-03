@@ -30,7 +30,7 @@ abstract class Question extends Equatable {
   // from Json
   factory Question.fromJson(Map<String, dynamic> json) {
     final questionData = json['question_type'] ?? json;
-    print('Question.fromJson 1   ${json}');
+    print('Question.fromJson 1   $json');
     print('Question.fromJson ${questionData['title']}');
     final MainCategory? mainCategory = json['category'] == null ? null : MainCategory.fromJson(json['category']);
 

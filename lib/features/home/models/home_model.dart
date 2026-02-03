@@ -1,7 +1,6 @@
 import 'package:escola/core/models/event_model.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/diary/models/child_model.dart';
-import 'package:escola/features/home/models/section_model.dart';
 
 class HomeModel {
   final List<EventModel> events;

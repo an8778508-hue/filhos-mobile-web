@@ -15,9 +15,9 @@ import '../bloc/add_form_state.dart';
 
 class CounterWidget extends StatefulWidget {
   const CounterWidget({
-    Key? key,
+    super.key,
     required this.model,
-  }) : super(key: key);
+  });
 
   final CounterModel model;
 

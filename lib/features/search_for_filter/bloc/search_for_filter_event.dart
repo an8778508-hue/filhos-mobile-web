@@ -12,7 +12,7 @@ class SearchForFilterEvent extends Equatable {
 class GetSearchForFilterItems extends SearchForFilterEvent {
   final SearchForFilterModelType searchModelType;
 
-  GetSearchForFilterItems(this.searchModelType);
+  const GetSearchForFilterItems(this.searchModelType);
 }
 
 class SubmitSearchForFilter extends SearchForFilterEvent {

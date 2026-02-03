@@ -1,15 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:escola/core/event_bus.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
-import 'package:escola/core/models/event_for_user_model.dart';
 import 'package:escola/core/models/single_event_model.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/features/settings/accept_event/bloc/single_event_event.dart';
 import 'package:escola/features/settings/accept_event/bloc/single_event_state.dart';
 import 'package:escola/features/settings/accept_event/data_source/single_event_repo.dart';
-import 'package:escola/features/settings/events/data_source/events_repo.dart';
-import 'package:escola/flavors/app_flavors.dart';
-import 'package:escola/my_app.dart';
 import 'package:flutter/material.dart';
 
 class SingleEventBloc extends Bloc<SingleEventEvent, SingleEventState> {

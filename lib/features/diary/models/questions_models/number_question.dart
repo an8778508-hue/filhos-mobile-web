@@ -7,21 +7,19 @@ class NumberQuestion extends Question {
   final String? icon_value;
 
   const NumberQuestion({
-    required int id,
+    required super.id,
     String? label,
-    String? subtitle,
+    super.subtitle,
     required this.number,
     this.mainCategory,
     this.icon_value,
   }) : super(
-          id: id,
           type: QuestionType.number,
           title: label,
-          // mainCategory: mainCategory,
-          subtitle: subtitle,
           value: number,
         );
 
+  @override
   Map<String, dynamic> toJson() => {
         'id': id,
         'type': 'number',

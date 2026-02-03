@@ -1,7 +1,6 @@
 import 'package:escola/core/components/fields/search_field.dart';
 import 'package:escola/core/components/loading/loading.dart';
 import 'package:escola/core/components/widgets/app_bar.dart';
-import 'package:escola/core/components/widgets/error_widget.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
@@ -87,38 +86,19 @@ class _SearchForFilterScreenState extends State<SearchForFilterScreen> {
                           children: [
                             if (state is SearchForFilterItemsLoading) ...[
                               const Expanded(child: Center(child: Loading()))
-                            ] else if (searchItems != null) ...[
-                              if (searchItems.isEmpty) ...[
-                                const EmptySearchResult()
-                              ] else ...[
-                                SearchForFilterItemsList(
-                                  items: searchItems,
-                                  searchModelType: widget.searchModelType,
-                                  onSearchForFilterItemsPressed: (SchoolItem searchModel) {
-                                    Navigator.of(context).pop(searchModel);
-                                  },
-                                )
-                              ]
-                            ] else if (items != null) ...[
+                            ] else ...[
+                            if (searchItems.isEmpty) ...[
+                              const EmptySearchResult()
+                            ] else ...[
                               SearchForFilterItemsList(
-                                items: items,
+                                items: searchItems,
                                 searchModelType: widget.searchModelType,
                                 onSearchForFilterItemsPressed: (SchoolItem searchModel) {
                                   Navigator.of(context).pop(searchModel);
                                 },
                               )
-                            ] else if (state is SearchForFilterItemsError) ...[
-                              Expanded(
-                                child: Center(
-                                  child: ErrorScreen(
-                                    errorText: state.failure.message,
-                                    onRetry: () {
-                                      context.read<SearchForFilterBloc>().add(GetSearchForFilterItems(widget.searchModelType));
-                                    },
-                                  ),
-                                ),
-                              )
-                            ],
+                            ]
+                          ],
                           ],
                         ),
                       ),

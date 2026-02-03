@@ -91,7 +91,7 @@ Future<void> configSilentNotificationListener(RemoteMessage message) async {
   debugPrint('configSilentNotificationListener ${getPrettyJSONString(message.toMap())}');
   final bool isSilent = message.notification == null;
 
-  if(message.data?['type'] == 'Teacher' ||message.data?['type'] == 'ParentModel'){
+  if(message.data['type'] == 'Teacher' ||message.data['type'] == 'ParentModel'){
     if (navigatorKey.currentState != null) {
       navigatorKey.currentState!.pushAndRemoveUntil( MaterialPageRoute(builder: (_) => const SplashScreen()),(route) => false,);
       return;

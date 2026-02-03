@@ -23,10 +23,10 @@ class FileMessage extends StatelessWidget {
   }
 
   Future<void> _launchUrl() async {
-    final Uri _url = Uri.parse(message.content);
+    final Uri url = Uri.parse(message.content);
 
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
     }
   }
 }

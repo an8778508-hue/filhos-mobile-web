@@ -8,7 +8,6 @@ import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/safe_x.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/diary/models/category_menu_item.dart';
-import 'package:escola/features/diary/models/child_menu_item.dart';
 import 'package:escola/features/diary/presentation/bloc/diary_bloc.dart';
 import 'package:escola/features/diary/presentation/widgets/diary_calendar.dart';
 import 'package:escola/shared/assets/assets.gen.dart';

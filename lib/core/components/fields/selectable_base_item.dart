@@ -6,8 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SelectableBaseItem<T> extends StatelessWidget {
-  const SelectableBaseItem({Key? key, required this.isSelected, required this.title, required this.model})
-      : super(key: key);
+  const SelectableBaseItem({super.key, required this.isSelected, required this.title, required this.model});
   final bool isSelected;
 
   final String title;

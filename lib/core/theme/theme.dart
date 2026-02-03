@@ -17,8 +17,6 @@ abstract class MainTheme {
         onSecondary: Config.get.styling.colors.secondaryTextColor,
         error: Config.get.styling.colors.error,
         onError: Config.get.styling.colors.secondaryTextColor,
-        background: Config.get.styling.colors.background,
-        onBackground: Config.get.styling.colors.textColor,
         surface: Config.get.styling.colors.background,
         onSurface: Config.get.styling.colors.textColor,
       ),

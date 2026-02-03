@@ -4,6 +4,7 @@ enum AppType { professores, parents }
 
 class AppFlavor extends InheritedWidget {
   final AppType appType;
+  @override
   final Widget child;
 
   const AppFlavor({

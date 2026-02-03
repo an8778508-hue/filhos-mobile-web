@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 class CustomSelectableText extends StatelessWidget {
   const CustomSelectableText(
     this.src, {
-    Key? key,
+    super.key,
     this.style,
     this.maxLines,
     this.textAlign,
     this.overflow,
-  }) : super(key: key);
+  });
 
   final String src;
   final TextStyle? style;

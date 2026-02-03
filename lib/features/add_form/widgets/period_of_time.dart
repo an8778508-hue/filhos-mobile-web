@@ -1,10 +1,8 @@
-import 'dart:async';
 
 import 'package:escola/core/components/fields/error_field.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
-import 'package:escola/core/utils/safe_x.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/add_form/bloc/add_form_bloc.dart';
 import 'package:escola/features/add_form/models/period_of_time_model.dart';
@@ -54,7 +52,7 @@ class _PeriodOfTimeWidgetState extends State<PeriodOfTimeWidget> {
     });
     selectedItemController.addListener(() {
       final selectedItem = selectedItemController.value;
-      print('_PeriodOfTimeWidgetState.initState 12 ${widget.model} ${selectedItem} ');
+      print('_PeriodOfTimeWidgetState.initState 12 ${widget.model} $selectedItem ');
       AddFormBloc.get(context).updateForm(widget.model, selectedItem);
     });
   }

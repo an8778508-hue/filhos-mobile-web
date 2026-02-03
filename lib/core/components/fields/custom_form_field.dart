@@ -14,14 +14,14 @@ class CustomFormField extends StatefulWidget {
   final TextAlign errorAlign;
 
   const CustomFormField({
-    Key? key,
+    super.key,
     required this.validator,
     this.errorAlign = TextAlign.center,
     this.marginHeight = 0.0,
     this.marginWidth = 0.0,
     this.initial,
     required this.builder,
-  }) : super(key: key);
+  });
 
   @override
   State<CustomFormField> createState() => _CustomFormFieldState();

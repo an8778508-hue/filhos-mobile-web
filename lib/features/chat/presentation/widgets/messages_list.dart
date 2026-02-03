@@ -1,4 +1,3 @@
-import 'package:escola/core/components/widgets/error_widget.dart';
 import 'package:escola/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:escola/features/chat/presentation/widgets/empty_messages.dart';
 import 'package:escola/features/chat/presentation/widgets/message_item.dart';

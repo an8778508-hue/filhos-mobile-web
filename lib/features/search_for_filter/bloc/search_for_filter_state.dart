@@ -2,7 +2,6 @@
  import 'package:equatable/equatable.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/features/search/models/global_search.dart';
-import 'package:escola/features/search_for_filter/model/search_for_filter_model.dart';
 
 class SearchForFilterState extends Equatable {
   const SearchForFilterState();

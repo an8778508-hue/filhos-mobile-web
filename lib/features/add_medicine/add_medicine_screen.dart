@@ -7,7 +7,6 @@ import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/event_bus.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
-import 'package:escola/core/utils/safe_x.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/add_form/add_form_screen.dart';
 import 'package:escola/features/add_form/bloc/add_form_bloc.dart';
@@ -19,7 +18,6 @@ import 'package:escola/features/add_form/models/comments_model.dart';
 import 'package:escola/features/add_form/models/counter_model.dart';
 import 'package:escola/features/add_form/models/date_picker_model.dart';
 import 'package:escola/features/add_form/models/dropdown_model.dart';
-import 'package:escola/features/add_form/models/multiselect_model.dart';
 import 'package:escola/features/add_form/models/params.dart';
 import 'package:escola/features/add_form/models/period_of_time_model.dart';
 import 'package:escola/features/add_form/models/segmented_control_model.dart';
@@ -38,12 +36,12 @@ import 'package:separated_column/separated_column.dart';
 
 class AddMedicineScreen extends StatelessWidget {
   const AddMedicineScreen({
-    Key? key,
+    super.key,
     required this.type,
     this.id,
     this.medicineModel,
     this.medicineBodyModel,
-  }) : super(key: key);
+  });
 
   final AddFormType type;
   final MedicineModel? medicineModel;
@@ -75,12 +73,12 @@ class AddMedicineScreen extends StatelessWidget {
 
 class AddFormBody extends StatefulWidget {
   const AddFormBody({
-    Key? key,
+    super.key,
     required this.id,
     this.medicineModel,
     this.medicineBodyModel,
     required this.addFormType,
-  }) : super(key: key);
+  });
 
   final String? id;
   final AddFormType addFormType;
@@ -186,8 +184,9 @@ class _AddFormBodyState extends State<AddFormBody> {
                     (s) => s.addMedicineFieldsState.data,
                   ]),
                   builder: (context, state) {
-                    if(widget.medicineBodyModel?.time != null)
+                    if(widget.medicineBodyModel?.time != null) {
                       print('_AddFormBodyState.build 1 ${widget.medicineBodyModel!.tempoTimeModels.map((e) => e.id).toList()}');
+                    }
                     final Map<FormModel, CreateFormParams> form = state.formState.data ?? {};
                     print(Map.fromEntries(form.entries.where((e) => validateDependency(e.key, form)).map((e) => MapEntry(e.key.id, e.value))));
                     final loading = state.fetchApiState.loading || state.addMedicineChildrenState.loading|| state.addMedicineFieldsState.loading;
@@ -281,7 +280,7 @@ class _AddFormBodyState extends State<AddFormBody> {
                                       ),
                                       PeriodOfTimeModel(
                                         id: 'tempo',
-                                        initial: [if(widget.medicineBodyModel?.time != null)...widget.medicineBodyModel!.tempoTimeModels.map((e) => e.id).toList()],
+                                        initial: [if(widget.medicineBodyModel?.time != null)...widget.medicineBodyModel!.tempoTimeModels.map((e) => e.id)],
                                         title: LocalizationKeys.time,
                                         hint: LocalizationKeys.select_time,
                                         values: state.addMedicineFieldsState.periodOfTimeModels ,

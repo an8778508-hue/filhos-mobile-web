@@ -25,11 +25,11 @@ class ImagesQuestionWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (question?.title != null) ...[
+          if (question.title != null) ...[
             Row(
               children: [
                 Text(
-                  question!.title!,
+                  question.title!,
                     textAlign: TextAlign.start,
                   style: TextStyle(
                     fontSize: 20.sp,

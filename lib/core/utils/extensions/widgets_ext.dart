@@ -18,12 +18,12 @@ extension SplashEffect on Widget {
               child: TextButton(
                 onPressed: onPressed,
                 style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: borderRadius,
                     ),
                   ),
-                  overlayColor: MaterialStateColor.resolveWith(
+                  overlayColor: WidgetStateColor.resolveWith(
                       (states) => Colors.grey.withOpacity(0.2)),
                 ),
                 child: Container(

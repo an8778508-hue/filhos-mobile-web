@@ -11,7 +11,7 @@ sealed class EventsEvent extends Equatable {
 final class FetchDataEvent extends EventsEvent {
   final FilterModel filterModel;
 
-  FetchDataEvent({required this.filterModel});
+  const FetchDataEvent({required this.filterModel});
 }
 
 final class FetchDayEvent extends EventsEvent {

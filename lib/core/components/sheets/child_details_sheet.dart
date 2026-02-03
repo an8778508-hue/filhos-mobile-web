@@ -105,7 +105,7 @@ class _ChildDetailsSheetState extends State<ChildDetailsSheet> {
             children: [
               Expanded(
                 child: Text(
-                  (LocalizationKeys.registration).tr(context) + ':',
+                  '${(LocalizationKeys.registration).tr(context)}:',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -162,7 +162,7 @@ class _ChildDetailsSheetState extends State<ChildDetailsSheet> {
             children: [
               Expanded(
                 child: Text(
-                  (LocalizationKeys.responsible).tr(context) + ':',
+                  '${(LocalizationKeys.responsible).tr(context)}:',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -219,7 +219,7 @@ class _ChildDetailsSheetState extends State<ChildDetailsSheet> {
             children: [
               Expanded(
                 child: Text(
-                  (LocalizationKeys.grade).tr(context) + ':',
+                  '${(LocalizationKeys.grade).tr(context)}:',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -247,7 +247,7 @@ class _ChildDetailsSheetState extends State<ChildDetailsSheet> {
             children: [
               Expanded(
                 child: Text(
-                  (LocalizationKeys.series).tr(context) + ':',
+                  '${(LocalizationKeys.series).tr(context)}:',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -275,7 +275,7 @@ class _ChildDetailsSheetState extends State<ChildDetailsSheet> {
             children: [
               Expanded(
                 child: Text(
-                  (LocalizationKeys.gender).tr(context) + ':',
+                  '${(LocalizationKeys.gender).tr(context)}:',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -303,7 +303,7 @@ class _ChildDetailsSheetState extends State<ChildDetailsSheet> {
             children: [
               Expanded(
                 child: Text(
-                  (LocalizationKeys.birthday).tr(context) + ':',
+                  '${(LocalizationKeys.birthday).tr(context)}:',
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(

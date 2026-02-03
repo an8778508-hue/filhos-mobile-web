@@ -21,15 +21,15 @@ class GlobalSearchList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    searchResult.parents.forEach((element) {
+    for (var element in searchResult.parents) {
       debugPrint("Parentttttttttt: ${element.name}");
-    });
-    searchResult.teachers.forEach((element) {
+    }
+    for (var element in searchResult.teachers) {
       debugPrint("Teacherrrrrrrrrrr: ${element.name}");
-    });
-    searchResult.children.forEach((element) {
+    }
+    for (var element in searchResult.children) {
       debugPrint("Childddddddddddddddd: ${element.name}");
-    });
+    }
     if (searchResult.teachers.isEmpty &&
         searchResult.parents.isEmpty &&
         searchResult.children.isEmpty &&

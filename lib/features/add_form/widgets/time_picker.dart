@@ -12,7 +12,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../core/config/widgets/config_builder.dart';
 import '../bloc/add_form_state.dart';
 import 'forms.dart';
 

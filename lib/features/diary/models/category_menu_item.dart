@@ -18,7 +18,7 @@ class Menu extends Equatable {
 
   // from Json
   factory Menu.fromJson(Map<String, dynamic> json) {
-    print('Menu.fromJson ${json}');
+    print('Menu.fromJson $json');
     return Menu(
       title: json['title'],
       items: json['items'] == null

@@ -3,7 +3,7 @@ import 'package:escola/features/add_address/models/region_model.dart';
 import 'package:flutter/material.dart';
 
 class AddressRegionItem extends StatelessWidget {
-  const AddressRegionItem({Key? key, this.selected, required this.model}) : super(key: key);
+  const AddressRegionItem({super.key, this.selected, required this.model});
   final RegionModel? selected ;
   final RegionModel model ;
 

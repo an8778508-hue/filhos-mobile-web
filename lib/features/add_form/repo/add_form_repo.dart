@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
-import 'package:escola/core/utils/print.dart';
 import 'package:escola/core/utils/safe_x.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/add_form/add_form_screen.dart';

@@ -7,8 +7,6 @@ import 'package:escola/core/models/announcements_with_date_model.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/funuctions/global_functions.dart';
-import 'package:escola/features/add_form/add_form_screen.dart';
-import 'package:escola/features/home/home_screen.dart';
 import 'package:escola/features/settings/Announcements/bloc/Announcements_bloc.dart';
 import 'package:escola/features/settings/announcements/bloc/announcements_event.dart';
 import 'package:escola/features/settings/announcements/bloc/announcements_state.dart';

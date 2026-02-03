@@ -22,7 +22,7 @@ class ApprovedSheetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('ApprovedSheetWidget.build ${name}');
+    print('ApprovedSheetWidget.build $name');
     return Container(
       width: double.maxFinite,
         decoration: BoxDecoration(

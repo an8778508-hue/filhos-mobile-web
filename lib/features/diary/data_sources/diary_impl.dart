@@ -92,7 +92,7 @@ class DiaryImpl extends DiaryRepo {
 
   getValue(dynamic value) {
     if (value is SelectItem) {
-      return (value as SelectItem).value;
+      return (value).value;
     }
     return value;
   }
@@ -291,13 +291,13 @@ class DiaryImpl extends DiaryRepo {
     debugPrint('URL: $sendQuestionsEndpoint');
     debugPrint('Method: POST');
     debugPrint('Fields:');
-    formData.fields.forEach((field) {
+    for (var field in formData.fields) {
       debugPrint('  ${field.key}: ${field.value}');
-    });
+    }
     debugPrint('Files:');
-    formData.files.forEach((file) {
+    for (var file in formData.files) {
       debugPrint('  ${file.key}: ${file.value.filename} (${file.value.contentType})');
-    });
+    }
     debugPrint('======================================');
     return await networkClient.handleRequest(
       NetworkRequest(

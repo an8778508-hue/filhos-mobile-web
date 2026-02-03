@@ -79,7 +79,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     return result.fold(
       (l) => emit(MessagesFailed(failure: l)),
       (teachers) {
-        print('ChatBloc._getChildTeachers ${teachers}');
+        print('ChatBloc._getChildTeachers $teachers');
         relatedTeachers = teachers;
         emit(TeachersSucceed(teachers: teachers));
       },
@@ -117,7 +117,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   Future<void> _sendMessage(SendMessage event, Emitter<ChatState> emit) async {
     final senderType = event.message.sender.type;
 debugPrint('ChatBloc._sendMessage      1 ${event.message}');
-debugPrint('sender type ${senderType}');
+debugPrint('sender type $senderType');
 
     if (event.message.child != null) {
       debugPrint('ChatBloc._sendMessage      2 ${event.message}');
@@ -127,7 +127,7 @@ debugPrint('sender type ${senderType}');
       } else {
         final parent = event.message.child!.parent;
         if (parent != null) {
-        print('ChatBloc._sendMessage      3 ${parent}');
+        print('ChatBloc._sendMessage      3 $parent');
           await _sendSingleMessage(event.message.copyWith(reciever: ChatUser.fromUserModel(parent)), emit);
         }
         debugPrint('ChatBloc._sendMessage      4');
@@ -151,7 +151,7 @@ debugPrint('sender type ${senderType}');
      debugPrint('ChatBloc._sendToRelatedTeachers      1 ${event.message}');
      debugPrint('senderType $senderType');
     debugPrint('child $child');
-    relatedTeachers.forEach((element) { debugPrint('relatedTeachersssssssssssssssssss $element'); });
+    for (var element in relatedTeachers) { debugPrint('relatedTeachersssssssssssssssssss $element'); }
     if ( relatedTeachers.isNotEmpty) {
       await Future.wait(
         relatedTeachers.map((e) async {
@@ -270,7 +270,7 @@ debugPrint('sender type ${senderType}');
       emit(MessagesLoading());
 
       final messagesStreamResult = await chatRepo.getMessages(
-        childId: event.child == null ? null : event.child!.id.toString(),
+        childId: event.child?.id.toString(),
         userId: currentUser!.id,
         contactId: event.contact.id,
       );

@@ -2,12 +2,11 @@ import 'package:escola/core/components/empty/empty_widget.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/funuctions/global_functions.dart';
-import 'package:escola/features/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class EmptyMedicines extends StatelessWidget {
-  const EmptyMedicines({Key? key}) : super(key: key);
+  const EmptyMedicines({super.key});
 
   @override
   Widget build(BuildContext context) {

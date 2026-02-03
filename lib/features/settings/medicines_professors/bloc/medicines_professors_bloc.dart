@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:escola/core/models/generic_state.dart';
 import 'package:escola/features/settings/medicines_professors/bloc/medicines_professors_states.dart';

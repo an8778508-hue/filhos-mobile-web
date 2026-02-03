@@ -18,7 +18,7 @@ class SearchField extends StatefulWidget {
   final Color? backgroundColor;
 
   const SearchField(
-      {Key? key,
+      {super.key,
       this.onTap,
       this.hint,
       required this.controller,
@@ -26,8 +26,7 @@ class SearchField extends StatefulWidget {
       this.onClearSearch,
       this.showClearButton = false,
       this.backgroundColor,
-      this.inAppBar = false})
-      : super(key: key);
+      this.inAppBar = false});
 
   @override
   State<SearchField> createState() => _SearchFieldState();

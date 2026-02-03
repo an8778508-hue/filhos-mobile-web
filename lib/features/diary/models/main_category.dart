@@ -1,7 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:escola/core/utils/valid_data.dart';
-import 'package:escola/features/diary/models/category_menu_item.dart';
-import 'package:escola/features/diary/models/questions_models/question.dart';
 
 class MainCategory extends Equatable {
   final int? id;
@@ -25,12 +23,12 @@ class MainCategory extends Equatable {
   factory MainCategory.fromJson(Map<String, dynamic> json) {
 
     return MainCategory(
-      statusType: json?['attendance_type'],
-      id: json?['id'],
-      name: json?['name'],
-      image: json?['image'],
-      type: json?['type'],
-      value: json?['attendance_type'],
+      statusType: json['attendance_type'],
+      id: json['id'],
+      name: json['name'],
+      image: json['image'],
+      type: json['type'],
+      value: json['attendance_type'],
     );
   }
 

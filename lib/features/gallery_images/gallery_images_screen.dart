@@ -5,7 +5,6 @@ import 'package:escola/core/components/widgets/app_bar.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/features/diary/models/child_model.dart';
-import 'package:escola/features/diary/presentation/widgets/gallery_media/image_viewer_dialog.dart';
 import 'package:escola/features/diary/presentation/widgets/gallery_media/media_gallery.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

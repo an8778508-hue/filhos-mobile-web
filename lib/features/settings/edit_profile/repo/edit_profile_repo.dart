@@ -8,7 +8,6 @@ import 'package:escola/features/settings/edit_profile/models/class_model.dart';
 import 'package:escola/features/settings/edit_profile/models/title_model.dart';
 import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/my_app.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileRepo {
@@ -55,8 +54,8 @@ class EditProfileRepo {
             'cpf_num': cpf,
             if (avatar != null)
               "avatar": await MultipartFile.fromFile(
-                avatar.path!,
-                filename: avatar.path!.split('/').last,
+                avatar.path,
+                filename: avatar.path.split('/').last,
               ),
           },
         ),

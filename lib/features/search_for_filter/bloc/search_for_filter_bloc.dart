@@ -1,15 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/search/data_sources/search_dc.dart';
 import 'package:escola/features/search/models/global_search.dart';
 import 'package:escola/features/search_for_filter/bloc/search_for_filter_event.dart';
 import 'package:escola/features/search_for_filter/bloc/search_for_filter_state.dart';
-import 'package:escola/features/search_for_filter/model/search_for_filter_model.dart';
-import 'package:flutter/material.dart';
-import 'package:equatable/equatable.dart';
 
 
 class SearchForFilterBloc extends Bloc<SearchForFilterEvent, SearchForFilterState> {

@@ -27,7 +27,7 @@ class ChatImpl extends ChatRepo {
   }) async {
     return await arrangeRequestResult(
       request: () async {
-        final String? childId = message.child == null ? null : message.child!.id.toString();
+        final String? childId = message.child?.id.toString();
 
         // sender user document
         final senderUser = _getChatUserById(id: message.sender.id);
@@ -109,7 +109,7 @@ class ChatImpl extends ChatRepo {
       request: () async {
         debugPrint('mark messages as seen:  222222222222222222222 ${lastMessage.toJson()} eeeend');
         // sender receiver document
-        final String? childId = lastMessage.child == null ? null : lastMessage.child!.id.toString();
+        final String? childId = lastMessage.child?.id.toString();
         final userContactDocument = _getContactDocument(userId, childId ?? contactId);
         final lastMessageData = LastMessage(message: lastMessage, isRead: true, unReadCount: 0);
         await userContactDocument.set(lastMessageData.toJson());

@@ -1,4 +1,3 @@
-import 'package:brasil_fields/brasil_fields.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:escola/core/utils/safe_x.dart';
 import 'package:escola/flavors/app_flavors.dart';
@@ -9,21 +8,17 @@ import 'package:escola/core/components/fields/custom_text_field.dart';
 import 'package:escola/core/components/fields/error_field.dart';
 import 'package:escola/core/components/fields/phone_field.dart';
 import 'package:escola/core/components/fields/selectable_field.dart';
-import 'package:escola/core/components/fromatters/row_formatters.dart';
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/components/items/address/title_item.dart';
 import 'package:escola/core/components/loading/loading.dart';
-import 'package:escola/core/components/sheets/selectable_sheet.dart';
 import 'package:escola/core/components/widgets/app_bar.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/localization/localization_keys.dart';
-import 'package:escola/core/models/multi_select_model.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/utils/app_constants.dart';
 import 'package:escola/core/utils/constants/constant_values.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
-import 'package:escola/core/utils/funuctions/global_functions.dart';
 import 'package:escola/core/utils/size_config.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/settings/edit_profile/bloc/edit_profile_events.dart';
@@ -42,7 +37,7 @@ import 'package:image_picker/image_picker.dart';
 import 'bloc/edit_profile_bloc.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
+  const EditProfileScreen({super.key});
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -416,10 +411,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                                             )),
                                                             borderRadius: 30.r,
                                                             validator: (_) {
-                                                              if (selectedTitle == null) {
-                                                                return (LocalizationKeys.this_field_cant_be_empty)
-                                                                    .tr(context);
-                                                              }
                                                               return null;
                                                             },
                                                             strokeWidth: 0.0,

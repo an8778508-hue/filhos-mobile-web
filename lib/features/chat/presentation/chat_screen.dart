@@ -122,10 +122,10 @@ class ProvidersHanlder extends StatelessWidget {
   final Widget child;
   final List<SingleChildWidget> providers;
   const ProvidersHanlder({
-    Key? key,
+    super.key,
     required this.child,
     required this.providers,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

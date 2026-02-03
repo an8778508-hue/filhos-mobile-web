@@ -6,17 +6,15 @@ class ImagesQuestion extends Question {
   final MainCategory? mainCategory;
 
   const ImagesQuestion({
-    required int id,
+    required super.id,
     required String? label,
-    String? subtitle,
+    super.subtitle,
     required this.images,
     this.mainCategory,
   }) : super(
-          id: id,
           type: QuestionType.image,
           // mainCategory: mainCategory,
           title: label,
-          subtitle: subtitle,
           value: images,
         );
 
@@ -41,7 +39,7 @@ class ImagesQuestion extends Question {
   }) {
     return ImagesQuestion(
       id: id ?? this.id,
-      label: label ?? this.title,
+      label: label ?? title,
       subtitle: subtitle ?? this.subtitle,
       images: images ?? this.images,
     );

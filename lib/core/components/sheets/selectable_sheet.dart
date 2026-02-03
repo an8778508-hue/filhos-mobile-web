@@ -1,14 +1,8 @@
 import 'package:escola/core/components/buttons/button_with_icon.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/models/multi_select_model.dart';
-import 'package:escola/core/models/multi_select_model.dart';
-import 'package:escola/core/models/multi_select_model.dart';
-import 'package:escola/core/models/multi_select_model.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
-import 'package:escola/core/utils/valid_data.dart';
-import 'package:escola/features/add_form/bloc/add_form_bloc.dart';
-import 'package:escola/features/add_form/models/dropdown_model.dart';
 import 'package:escola/features/add_form/widgets/forms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -72,7 +66,7 @@ class _MultiSelectWidgetState extends State<MultiSelectWidget> {
     );
     return GestureDetector(
       onTap: () => openMultiSelect(),
-      child: FormCard(child: child,radius: 30.r),
+      child: FormCard(radius: 30.r, child: child),
     );
   }
 

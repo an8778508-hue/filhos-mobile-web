@@ -92,8 +92,8 @@ class UserModel {
 
   // toJson
   Map<String, dynamic> toJson([String? oldToken]) {
-    print('UserModel.toJson oldToken ${oldToken}');
-    print('UserModel.toJson accessToken ${accessToken}');
+    print('UserModel.toJson oldToken $oldToken');
+    print('UserModel.toJson accessToken $accessToken');
     print('UserModel.toJson validString ${validString(accessToken)}');
     return {
       "id": id,

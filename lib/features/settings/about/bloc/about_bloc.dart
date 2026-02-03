@@ -20,8 +20,8 @@ class AboutBloc extends Bloc<AboutEvents, AboutStates> {
         try {
           PackageInfo packageInfo = await PackageInfo.fromPlatform();
           String version = packageInfo.version;
-          final _checker = AppVersionChecker();
-          final canUpdateChecker = await _checker.checkUpdate();
+          final checker = AppVersionChecker();
+          final canUpdateChecker = await checker.checkUpdate();
 
           emit(state.copyWith(
               aboutState: state.aboutState.copyWith(loading: false,version: version, canUpdate: canUpdateChecker.canUpdate)));

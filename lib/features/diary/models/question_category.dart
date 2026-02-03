@@ -41,24 +41,24 @@ class QuestionCategory extends Equatable {
   // from Json
   factory QuestionCategory.fromJson(Map<String, dynamic> json) {
     final categoryData = json['category'];
-    final questionAnswers = json?['answers'] ?? [];
+    final questionAnswers = json['answers'] ?? [];
     final List<String>? answersOfQuestions = json['answer'] == null
         ? null
         : List<String>.from((json['answer'] is String) ? [json['answer']] : json['answer']);
-    final String count_love = validateString(json?['count_love'].toString());
-    final String count_wow = validateString(json?['count_wow'].toString());
-    final String count_sad = validateString(json?['count_sad'].toString());
-    final String count_angry = validateString(json?['count_angry'].toString());
-    final String count_like = validateString(json?['count_like'].toString());
-    final String count_haha = validateString(json?['count_haha'].toString());
-    final totalCount = (int.tryParse(count_love) ?? 0) +
-        (int.tryParse(count_wow) ?? 0) +
-        (int.tryParse(count_sad) ?? 0) +
-        (int.tryParse(count_angry) ?? 0) +
-        (int.tryParse(count_like) ?? 0) +
-        (int.tryParse(count_haha) ?? 0);
-    String? icon_value;
-    final metadata = json?['metadata'];
+    final String countLove = validateString(json['count_love'].toString());
+    final String countWow = validateString(json['count_wow'].toString());
+    final String countSad = validateString(json['count_sad'].toString());
+    final String countAngry = validateString(json['count_angry'].toString());
+    final String countLike = validateString(json['count_like'].toString());
+    final String countHaha = validateString(json['count_haha'].toString());
+    final totalCount = (int.tryParse(countLove) ?? 0) +
+        (int.tryParse(countWow) ?? 0) +
+        (int.tryParse(countSad) ?? 0) +
+        (int.tryParse(countAngry) ?? 0) +
+        (int.tryParse(countLike) ?? 0) +
+        (int.tryParse(countHaha) ?? 0);
+    String? iconValue;
+    final metadata = json['metadata'];
     if (metadata != null && metadata is List && metadata.isNotEmpty) {
       final list = metadata[0]? ['value' ] ;
       String? icon ;
@@ -66,7 +66,7 @@ class QuestionCategory extends Equatable {
         icon  = list[0]['icon_value'];
 
       }
-      icon_value = metadata[0]['icon_value']??icon ;
+      iconValue = metadata[0]['icon_value']??icon ;
     }
 
     return QuestionCategory(
@@ -75,18 +75,18 @@ class QuestionCategory extends Equatable {
       title: categoryData?['name'],
       icon: categoryData?['icon'],
       type: categoryData?['type'],
-      count_love: count_love,
-      count_wow: count_wow,
-      count_sad: count_sad,
-      count_angry: count_angry,
-      count_like: count_like,
-      count_haha: count_haha,
-      icon_value: icon_value,
+      count_love: countLove,
+      count_wow: countWow,
+      count_sad: countSad,
+      count_angry: countAngry,
+      count_like: countLike,
+      count_haha: countHaha,
+      icon_value: iconValue,
       totalCount: totalCount.toString(),
       value: categoryData?['attendance_type'],
       answer: answersOfQuestions,
       questions: List<Question>.from(questionAnswers.map((x) => Question.fromJson(x))),
-      question: Question.fromJson(json?['question'] ?? {}),
+      question: Question.fromJson(json['question'] ?? {}),
     );
   }
 

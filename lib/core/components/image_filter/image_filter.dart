@@ -4,12 +4,12 @@ import 'image_filter_gen.dart';
 
 class ImageFilter extends StatelessWidget {
   const ImageFilter({
-    Key? key,
+    super.key,
     required this.child,
     this.brightness = 0.0,
     this.saturation = 0.0,
     this.hue = 0.0,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final double brightness;

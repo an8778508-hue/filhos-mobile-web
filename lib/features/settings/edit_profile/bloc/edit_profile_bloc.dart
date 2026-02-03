@@ -1,8 +1,5 @@
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
-import 'package:escola/features/add_address/repo/add_address_repo.dart';
-import 'package:escola/features/settings/edit_profile/models/class_model.dart';
-import 'package:escola/features/settings/edit_profile/models/state_model.dart';
 import 'package:escola/features/settings/edit_profile/models/title_model.dart';
 import 'package:escola/features/settings/edit_profile/repo/edit_profile_repo.dart';
 import 'package:escola/flavors/app_flavors.dart';

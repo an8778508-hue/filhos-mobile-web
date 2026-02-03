@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class Pagination extends StatelessWidget {
   const Pagination({
-    Key? key,
+    super.key,
     required this.child,
     required this.onLoadMore,
     required this.noMore,
-  }) : super(key: key);
+  });
 
   final Widget child;
   final Function() onLoadMore;

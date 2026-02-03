@@ -9,7 +9,6 @@ import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
 import 'package:escola/features/diary/models/school_item.dart';
 import 'package:escola/features/settings/events/data_source/events_repo.dart';
-import 'package:flutter/services.dart';
 
 class EventsImpl extends EventsRepo {
   final NetworkClientRepository networkClient;

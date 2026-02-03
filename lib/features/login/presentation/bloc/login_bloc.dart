@@ -20,7 +20,7 @@ class LoginBloc extends Cubit<LoginState> {
   final LoginRepository loginRepository;
   final LocalDatabaseRepo localDatabase;
 
-  LoginBloc(this.loginRepository, this.localDatabase) : super(LoginInitial()) {}
+  LoginBloc(this.loginRepository, this.localDatabase) : super(LoginInitial());
   int? pendingOTPTime;
   OTPRequest? loginModel;
   Timer? _timer;
@@ -45,7 +45,7 @@ class LoginBloc extends Cubit<LoginState> {
     await localDatabase.write(key: LocalKeys.last_otp_request, value: DateTime.now().millisecondsSinceEpoch);
     await localDatabase.write(key: LocalKeys.last_otp_phone, value: phone);
     _startTimer();
-        debugPrint('OTPBloc.requestOtttttttttttttttttttttTP ${phone}');
+        debugPrint('OTPBloc.requestOtttttttttttttttttttttTP $phone');
     await loginRepository.requestOTP(
       phone: phone,
       onReady: () async {

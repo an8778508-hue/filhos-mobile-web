@@ -14,7 +14,6 @@ import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/models/event_for_user_model.dart';
 import 'package:escola/core/models/single_event_model.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
-import 'package:escola/core/user/bloc/user_state.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/funuctions/global_functions.dart';

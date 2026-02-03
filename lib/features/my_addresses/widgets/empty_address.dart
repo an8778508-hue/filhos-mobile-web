@@ -2,8 +2,6 @@ import 'package:escola/core/components/buttons/custom_button.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
-import 'package:escola/features/add_address/add_address_screen.dart';
-import 'package:escola/features/add_form/add_form_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

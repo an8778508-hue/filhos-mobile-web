@@ -7,10 +7,10 @@ import '../bloc/user_state.dart';
 
 class UserBuilder extends StatelessWidget {
   const UserBuilder({
-    Key? key,
+    super.key,
     required this.builder,
     required this.buildWhen,
-  }) : super(key: key);
+  });
 
   final Widget Function(BuildContext context, UserState state) builder;
   final BlocBuilderCondition<UserState> buildWhen;
@@ -27,12 +27,12 @@ class UserBuilder extends StatelessWidget {
 
 class UserConsumer extends StatelessWidget {
   const UserConsumer({
-    Key? key,
+    super.key,
     required this.builder,
     required this.listener,
     required this.buildWhen,
     required this.listenWhen,
-  }) : super(key: key);
+  });
 
   final Widget Function(BuildContext context, UserState state) builder;
   final void Function(BuildContext context, UserState state) listener;
@@ -53,10 +53,10 @@ class UserConsumer extends StatelessWidget {
 
 class UserSelector<T> extends StatelessWidget {
   const UserSelector({
-    Key? key,
+    super.key,
     required this.builder,
     required this.selector,
-  }) : super(key: key);
+  });
 
   final BlocWidgetBuilder<T> builder;
   final T Function(UserState state) selector;
@@ -73,11 +73,11 @@ class UserSelector<T> extends StatelessWidget {
 
 class UserListener extends StatelessWidget {
   const UserListener({
-    Key? key,
+    super.key,
     required this.listener,
     required this.listenWhen,
     required this.child,
-  }) : super(key: key);
+  });
 
   final void Function(BuildContext context, UserState state) listener;
   final BlocListenerCondition<UserState> listenWhen;

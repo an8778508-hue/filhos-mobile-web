@@ -9,7 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CompleteProfileCard extends StatefulWidget {
   final double percentage;
 
-  CompleteProfileCard({super.key, required this.percentage});
+  const CompleteProfileCard({super.key, required this.percentage});
 
   @override
   State<CompleteProfileCard> createState() => _CompleteProfileCardState();

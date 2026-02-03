@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/notifications_service/notification_helper.dart';
-import 'package:escola/core/utils/lang_utils.dart';
 import 'package:escola/my_app.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

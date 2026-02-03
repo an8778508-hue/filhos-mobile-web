@@ -6,9 +6,9 @@ import 'package:separated_column/separated_column.dart';
 
 class GroupWidget extends StatelessWidget {
   const GroupWidget({
-    Key? key,
+    super.key,
     required this.model,
-  }) : super(key: key);
+  });
 
   final GroupFormModel model;
 

@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:escola/core/models/event_model.dart';
-import 'package:escola/core/utils/valid_data.dart';
 
 class EventGenericModel {
   final DateTime? date;

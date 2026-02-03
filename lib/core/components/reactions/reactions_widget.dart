@@ -13,10 +13,10 @@ import 'reactions.dart';
 
 class Reactions extends StatelessWidget {
   const Reactions({
-    Key? key,
+    super.key,
     this.count = 0,
     this.myReaction,
-  }) : super(key: key);
+  });
 
   final int count;
   final MyReaction? myReaction;

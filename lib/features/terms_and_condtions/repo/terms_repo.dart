@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
-import 'package:escola/core/utils/constants/static_config.dart';
 import 'package:escola/core/utils/valid_data.dart';
 
 class TermsRepo {

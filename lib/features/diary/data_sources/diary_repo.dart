@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/features/diary/models/activities.dart';
-import 'package:escola/features/diary/models/category_menu_item.dart';
 import 'package:escola/features/diary/models/child_menu_item.dart';
 import 'package:escola/features/diary/models/question_category.dart';
 import 'package:escola/features/diary/models/school_item.dart';

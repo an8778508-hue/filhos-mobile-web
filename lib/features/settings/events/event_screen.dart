@@ -399,7 +399,7 @@ class _EventsScreenState extends State<EventsScreen> {
 }
 
 class FilterTag extends StatelessWidget {
-  const FilterTag({Key? key, required this.tag, required this.onRemove}) : super(key: key);
+  const FilterTag({super.key, required this.tag, required this.onRemove});
   final String tag;
   final Function onRemove;
 

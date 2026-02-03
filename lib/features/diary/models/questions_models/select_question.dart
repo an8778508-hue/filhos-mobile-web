@@ -8,17 +8,15 @@ class SelectQuestion extends Question {
   final String? icon_value;
 
   const SelectQuestion({
-    required int id,
+    required super.id,
     String? label,
-    String? subtitle,
+    super.subtitle,
     required this.items,
     this.mainCategory,
     this.icon_value,
   }) : super(
-          id: id,
           type: QuestionType.select,
           title: label,
-          subtitle: subtitle,
           // mainCategory: mainCategory,
           // icon_value: icon_value,
           value: items,

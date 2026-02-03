@@ -15,7 +15,7 @@ class CommonBoldText extends StatelessWidget {
   final TextOverflow? overflow;
 
   const CommonBoldText({
-    Key? key,
+    super.key,
     required this.value,
     this.size,
     this.maxLines,
@@ -27,7 +27,7 @@ class CommonBoldText extends StatelessWidget {
     this.marginHeight = 0.0,
     this.marginWidth = 0.0,
     this.align = TextAlign.start,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

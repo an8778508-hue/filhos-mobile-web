@@ -391,15 +391,15 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                 controller: cepController,
                                                 onSubmitted: (value) async {
                                                   final postmonSearchCep = PostmonSearchCep();
-                                                  print('onSubmitted ${value}');
+                                                  print('onSubmitted $value');
                                                   loadingCep.value = true;
                                                   final infoCep = await postmonSearchCep.searchInfoByCep(cep: value);
-                                                  print('infoCepJSON ${infoCep}');
+                                                  print('infoCepJSON $infoCep');
 
                                                   await infoCep.fold((l) async {
                                                     errorCep.value = l.errorMessage;
                                                   }, (r) async {
-                                                    print('infoCepJSON 1 ${r}');
+                                                    print('infoCepJSON 1 $r');
                                                     errorCep.value = null;
                                                     addressController.text = r.logradouro ?? '';
                                                     areaController.text = r.bairro?? '';
@@ -409,7 +409,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                                                     try {
                                                       brazilStatesModel.value = BrazilStates.states
                                                           .firstWhere((element) => element.code == (r.estado ?? ''));
-                                                    } on Exception catch (e) {}
+                                                    } on Exception {}
                                                     print(infoCep);
                                                   });
                                                   loadingCep.value = false;

@@ -10,5 +10,5 @@ abstract class UserRepo {
 
   Future<Either<Failure, UserModel>> getUser();
 
-  Future<Either<Failure, void>> updateDeviceToken(String token,String? old_device_token, String uuid);
+  Future<Either<Failure, void>> updateDeviceToken(String token,String? oldDeviceToken, String uuid);
 }

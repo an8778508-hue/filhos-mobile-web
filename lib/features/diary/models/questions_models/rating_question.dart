@@ -7,14 +7,13 @@ class RatingQuestion extends Question {
   final String? icon_value;
 
   const RatingQuestion({
-    required int id,
+    required super.id,
     String? label,
     String? subtitle,
     required this.rating,
     this.mainCategory,
     this.icon_value,
   }) : super(
-          id: id,
           type: QuestionType.rating,
           // mainCategory: mainCategory,
           // icon_value: icon_value,

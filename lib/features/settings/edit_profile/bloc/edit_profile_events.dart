@@ -1,6 +1,4 @@
-import 'dart:io';
 
-import 'package:escola/features/add_address/bloc/add_address_events.dart';
 import 'package:escola/features/add_address/models/city_model.dart';
 import 'package:escola/features/add_address/models/area_model.dart';
 import 'package:escola/features/add_address/models/region_model.dart';

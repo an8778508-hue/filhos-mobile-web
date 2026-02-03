@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-import 'package:escola/features/chat/models/message.dart';
 
 // class Conversation extends Equatable {
 //   final List<Message> messages;

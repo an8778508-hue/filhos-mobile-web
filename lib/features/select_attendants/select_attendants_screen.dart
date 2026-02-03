@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SelectAttendantsScreen extends StatelessWidget {
-  const SelectAttendantsScreen({Key? key}) : super(key: key);
+  const SelectAttendantsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

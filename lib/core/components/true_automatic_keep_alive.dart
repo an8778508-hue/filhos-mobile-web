@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class TrueAutomaticKeepAlive extends StatefulWidget {
-  const TrueAutomaticKeepAlive({Key? key, required this.child}) : super(key: key);
+  const TrueAutomaticKeepAlive({super.key, required this.child});
 
   final Widget child;
 

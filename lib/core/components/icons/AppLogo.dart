@@ -1,4 +1,3 @@
-import 'package:escola/core/config/config.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/funuctions/global_functions.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +10,11 @@ class AppLogoIcon extends StatelessWidget {
   final Color? color;
 
   const AppLogoIcon({
-    Key? key,
+    super.key,
     required this.height,
     required this.width,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

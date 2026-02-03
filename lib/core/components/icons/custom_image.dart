@@ -10,12 +10,12 @@ class CustomImage extends StatelessWidget {
   final Color? color;
 
   const CustomImage({
-    Key? key,
+    super.key,
     required this.image,
     required this.height,
     required this.width,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
