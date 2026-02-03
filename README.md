@@ -49,10 +49,11 @@ fvm use 3.29.3
 git clone <repository-url>
 cd filhos-mobile
 
-# Install dependencies
-fvm flutter pub get
+# Quick setup using Makefile (recommended)
+make setup
 
-# Generate code (assets, etc.)
+# Or manually:
+fvm flutter pub get
 fvm dart run build_runner build --delete-conflicting-outputs
 
 # iOS only - Install pods
