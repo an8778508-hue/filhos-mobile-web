@@ -158,8 +158,13 @@ make build-professors-apk
 ### Code Generation
 
 ```bash
-# Generate assets and other code
+# Generate assets and other code (main project)
 fvm dart run build_runner build --delete-conflicting-outputs
+
+# Generate code for alarm package (required)
+cd lib/alarm_package/alarm-5.1.3
+fvm dart run build_runner build --delete-conflicting-outputs
+cd ../../..
 
 # Watch mode (auto-regenerate on changes)
 fvm dart run build_runner watch --delete-conflicting-outputs
