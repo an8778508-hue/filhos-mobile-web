@@ -161,14 +161,19 @@ make build-professors-apk
 # Generate assets and other code (main project)
 fvm dart run build_runner build --delete-conflicting-outputs
 
-# Generate code for alarm package (required)
+# Generate code for alarm package (required - run BOTH commands)
 cd lib/alarm_package/alarm-5.1.3
+fvm dart pub get
+fvm dart run pigeon --input pigeons/alarm_api.dart
 fvm dart run build_runner build --delete-conflicting-outputs
+fvm dart format .
 cd ../../..
 
 # Watch mode (auto-regenerate on changes)
 fvm dart run build_runner watch --delete-conflicting-outputs
 ```
+
+**Important:** The alarm package requires **pigeon** to generate platform bindings (`platform_bindings.g.dart`) and **build_runner** for JSON serialization (`notification_settings.g.dart`).
 
 ### Regenerate App Icons and Splash Screens
 
@@ -258,6 +263,15 @@ fvm flutter clean
 rm -rf .dart_tool
 fvm flutter pub get
 fvm dart run build_runner build --delete-conflicting-outputs
+```
+
+**Alarm package "platform_bindings.g.dart" not found:**
+```bash
+cd lib/alarm_package/alarm-5.1.3
+fvm dart pub get
+fvm dart run pigeon --input pigeons/alarm_api.dart
+fvm dart run build_runner build --delete-conflicting-outputs
+cd ../../..
 ```
 
 **iOS build fails:**
