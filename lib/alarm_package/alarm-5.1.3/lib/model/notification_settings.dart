@@ -6,6 +6,23 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'notification_settings.g.dart';
 
+/// Converts [Color] to/from JSON (stored as int value).
+class ColorConverter extends JsonConverter<Color?, int?> {
+  const ColorConverter();
+
+  @override
+  Color? fromJson(int? json) {
+    if (json == null) return null;
+    return Color(json);
+  }
+
+  @override
+  int? toJson(Color? object) {
+    if (object == null) return null;
+    return object.value;
+  }
+}
+
 /// Model for notification settings.
 @JsonSerializable()
 class NotificationSettings extends Equatable {
@@ -68,6 +85,7 @@ class NotificationSettings extends Equatable {
   ///
   /// If `null`, the icon will have a default color.
   /// Defaults to `null`.
+  @ColorConverter()
   final Color? iconColor;
 
   /// Converts the `NotificationSettings` instance to a JSON object.
