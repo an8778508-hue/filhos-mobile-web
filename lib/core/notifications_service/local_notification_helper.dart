@@ -157,7 +157,7 @@ class LocalNotificationHelper {
   static showFlashWhenNotificationAppear(String title, String body) async {
     final String appIcon = navigatorKey.currentContext!.isParents
         ? Assets.appIcon.appIconParents.path
-        : Assets.appIcon.appIconProfessors.path;
+        : Assets.appIcon.appIconProfessors2A.path;
 
     navigatorKey.currentContext!.showFlash<bool>(
       barrierDismissible: true,
