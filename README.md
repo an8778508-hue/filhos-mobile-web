@@ -197,6 +197,7 @@ To rebrand the app with the AABAR logo, generate the following assets from the s
 
 | File | Size | Description | How to Generate |
 |------|------|-------------|-----------------|
+| `app_icon_parents.png` | 1024x1024 px | **Fallback icon (pubspec.yaml)** | Same as parents launcher icon - **don't skip this one!** |
 | `app_icon_parents2A.png` | 1024x1024 px | Parents app launcher icon | Square PNG with AABAR logo centered, transparent or solid background |
 | `app_icon_parents2.png` | 1024x1024 px | Parents adaptive icon foreground | Same as above, used for Android adaptive icons |
 | `app_icon_professors2A.png` | 1024x1024 px | Professors app launcher icon | Same logo, can add subtle color variation to distinguish |
