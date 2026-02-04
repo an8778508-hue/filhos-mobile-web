@@ -32,7 +32,20 @@ class LoginImpl extends LoginRepository {
   @override
   Future<Either<Failure, UserModel>> login(LoginRequest request) async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
-    String? deviceToken = await messaging.getToken();
+    String? deviceToken;
+
+    try {
+      deviceToken = await messaging.getToken();
+    } catch (e) {
+      // In debug mode, allow login without FCM token (emulator may not have Google Play Services)
+      if (kDebugMode) {
+        debugPrint('DEBUG MODE: FCM token unavailable, using fallback: $e');
+        deviceToken = 'debug-device-token';
+      } else {
+        rethrow;
+      }
+    }
+
     return networkClient.handleRequest(
       NetworkRequest(method: HttpMethod.post, url: loginEndpoint, body: {
         'phone': request.phone,
