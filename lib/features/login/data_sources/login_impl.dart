@@ -32,7 +32,20 @@ class LoginImpl extends LoginRepository {
   @override
   Future<Either<Failure, UserModel>> login(LoginRequest request) async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
-    String? deviceToken = await messaging.getToken();
+    String? deviceToken;
+
+    try {
+      deviceToken = await messaging.getToken();
+    } catch (e) {
+      // In debug mode, allow login without FCM token (emulator may not have Google Play Services)
+      if (kDebugMode) {
+        debugPrint('DEBUG MODE: FCM token unavailable, using fallback: $e');
+        deviceToken = 'debug-device-token';
+      } else {
+        rethrow;
+      }
+    }
+
     return networkClient.handleRequest(
       NetworkRequest(method: HttpMethod.post, url: loginEndpoint, body: {
         'phone': request.phone,
@@ -51,6 +64,10 @@ class LoginImpl extends LoginRepository {
   int? _resendToken;
   String? _verificationId;
 
+  // Debug bypass code - only works in debug mode
+  static const String _debugOTPCode = '123456';
+  bool _isDebugBypass = false;
+
   @override
   Future requestOTP({
     required String phone,
@@ -58,6 +75,17 @@ class LoginImpl extends LoginRepository {
     required Future<void> Function(OTPErrorModel error) onFailed,
     required Future<void> Function() onReady,
   }) async {
+    // DEBUG BYPASS: Skip Firebase verification in debug mode
+    if (kDebugMode) {
+      debugPrint('DEBUG MODE: Bypassing Firebase phone verification');
+      debugPrint('DEBUG MODE: Use code "$_debugOTPCode" to verify');
+      _isDebugBypass = true;
+      _verificationId = 'debug-verification-id';
+      await Future.delayed(const Duration(milliseconds: 500));
+      await onReady.call();
+      return;
+    }
+
     try {
       await FirebaseAuth.instance.verifyPhoneNumber(
         phoneNumber: phone,
@@ -109,6 +137,20 @@ class LoginImpl extends LoginRepository {
     required String smsCode,
     required String phone,
   }) async {
+    // DEBUG BYPASS: Accept debug code in debug mode
+    if (kDebugMode && _isDebugBypass) {
+      if (smsCode == _debugOTPCode) {
+        debugPrint('DEBUG MODE: OTP verified successfully');
+        return Right(OTPRequest(phoneNumber: phone));
+      } else {
+        debugPrint('DEBUG MODE: Invalid code. Use "$_debugOTPCode"');
+        return const Left(OTPErrorModel(
+          code: 'invalid-verification-code',
+          message: 'Invalid code. In debug mode, use: 123456',
+        ));
+      }
+    }
+
     if (_verificationId == null) {
       return const Left(OTPErrorModel.verificationIdNotFound());
     }

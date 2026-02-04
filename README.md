@@ -49,10 +49,11 @@ fvm use 3.29.3
 git clone <repository-url>
 cd filhos-mobile
 
-# Install dependencies
-fvm flutter pub get
+# Quick setup using Makefile (recommended)
+make setup
 
-# Generate code (assets, etc.)
+# Or manually:
+fvm flutter pub get
 fvm dart run build_runner build --delete-conflicting-outputs
 
 # iOS only - Install pods
@@ -163,6 +164,71 @@ fvm dart run build_runner build --delete-conflicting-outputs
 # Watch mode (auto-regenerate on changes)
 fvm dart run build_runner watch --delete-conflicting-outputs
 ```
+
+### Regenerate App Icons and Splash Screens
+
+After updating logo or splash assets, regenerate them:
+
+```bash
+# Generate app icons for both flavors
+fvm dart run flutter_launcher_icons -f flutter_launcher_icons-parents.yaml
+fvm dart run flutter_launcher_icons -f flutter_launcher_icons-professores.yaml
+
+# Generate splash screens for both flavors
+fvm dart run flutter_native_splash:create --flavor parents
+fvm dart run flutter_native_splash:create --flavor professores
+```
+
+### AABAR Logo Assets Guide
+
+To rebrand the app with the AABAR logo, generate the following assets from the source logo:
+
+#### App Icons (in `assets/app_icon/`)
+
+| File | Size | Description | How to Generate |
+|------|------|-------------|-----------------|
+| `app_icon_parents.png` | 1024x1024 px | **Fallback icon (pubspec.yaml)** | Same as parents launcher icon - **don't skip this one!** |
+| `app_icon_parents2A.png` | 1024x1024 px | Parents app launcher icon | Square PNG with AABAR logo centered, transparent or solid background |
+| `app_icon_parents2.png` | 1024x1024 px | Parents adaptive icon foreground | Same as above, used for Android adaptive icons |
+| `app_icon_professors.png` | 1024x1024 px | **Professors in-app icon (notifications)** | Same as professors launcher icon - **don't skip this one!** |
+| `app_icon_professors2A.png` | 1024x1024 px | Professors app launcher icon | Same logo, can add subtle color variation to distinguish |
+| `app_icon_professors2.png` | 1024x1024 px | Professors adaptive icon foreground | Same as above |
+
+#### Splash Screen Assets (in `assets/app_icon/`)
+
+| File | Size | Description | How to Generate |
+|------|------|-------------|-----------------|
+| `native_splash_icon.png` | 512x512 px | Logo shown during app launch | AABAR logo on transparent background |
+| `native_splash_background.png` | Any size | Splash screen background | Solid color image (#F5F7FA or white recommended) |
+
+#### In-App Logos (in `assets/icons/`)
+
+| File | Format | Description | How to Generate |
+|------|--------|-------------|-----------------|
+| `default_logo.svg` | SVG | Default logo used throughout the app | Convert AABAR logo to SVG format |
+| `default_horizontal_logo.svg` | SVG | Horizontal layout version | Create horizontal variant of logo |
+| `filhos_logo.svg` | SVG | Main brand logo | AABAR logo in SVG format |
+| `filhos_logo_white.svg` | SVG | White version for dark backgrounds | AABAR logo with white fill |
+
+#### In-App Logos (in `assets/images/`)
+
+| File | Format | Description | How to Generate |
+|------|--------|-------------|-----------------|
+| `filhos_logo.png` | PNG | Main brand logo (raster) | AABAR logo, 512x512 px recommended |
+
+#### Brand Colors (AABAR)
+
+Use these colors when creating logo variants:
+- **Primary Navy Blue:** `#1E3A5F`
+- **Accent Orange:** `#E87722`
+- **Light Background:** `#F5F7FA`
+
+#### Quick Steps to Rebrand
+
+1. Create all PNG assets from the AABAR logo using an image editor (Figma, Photoshop, GIMP)
+2. Create SVG versions using a vector editor (Figma, Illustrator, Inkscape)
+3. Replace all files listed above in their respective folders
+4. Run the regeneration commands above to generate platform-specific icons
 
 ### Maintenance Commands
 

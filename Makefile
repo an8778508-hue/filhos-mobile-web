@@ -1,7 +1,7 @@
 # Escola Flutter Project Makefile
 # Provides convenient shortcuts for common development tasks
 
-.PHONY: help setup check deps codegen clean run-parents run-professors build-parents build-professors
+.PHONY: help setup deps codegen clean run-parents run-professors build-parents build-professors
 
 # Default Flutter command (uses FVM if available)
 FLUTTER := $(shell command -v fvm >/dev/null 2>&1 && echo "fvm flutter" || echo "flutter")
@@ -15,8 +15,7 @@ help:
 	@echo "Escola Flutter Project - Available Commands"
 	@echo ""
 	@echo "Setup:"
-	@echo "  make setup          - Run full project setup"
-	@echo "  make check          - Check system requirements"
+	@echo "  make setup          - Run full project setup (deps + codegen)"
 	@echo "  make deps           - Install dependencies (pub get)"
 	@echo "  make codegen        - Run code generation (build_runner)"
 	@echo "  make clean          - Clean build artifacts"
@@ -42,11 +41,8 @@ help:
 	@echo ""
 
 # Setup targets
-setup:
-	@./scripts/setup.sh full
-
-check:
-	@./scripts/setup.sh check
+setup: deps codegen
+	@echo "Setup complete!"
 
 deps:
 	$(FLUTTER) pub get

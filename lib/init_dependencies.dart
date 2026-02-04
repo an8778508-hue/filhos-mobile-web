@@ -8,6 +8,7 @@ import 'package:escola/core/utils/bloc_observer.dart';
 import 'package:escola/firebase_options.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -28,14 +29,15 @@ Future initDependencies() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAppCheck.instance.activate(
-    // Use debug provider during development
-    androidProvider: AndroidProvider.debug,
-    // Use appropriate provider for production
-    // androidProvider: AndroidProvider.playIntegrity,
-  );
-  // Add a small delay to ensure App Check initialization completes
-  await Future.delayed(const Duration(milliseconds: 500));
+
+  // Only activate App Check in release mode
+  if (kReleaseMode) {
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: AndroidProvider.playIntegrity,
+    );
+    await Future.delayed(const Duration(milliseconds: 500));
+  }
+
   // clear firebase cache
   FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: false);
 

@@ -15,30 +15,30 @@
 		<key>CFBundleInfoDictionaryVersion</key>
 		<string>6.0</string>
 		<key>CFBundleName</key>
-		<string>Dizney</string>
-        <key>com.apple.developer.applesignin</key>
-        <array>
-          <string>Default</string>
-        </array>
+		<string>AABAR</string>
+		<key>com.apple.developer.applesignin</key>
+		<array>
+			<string>Default</string>
+		</array>
 		<key>FacebookAppID</key>
-        <string>761815839741629</string>
-        <key>FacebookClientToken</key>
-        <string>d8709d865117130d4e4f94b2d400c800</string>
-        <key>FacebookDisplayName</key>
-        <string>Disney parent</string>
-        <key>LSApplicationQueriesSchemes</key>
-        <array>
-            <string>fbapi</string>
-            <string>fb-messenger-share-api</string>
-            <string>fbauth2</string>
-            <string>fbshareextension</string>
-        </array>
+		<string>761815839741629</string>
+		<key>FacebookClientToken</key>
+		<string>d8709d865117130d4e4f94b2d400c800</string>
+		<key>FacebookDisplayName</key>
+		<string>AABAR Parents</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+			<string>fbapi</string>
+			<string>fb-messenger-share-api</string>
+			<string>fbauth2</string>
+			<string>fbshareextension</string>
+		</array>
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
 		<string>$(FLUTTER_BUILD_NAME)</string>
 		<key>GIDClientID</key>
-        <string>328842559224-hdbup6e2enp5cidaeh7oqua8220pflpf.apps.googleusercontent.com</string>
+		<string>328842559224-hdbup6e2enp5cidaeh7oqua8220pflpf.apps.googleusercontent.com</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleURLTypes</key>
@@ -49,13 +49,13 @@
 				<key>CFBundleURLSchemes</key>
 				<array>
 					<string>app-1-328842559224-ios-2763f94e3f954ed206c50d</string>
-					 <!-- Google Sign-In URL scheme -->
-                    <string>com.googleusercontent.apps.328842559224-aihkknn2jhd7arpqcqkr0mdoihqfegdh</string>
-                    <string>com.googleusercontent.apps.328842559224-hdbup6e2enp5cidaeh7oqua8220pflpf</string>
-                    <!-- Facebook URL scheme -->
-                    <string>fb761815839741629</string>
-                    <!-- Add Apple Sign In scheme -->
-                    <string>com.algoriza.disneyNew.signin</string>
+					<!-- Google Sign-In URL scheme -->
+					<string>com.googleusercontent.apps.328842559224-aihkknn2jhd7arpqcqkr0mdoihqfegdh</string>
+					<string>com.googleusercontent.apps.328842559224-hdbup6e2enp5cidaeh7oqua8220pflpf</string>
+					<!-- Facebook URL scheme -->
+					<string>fb761815839741629</string>
+					<!-- Add Apple Sign In scheme -->
+					<string>com.algoriza.disneyNew.signin</string>
 				</array>
 			</dict>
 		</array>

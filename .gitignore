@@ -50,6 +50,7 @@ app.*.map.json
 /android/local.properties
 /android/captures/
 /android/**/build/
+/android/build/
 
 # Android signing (SECURITY - never commit these)
 **/*.keystore
@@ -62,6 +63,7 @@ android/upload-keystore.jks
 # iOS build artifacts
 /ios/Pods/
 /ios/.symlinks/
+**/Podfile.lock
 /ios/Flutter/Flutter.framework
 /ios/Flutter/Flutter.podspec
 /ios/Flutter/Generated.xcconfig
