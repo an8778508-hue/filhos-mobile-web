@@ -41,9 +41,9 @@ class AlarmSettings extends Equatable {
       final volume = (json['volume'] as num?)?.toDouble();
       final fadeDurationSeconds = (json['fadeDuration'] as num?)?.toDouble();
       final fadeDurationMillis =
-      (fadeDurationSeconds != null && fadeDurationSeconds > 0)
-          ? (fadeDurationSeconds * 1000).toInt()
-          : null;
+          (fadeDurationSeconds != null && fadeDurationSeconds > 0)
+              ? (fadeDurationSeconds * 1000).toInt()
+              : null;
       final volumeEnforced = json['volumeEnforced'] as bool? ?? false;
 
       json['volumeSettings'] = {
@@ -81,8 +81,10 @@ class AlarmSettings extends Equatable {
     }
 
     // Add handling for null notificationSettings
-    if (!json.containsKey('notificationSettings') || json['notificationSettings'] == null) {
-      _log.fine('notificationSettings is missing or null, adding default value');
+    if (!json.containsKey('notificationSettings') ||
+        json['notificationSettings'] == null) {
+      _log.fine(
+          'notificationSettings is missing or null, adding default value');
       json['notificationSettings'] = {
         'title': 'Alarm',
         'body': 'Time to wake up!',
