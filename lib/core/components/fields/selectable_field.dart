@@ -27,6 +27,7 @@ class SelectableField<T> extends StatefulWidget {
   final double marginErrorWidthPercentage;
   final double borderRadius;
   final EdgeInsetsGeometry? padding;
+  final double? height;
 
   const SelectableField({
     super.key,
@@ -46,6 +47,7 @@ class SelectableField<T> extends StatefulWidget {
     this.background,
     this.strokeColor,
     this.readOnly = false,
+    this.height,
   });
 
   @override
@@ -67,6 +69,7 @@ class _SelectableFieldState<T> extends State<SelectableField<T>> {
             textDirection: TextDirection.ltr,
             child: _FilledTextFiled(
               width: double.maxFinite,
+              height: widget.height,
               strokeColor: widget.strokeColor,
               elevation: widget.elevation,
               shadowColor: const Color(0xffeaeaea),
@@ -80,7 +83,11 @@ class _SelectableFieldState<T> extends State<SelectableField<T>> {
                     Expanded(
                       child: Text(
                         widget.value!,
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.sp, color: context.colors.textColor),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          color: context.colors.textColor,
+                        ),
                       ),
                     ),
                   if (widget.value == null)
@@ -90,7 +97,7 @@ class _SelectableFieldState<T> extends State<SelectableField<T>> {
                         style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 14.sp,
-                          color: Color(0xffD0D0D0),
+                          color: const Color(0xffD0D0D0),
                         ),
                       ),
                     ),
@@ -108,7 +115,7 @@ class _SelectableFieldState<T> extends State<SelectableField<T>> {
     );
   }
 
-  _onTap() async {
+  Future<void> _onTap() async {
     final res = await showModalBottomSheet<T?>(
       isDismissible: true,
       isScrollControlled: true,
@@ -121,12 +128,13 @@ class _SelectableFieldState<T> extends State<SelectableField<T>> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(10.r)),
       ),
       context: context,
-      builder: (context) => SelectableBottomSheet(
+      builder: (context) => SelectableBottomSheet<T>(
         item: widget.item,
         list: widget.list,
         whereCondition: widget.whereCondition,
       ),
     );
+
     if (res != null) {
       widget.onSelected.call(res);
     }
@@ -147,7 +155,8 @@ class SelectableBottomSheet<T> extends StatefulWidget {
   final bool Function(T, String) whereCondition;
 
   @override
-  State<SelectableBottomSheet<T>> createState() => _SelectableBottomSheetState<T>();
+  State<SelectableBottomSheet<T>> createState() =>
+      _SelectableBottomSheetState<T>();
 }
 
 class _SelectableBottomSheetState<T> extends State<SelectableBottomSheet<T>> {
@@ -160,6 +169,7 @@ class _SelectableBottomSheetState<T> extends State<SelectableBottomSheet<T>> {
     controller = TextEditingController();
     super.initState();
   }
+
   @override
   void dispose() {
     controller.dispose();
@@ -191,7 +201,7 @@ class _SelectableBottomSheetState<T> extends State<SelectableBottomSheet<T>> {
                 alignment: AlignmentDirectional.centerEnd,
                 child: IconButton(
                   icon: MyIcon(
-                     'assets/icons/close.svg',
+                    'assets/icons/close.svg',
                     size: 15.h,
                   ),
                   onPressed: () {
@@ -209,19 +219,25 @@ class _SelectableBottomSheetState<T> extends State<SelectableBottomSheet<T>> {
             },
             controller: controller,
             backgroundColor: Colors.white,
-            padding: EdgeInsets.symmetric(vertical: getHeightByNumber(0), horizontal: getWidthByNumber(16)),
+            padding: EdgeInsets.symmetric(
+              vertical: getHeightByNumber(0),
+              horizontal: getWidthByNumber(16),
+            ),
             hasBorder: true,
             marginWidth: 20,
             borderColor: context.colors.greyLight,
             mainAxisAlignment: MainAxisAlignment.center,
             textColor: context.colors.textColor,
-            hintColor: Color(0xffD0D0D0),
+            hintColor: const Color(0xffD0D0D0),
             firstIconPath: assetsPath('search'),
-            // firstIconColor: Colors.black,
             hint: (LocalizationKeys.search).tr(context),
             onChanged: (value) {
               if (validString(value)) {
-                myList.value = [...widget.list.where((element) => widget.whereCondition(element, value))];
+                myList.value = [
+                  ...widget.list.where(
+                        (element) => widget.whereCondition(element, value),
+                  )
+                ];
               } else {
                 myList.value = [...widget.list];
               }
@@ -233,14 +249,14 @@ class _SelectableBottomSheetState<T> extends State<SelectableBottomSheet<T>> {
           ),
           SizedBox(height: 16.h),
           Expanded(
-            child: ValueListenableBuilder(
+            child: ValueListenableBuilder<List<T>>(
               valueListenable: myList,
               builder: (context, myList, child) => ListView.separated(
                 itemCount: myList.length,
                 shrinkWrap: true,
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
                 itemBuilder: (context, index) {
-                  T item = myList[index];
+                  final T item = myList[index];
                   return widget.item(item);
                 },
               ),
@@ -265,38 +281,46 @@ class _FilledTextFiled extends StatelessWidget {
   final Color? background;
   final Color? shadowColor;
 
-  const _FilledTextFiled(
-      {required this.child,
-      this.width,
-      this.strokeWidth,
-      this.padding,
-      this.borderRadius,
-      this.elevation,
-      this.shadowColor,
-      this.strokeColor,
-      this.background});
+  const _FilledTextFiled({
+    super.key,
+    required this.child,
+    this.width,
+    this.height,
+    this.strokeWidth,
+    this.padding,
+    this.borderRadius,
+    this.elevation,
+    this.shadowColor,
+    this.strokeColor,
+    this.background,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: width ?? 358.sp,
-        // height: height ?? 56.sp,
-        padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
-        decoration: BoxDecoration(
-            color: background ?? context.colors.background.withOpacity(0.06),
-            boxShadow: elevation == null
-                ? null
-                : kElevationToShadow[elevation]
-                    ?.map((e) => BoxShadow(
-                          blurRadius: e.blurRadius,
-                          blurStyle: e.blurStyle,
-                          offset: e.offset,
-                          spreadRadius: e.spreadRadius,
-                          color: shadowColor ?? Colors.black,
-                        ))
-                    .toList(),
-            borderRadius: BorderRadius.circular(borderRadius ?? 10.sp),
-            border: Border.all(color: strokeColor ?? context.colors.greyLight, width: strokeWidth ?? 1.sp)),
-        child: Center(child: child));
+      width: width ?? 358.sp,
+      height: height,
+      padding: padding ?? EdgeInsets.symmetric(horizontal: 16.w),
+      decoration: BoxDecoration(
+        color: background ?? context.colors.background.withOpacity(0.06),
+        boxShadow: elevation == null
+            ? null
+            : kElevationToShadow[elevation]
+            ?.map((e) => BoxShadow(
+          blurRadius: e.blurRadius,
+          blurStyle: e.blurStyle,
+          offset: e.offset,
+          spreadRadius: e.spreadRadius,
+          color: shadowColor ?? Colors.black,
+        ))
+            .toList(),
+        borderRadius: BorderRadius.circular(borderRadius ?? 10.sp),
+        border: Border.all(
+          color: strokeColor ?? context.colors.greyLight,
+          width: strokeWidth ?? 1.sp,
+        ),
+      ),
+      child: Center(child: child),
+    );
   }
 }
