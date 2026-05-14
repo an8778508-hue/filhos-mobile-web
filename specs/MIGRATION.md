@@ -31,7 +31,7 @@ Sorted by file count (largest first) to make the cost of each migration visible 
 | Feature | Code | Flavor | .dart files | Source-of-truth (features.md) | Trio status |
 |---|---|---|---:|---|:---:|
 | settings | [lib/features/settings/](../lib/features/settings/) | B | 91 | [#settings--b](features.md#settings--b) | 🔴 |
-| diary | [lib/features/diary/](../lib/features/diary/) | B | 68 | [#diary--b](features.md#diary--b) | 🔴 |
+| diary | [lib/features/diary/](../lib/features/diary/) | B | 68 | [#diary--b](features.md#diary--b) → [specs/diary/](diary/) | 🟢 |
 | add_form | [lib/features/add_form/](../lib/features/add_form/) | B | 47 | [#add_form--b](features.md#add_form--b) | 🔴 |
 | chat | [lib/features/chat/](../lib/features/chat/) | B | 44 | [#chat--b](features.md#chat--b) → [specs/chat/](chat/) | 🟢 |
 | home | [lib/features/home/](../lib/features/home/) | B | 16 | [#home--b](features.md#home--b) | 🔴 |
@@ -59,7 +59,7 @@ Sorted by file count (largest first) to make the cost of each migration visible 
 | choose_language | [lib/features/choose_language/](../lib/features/choose_language/) | B | 1 | [#choose_language--b](features.md#choose_language--b) | 🔴 |
 | attendants_selection | [lib/features/attendants_selection/](../lib/features/attendants_selection/) | B | 1 | [#attendants_selection--b](features.md#attendants_selection--b) | 🔴 |
 
-**Coverage**: 6 / 28 features migrated to per-feature trios ([login](login/), [otp](otp/), [splash](splash/), [register](register/), [notifications](notifications/), [chat](chat/)).
+**Coverage**: 7 / 28 features migrated to per-feature trios ([login](login/), [otp](otp/), [splash](splash/), [register](register/), [notifications](notifications/), [chat](chat/), [diary](diary/)).
 
 ## Proposed features (not yet implemented)
 
@@ -100,8 +100,8 @@ Recommended sequence for the first few migrations — small and self-contained f
 3. ~~**`register`** (4 files, shares LoginRepository)~~ ✅ Migrated 2026-05-14 → [specs/register/](register/)
 4. ~~**`notifications`** — exercises the FCM / deep-link / approval-gate axes~~ ✅ Migrated 2026-05-14 → [specs/notifications/](notifications/)
 5. ~~**`chat`** — first complex Firestore-backed feature; stresses the "backend touchpoints" template section~~ ✅ Migrated 2026-05-14 → [specs/chat/](chat/). **Surfaced blocking compile bug: duplicate `_asMap` declaration in `message.dart` ([T-fix-1](chat/tasks.md))**.
-6. **`diary`** — typed-question domain; will surface any template gaps for schema-driven UI
-7. **`settings`** — largest; split into sub-features (`edit_profile`, `my_children`, `medicines`, `announcements`, `events`, `about`) per the source-of-truth in features.md
+6. ~~**`diary`** — typed-question domain; will surface any template gaps for schema-driven UI~~ ✅ Migrated 2026-05-14 → [specs/diary/](diary/). **Surfaced bugs**: hardcoded `childId: 1` in template fetch, `activities.sort` in loop (O(n² log n)), 200+ lines of commented-out `sendQuestions`, missing idempotency on submit.
+7. **`settings`** — largest (91 files); split into sub-features (`edit_profile`, `my_children`, `medicines`, `announcements`, `events`, `about`) per the source-of-truth in features.md
 
 ~~`register` is **not yet in [features.md](features.md)**~~ ✅ Anchor added and feature migrated 2026-05-14 → [specs/register/](register/).
 
