@@ -59,8 +59,9 @@ class _NotificationsPageState extends State<NotificationsPage> with AutomaticKee
           BlocListener<NotificationsBloc, NotificationsState>(
             listenWhen: (p, c) => p.notificationsListState.error != c.notificationsListState.error,
             listener: (context, state) {
-              if (validString(state.notificationsListState.error)) {
-                Snack.show(context, state.viewNotificationsState.error!.message, false);
+              final err = state.notificationsListState.error;
+              if (err != null) {
+                Snack.show(context, err.message, false);
               }
             },
           ),

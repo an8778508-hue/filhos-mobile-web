@@ -90,9 +90,6 @@ class Message extends Equatable {
   static Map<String, dynamic> _asMap(dynamic v) =>
       v is Map<String, dynamic> ? v : <String, dynamic>{};
 
-  static Map<String, dynamic> _asMap(dynamic v) =>
-      v is Map<String, dynamic> ? v : <String, dynamic>{};
-
   // copy with
   Message copyWith({
     String? id,

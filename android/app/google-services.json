@@ -37,9 +37,6 @@
       "api_key": [
         {
           "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
-        },
-        {
-          "current_key": "AIzaSyCXL4l7S0Y9Ral9vh63CZabfwhGL2s3JAY"
         }
       ],
       "services": {
@@ -85,6 +82,14 @@
           }
         },
         {
+          "client_id": "328842559224-r5kc9ub0e5kdpkptdjf4hsesmo598vt1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.disneyNew",
+            "certificate_hash": "b9574677e54880efce21edf1fc977391b08832a8"
+          }
+        },
+        {
           "client_id": "328842559224-v17h54olkdt4oj7jo526506j2kfjpdm9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -100,9 +105,6 @@
       "api_key": [
         {
           "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
-        },
-        {
-          "current_key": "AIzaSyCXL4l7S0Y9Ral9vh63CZabfwhGL2s3JAY"
         }
       ],
       "services": {
@@ -147,9 +149,6 @@
       "api_key": [
         {
           "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
-        },
-        {
-          "current_key": "AIzaSyCXL4l7S0Y9Ral9vh63CZabfwhGL2s3JAY"
         }
       ],
       "services": {
@@ -203,6 +202,14 @@
           }
         },
         {
+          "client_id": "328842559224-v1bev8lg5nm90njj0v3hq89cf2ub7jq3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.algoriza.profedisneyNew",
+            "certificate_hash": "b9574677e54880efce21edf1fc977391b08832a8"
+          }
+        },
+        {
           "client_id": "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -210,9 +217,6 @@
       "api_key": [
         {
           "current_key": "AIzaSyC9A4yX-7J66etdhqr_igLy6c6jhXbJ9Io"
-        },
-        {
-          "current_key": "AIzaSyCXL4l7S0Y9Ral9vh63CZabfwhGL2s3JAY"
         }
       ],
       "services": {

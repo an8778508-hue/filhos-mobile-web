@@ -54,7 +54,7 @@ migrated_date: 2026-05-14
 
 ### Bugs
 
-- [ ] **T-fix-1** **(P1)** [US1] Snackbar reads the wrong state slice at [notifications_page.dart:60-64](../../lib/features/notifications/notifications_page.dart#L60-L64). The `listenWhen` checks `state.notificationsListState.error != c.notificationsListState.error` (correct), but the listener body reads `state.viewNotificationsState.error!.message` (wrong — and risks `null` deref). Replace with `state.notificationsListState.error!.message`.
+- [x] **T-fix-1** **(P1)** [US1] ✅ **Fixed 2026-05-14** in [notifications_page.dart:60-66](../../lib/features/notifications/notifications_page.dart#L60-L66): snackbar now reads `state.notificationsListState.error` (the slice the `listenWhen` actually watches), with explicit null check instead of `validString` over a `Failure` type (`validString` is for strings) — closes both the wrong-state-slice and the latent null-deref risk in one edit.
 
 - [ ] **T-fix-2** **(P2)** [US1] `NotificationModel.image` is parsed but never rendered ([notifications_page.dart:241-258](../../lib/features/notifications/notifications_page.dart#L241-L258)). Decide product intent: either render the image when `validString(notification.image)`, or drop the field.
 
