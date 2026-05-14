@@ -101,7 +101,6 @@ class OTPBloc extends Cubit<OTPState> {
       ready.value = true;
       return;
       // }
-      return;
     }
     await localDatabase.write(key: LocalKeys.last_otp_request, value: DateTime.now().millisecondsSinceEpoch);
     await localDatabase.write(key: LocalKeys.last_otp_phone, value: phone);

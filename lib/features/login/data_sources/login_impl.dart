@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:escola/core/errors/exceptions.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/models/user_model.dart';
 import 'package:escola/core/network/network_client.dart';
@@ -8,13 +9,18 @@ import 'package:escola/core/network/network_models.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/utils/constants/static_config.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
+import 'package:escola/features/login/models/login_email_paramaters.dart';
 import 'package:escola/features/login/models/login_requset.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
+import 'package:escola/features/register/bloc/register_event.dart';
 import 'package:escola/flavors/app_flavors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class LoginImpl extends LoginRepository {
   final NetworkClientRepository networkClient;
@@ -249,12 +255,10 @@ class LoginImpl extends LoginRepository {
         throw Exception('No ID token returned - check serverClientId configuration');
       }
 
-      // Send token to your backend
+      // Send token to your backend. Firebase OAuthCredential isn't constructed
+      // here because login is brokered by the Criarte backend, not by
+      // Firebase Auth directly.
       final result = await sendSocialTokenToApi(idToken: googleAuth.accessToken!, provider: 'google');
-      final credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
       return result.fold(
         (failure) => Left(failure),
         (r) async {
@@ -262,9 +266,6 @@ class LoginImpl extends LoginRepository {
           return Right(r);
         },
       );
-      // Create OAuth credential
-
-      // Sign in to Firebase with the credential
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -297,11 +298,9 @@ class LoginImpl extends LoginRepository {
       debugPrint('Facebook User Email: ${userData['email']}');
       debugPrint('Facebook User ID: ${userData['id']}');
 
-      // Send token to your backend
+      // Send token to your backend (login is brokered server-side, not via
+      // Firebase Auth directly).
       final result2 = await sendSocialTokenToApi(idToken: accessToken.tokenString, provider: 'facebook');
-
-      // Create OAuth credential for Firebase
-      final credential = FacebookAuthProvider.credential(accessToken.tokenString);
 
       return result2.fold(
         (failure) => Left(failure),

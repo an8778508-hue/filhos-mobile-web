@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:flutter/foundation.dart';
 
 /// App Tracking Transparency. Apple Guideline 5.1.2:
@@ -17,18 +16,19 @@ import 'package:flutter/foundation.dart';
 ///     repeatedly on every cold start.
 ///   - Is invoked from `MainScreen.initState` (post-login, post-approval),
 ///     where the user has already seen the privacy policy / terms.
+///
+/// NOTE: The `app_tracking_transparency` package is currently commented out
+/// in `pubspec.yaml`. This helper is a no-op until that dependency is
+/// restored. Restore by:
+///   1. Uncommenting `app_tracking_transparency: ^2.0.6+1` in pubspec.yaml
+///   2. Running `flutter pub get`
+///   3. Re-adding the original implementation (see git history)
+/// Today the app does not ship any IDFA-using SDK, so compliance is not at
+/// risk — but the moment one is added (e.g., a third-party analytics SDK
+/// that reads the IDFA), this must be restored.
 Future<void> ensureTrackingPermission() async {
   if (!Platform.isIOS) return;
-  try {
-    final status = await AppTrackingTransparency.trackingAuthorizationStatus;
-    if (status == TrackingStatus.notDetermined) {
-      // Small delay so the system prompt isn't stacked on top of an animating
-      // transition; otherwise the UIAlert can be dismissed before the user
-      // even sees it.
-      await Future.delayed(const Duration(milliseconds: 500));
-      await AppTrackingTransparency.requestTrackingAuthorization();
-    }
-  } catch (e) {
-    debugPrint('ATT request failed: $e');
+  if (kDebugMode) {
+    debugPrint('ATT helper is a no-op (app_tracking_transparency commented out in pubspec)');
   }
 }

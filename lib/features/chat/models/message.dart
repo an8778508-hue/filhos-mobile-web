@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/diary/models/child_model.dart';
-import 'package:flutter/cupertino.dart';
 
 class Message extends Equatable {
   final String id;

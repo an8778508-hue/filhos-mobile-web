@@ -68,7 +68,7 @@ android {
     defaultConfig {
         applicationId "com.algoriza.disneyNew"
         multiDexEnabled true
-        minSdkVersion 21
+        minSdkVersion flutter.minSdkVersion
         // Play Store rejects target SDK < 34 (Aug 2024) / < 35 (Aug 2025).
         // Pinned explicitly so the value doesn't drift with the Flutter toolchain.
         targetSdkVersion 34

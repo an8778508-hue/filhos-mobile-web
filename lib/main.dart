@@ -5,6 +5,6 @@ import 'package:flutter/material.dart';
 
 void main() async {
   AppFlavor.setCurrent(AppType.parents);
-  await initDependecies();
+  await initDependencies();
   runApp(AppFlavor(appType: AppType.parents, child: const MyApp()));
 }

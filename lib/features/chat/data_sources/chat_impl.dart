@@ -14,7 +14,6 @@ import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/chat/models/last_message.dart';
 import 'package:escola/features/chat/models/message.dart';
 import 'package:escola/features/chat/presentation/bloc/chat_helper.dart';
-import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/my_app.dart';
 import 'package:flutter/material.dart';
 

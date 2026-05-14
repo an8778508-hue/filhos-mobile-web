@@ -40,7 +40,6 @@ class LoginBloc extends Cubit<LoginState> {
       emit(LoginReady());
       return;
       // }
-      return;
     }
     await localDatabase.write(key: LocalKeys.last_otp_request, value: DateTime.now().millisecondsSinceEpoch);
     await localDatabase.write(key: LocalKeys.last_otp_phone, value: phone);
@@ -59,7 +58,7 @@ class LoginBloc extends Cubit<LoginState> {
           return;
         }
         if (!isClosed) {
-          emit(LoginFailure(NetworkFailure(message: '${l.code}''${l.message}' ?? '')));
+          emit(LoginFailure(NetworkFailure(message: '${l.code}${l.message}')));
         }
       },
       onSuccess: (r) async {},
