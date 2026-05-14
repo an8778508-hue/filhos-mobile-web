@@ -311,6 +311,158 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 
 ---
 
+---
+
+# Proposed features — competitive gap closure (added 2026-05-14)
+
+*Driven by the iCare Kids / InstaKidz comparison in [business.md §9](business.md#9-competitive-landscape). Each entry is a candidate feature, not a committed roadmap item — pick during planning. Flavor tag uses the same P/T/B convention as above.*
+
+## qr_pickup · B *(Tier 1 — proposed)*
+QR-code drop-off and pickup. Parent app generates a rotating QR for an authorized pickup person; teacher app scans on arrival/release. Closes the iCare-only "QR pickup" gap.
+
+### Tasks
+- [ ] Generate per-authorization rotating QR codes on the parent side (TTL ≤ 24h).
+- [ ] Scanner UI in teacher app; logs `pickup_at` / `dropoff_at` timestamps server-side.
+- [ ] Pair with `attendants_selection` for authorized-list management.
+- [ ] Push parent confirmation: "Child picked up by {name} at {time}".
+- [ ] Verify LGPD: QR encodes an opaque token only, no PII.
+
+## parent_arrival · P *(Tier 1 — proposed)*
+"I'm here" tap from parent home → push to the assigned teacher, reducing pickup wait time.
+
+### Tasks
+- [ ] New action on parent home; debounced to one ping per 5 min per child.
+- [ ] Pre-built localized message; teacher gets a special-styled push (different from chat).
+- [ ] Surfaces a "Parents waiting at gate" widget on the teacher home.
+
+## allergies · B *(Tier 1 — proposed)*
+Surface `ChildDetailsModel` allergy / medical-flag data prominently on the teacher-side child header.
+
+### Tasks
+- [ ] Confirm the field exists on the server payload; add to `ChildDetailsModel` if not.
+- [ ] Red banner above the child name on diary write, gallery upload, and chat header.
+- [ ] Bypass parent app — teacher-only surface.
+- [ ] Treat as sensitive: no logging in Crashlytics breadcrumbs.
+
+## incident_report · B *(Tier 1 — proposed)*
+Accident / incident report template; legal paper trail. Builds on `add_form` engine.
+
+### Tasks
+- [ ] Add `AddFormType.incidentReport`; schema with who / what / when / where / severity / photo / parent-acknowledgement.
+- [ ] PDF export for the school archive (server-side rendering preferred).
+- [ ] Auto-push to the parent with "Open report" CTA; parent ack stored.
+- [ ] LGPD: 5-year retention by default (check Brazilian education-law requirements).
+
+## health_log · B *(Tier 1 — proposed)*
+Health / nurse diary subtype: temperature, symptoms, action taken, notify-nurse flag.
+
+### Tasks
+- [ ] New `MainCategory` "Saúde" + typed questions (temp, symptoms multi-select, action-taken text, notify-nurse boolean).
+- [ ] Parent receives a "Health update" push distinct from regular diary push.
+- [ ] Optionally hide from the standard diary timeline unless permission granted (LGPD).
+
+## poll · B *(Tier 1 — proposed)*
+Parent-facing polls / surveys via the `add_form` engine.
+
+### Tasks
+- [ ] Add `AddFormType.poll`; single-question (radio / multi-select / Likert).
+- [ ] School-wide vs per-class targeting.
+- [ ] Results visible to admin (and optionally parents, per setting).
+- [ ] Deadline + reminder push for non-responders.
+
+## reactions · B *(Tier 1 — proposed)*
+Likes & comments on gallery posts and diary entries. Maps to InstaKidz's social-engagement feature.
+
+### Tasks
+- [ ] Firestore reactions doc per content item (`{contentType, contentId, userId, type}`).
+- [ ] Render heart / clap / "saudades" reactions on `gallery_images` and diary entries.
+- [ ] Comment thread (text only first; no media).
+- [ ] Reuse chat moderation primitives (eventual: word filter, abuse report).
+
+---
+
+## gate_module · B *(Tier 2 — proposed)*
+School-gate kiosk mode using teacher app; pairs with `qr_pickup`.
+
+### Tasks
+- [ ] Kiosk-mode auth flow for the gate tablet (separate from teacher login).
+- [ ] Continuous QR scanner; logs `arrived_at` / `released_at` per child.
+- [ ] Parent push on both events.
+- [ ] Offline buffer for poor gate-Wi-Fi.
+
+## bus_tracking · P *(Tier 2 — proposed)*
+Parent-side read-only bus map + ETA push.
+
+### Tasks
+- [ ] Pick a GPS/telematics vendor; document API contract.
+- [ ] Parent map shows current bus position only for the trip their child is on (privacy).
+- [ ] 5-min-before-arrival push to the parent's chosen stop.
+- [ ] Out-of-route alert to school admin.
+
+## white_label_theming · B *(Tier 2 — proposed)*
+Per-school branding (palette + logo + display name) without separate binaries. Extends `ConfigCubit.styling`.
+
+### Tasks
+- [ ] Per-`school_id` Firestore `config/{school_id}` document overrides theming.
+- [ ] Logo asset URL hot-swapped on splash + main app bar.
+- [ ] "Display name" in `AppInfo` overridable.
+- [ ] Document the schema; ship 1 pilot school to validate.
+
+---
+
+## ai_diary_draft · T *(Tier 3 — proposed — flagship AI feature)*
+Teacher uploads 3–4 photos + 30s voice note → LLM drafts a typed-question diary entry pre-filled into the existing diary editor. Teacher edits + sends.
+
+### Tasks
+- [ ] Server-side LLM endpoint with photo+audio input (Vertex AI Gemini or Anthropic via Claude API; both have multimodal vision + audio).
+- [ ] Output schema matches `QuestionCategory` so the editor can pre-fill without UI changes.
+- [ ] LGPD: photos are processed in-region (São Paulo for GCP, AWS sa-east-1 for AWS); no model-provider retention of children's images.
+- [ ] Always teacher-confirmed before send; no auto-publish.
+- [ ] Per-school opt-in; default OFF for first 6 months.
+
+## photo_moderation · T *(Tier 3 — proposed)*
+Pre-publish vision check on `gallery` uploads: tagged-only children visible, no PII in background.
+
+### Tasks
+- [ ] Vision model inference on the teacher's device (TFLite / Core ML) for first pass; server-side for second pass.
+- [ ] Suggest crops; teacher confirms before publish.
+- [ ] Reject obviously-unsafe content (e.g., screen with another child's data visible).
+
+## chat_sentiment · B *(Tier 3 — proposed)*
+PT-BR-aware sentiment scorer on incoming parent messages; high-anxiety messages get a priority push on the teacher side.
+
+### Tasks
+- [ ] Per-message sentiment classification (server-side; cached for re-use).
+- [ ] Priority push channel separate from default chat push.
+- [ ] Opt-out for parents who don't want their messages classified.
+
+## parent_faq_assistant · P *(Tier 3 — proposed)*
+PT-BR / EN RAG over school-admin-uploaded docs (handbook, calendar, policies). Lives as "Ask the school" tile.
+
+### Tasks
+- [ ] School admin uploads docs via web (out of scope of mobile).
+- [ ] Vector store per `school_id`.
+- [ ] Citations in every answer (link back to the source page in the doc).
+- [ ] Escalate to teacher when confidence is low.
+
+## anomaly_alerts · admin/T *(Tier 3 — proposed, primarily server-side)*
+Detect: child absent N consecutive days; behavior-rating drop; missed medication.
+
+### Tasks
+- [ ] Server-side daily cron over diary + attendance + medicine records.
+- [ ] Push to assigned teacher + school admin (not to parent directly).
+- [ ] Tunable thresholds per school.
+
+---
+
+## (NOT building — explicit non-goals from §9.3)
+
+- ❌ **IP camera integration** — LGPD risk for a children's product in Brazil; brand damage if a stream is breached. Document this decision when next reviewed; do not entertain in sales discovery.
+- ❌ **HR / payroll module** — scope creep; if a school needs it they have dedicated HR tools.
+- ❌ **Full discovery / marketplace pivot** — that is a different business model (B2B → B2B2C with two-sided flywheel). Evaluate as a separate product, not as a feature.
+
+---
+
 ## Cross-feature tasks
 
 ### From the multi-expert review ([review.md](review.md))
