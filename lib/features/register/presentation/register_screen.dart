@@ -22,7 +22,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/components/widgets/app_bar.dart';
 import '../../../core/user/bloc/user_bloc.dart';
 import '../../main/presentation/main_screen.dart';
+import '../../privacy_policy/privacy_policy_screen.dart';
 import '../../settings/edit_profile/widgets/edit_profile_field_tile.dart';
+import '../../terms_and_condtions/terms_and_conditions_screen.dart';
 import '../../your_account_under_review/presentation/your_account_under_review_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -256,6 +258,76 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   borderRadius: 30.r,
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20.csh,
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                                child: Text.rich(
+                                  textAlign: TextAlign.center,
+                                  TextSpan(
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: context.colors.labelColor,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    children: [
+                                      TextSpan(
+                                        text: LocalizationKeys.by_continuing_i_agree.tr(context),
+                                      ),
+                                      WidgetSpan(
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => const TermsAndConditions()),
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.h),
+                                            child: Text(
+                                              LocalizationKeys.terms_and_conditions.tr(context),
+                                              style: TextStyle(
+                                                decoration: TextDecoration.underline,
+                                                color: context.colors.labelColor,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        alignment: PlaceholderAlignment.middle,
+                                      ),
+                                      TextSpan(
+                                        text: LocalizationKeys.and.tr(context),
+                                      ),
+                                      WidgetSpan(
+                                        child: InkWell(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(builder: (context) => const PrivacyPolicy()),
+                                            );
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2),
+                                            child: Text(
+                                              LocalizationKeys.privacy_policy.tr(context),
+                                              style: TextStyle(
+                                                decoration: TextDecoration.underline,
+                                                color: context.colors.labelColor,
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        alignment: PlaceholderAlignment.middle,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                               SizedBox(

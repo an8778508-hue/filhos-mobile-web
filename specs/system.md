@@ -4,7 +4,7 @@ Technical architecture, runtime, and operational practices. See [`../CLAUDE.md`]
 
 ## 1. Stack snapshot
 
-- **Flutter** 3.13.6, Dart `>=3.0.5 <4.0.0` (FVM-pinned via [`.fvm/`](../.fvm/))
+- **Flutter** 3.29.3, Dart `>=3.0.5 <4.0.0` (FVM-pinned via [`.fvmrc`](../.fvmrc))
 - **State:** `flutter_bloc` + `hydrated_bloc` (HydratedCubit for `UserBloc`, `ConfigCubit`)
 - **DI:** `get_it` singleton in [lib/core/dependency_injection/di.dart](../lib/core/dependency_injection/di.dart); each feature has a `*_di.dart` implementing `DependencyInjection`
 - **HTTP:** `dio` with interceptors in [lib/core/network/](../lib/core/network/)
@@ -138,7 +138,7 @@ Version source of truth: [pubspec.yaml](../pubspec.yaml) `version:` line.
 
 ### Build & CI
 - [ ] [both] Add CI that builds both flavors on every PR (currently no CI workflow files committed).
-- [ ] [both] Pin Flutter version via FVM in CI (`.fvm/fvm_config.json`) to avoid drift.
+- [ ] [both] Pin Flutter version via FVM in CI (`.fvmrc` — already present, pins to 3.29.3) to avoid drift.
 - [ ] [both] Sign release builds in CI with secrets pulled from a vault, not local keystores.
 
 ### Testing

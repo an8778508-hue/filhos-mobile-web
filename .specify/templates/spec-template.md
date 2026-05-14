@@ -8,6 +8,17 @@
 
 **Input**: User description: "$ARGUMENTS"
 
+## Flavor Scope *(mandatory for Criarte)*
+
+<!--
+  Criarte ships as two flavors from one codebase: `parents` and `professores`.
+  State which flavor(s) this feature targets and whether behavior diverges.
+-->
+
+- **Target flavor(s)**: [parents | professores | both]
+- **Flavor-conditional behavior**: [Describe any UI/permission differences between flavors, or "Identical in both flavors"]
+- **Server role implication**: [If both flavors, note that the role header is set from the flavor at login — see lib/features/login/data_sources/login_impl.dart]
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
@@ -77,6 +88,8 @@
 
 - What happens when [boundary condition]?
 - How does system handle [error scenario]?
+- How does the feature behave on the **non-target flavor**, if any user could reach it?
+- How does the feature behave for a user whose `isApproval == false` (approval gate)?
 
 ## Requirements *(mandatory)*
 
@@ -87,20 +100,44 @@
 
 ### Functional Requirements
 
-- **FR-001**: System MUST [specific capability, e.g., "allow users to create accounts"]
-- **FR-002**: System MUST [specific capability, e.g., "validate email addresses"]
-- **FR-003**: Users MUST be able to [key interaction, e.g., "reset their password"]
-- **FR-004**: System MUST [data requirement, e.g., "persist user preferences"]
-- **FR-005**: System MUST [behavior, e.g., "log all security events"]
+- **FR-001**: System MUST [specific capability]
+- **FR-002**: System MUST [specific capability]
+- **FR-003**: Users MUST be able to [key interaction]
+- **FR-004**: System MUST [data requirement]
+- **FR-005**: System MUST [behavior]
 
 *Example of marking unclear requirements:*
 
-- **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
-- **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
+- **FR-006**: System MUST [behavior] [NEEDS CLARIFICATION: detail not specified]
+
+### Localization Requirements *(mandatory for any user-visible text)*
+
+- All user-visible strings MUST be added as keys in `lib/core/localization/localization_keys.dart`.
+- Translations MUST be provided for **all three** languages: Portuguese (primary), English, Arabic.
+- List every new key here:
+
+| Key           | pt (primary) | en        | ar     |
+|---------------|--------------|-----------|--------|
+| `example_key` | "Exemplo"    | "Example" | "مثال" |
+
+- Note any string that should be **remote-overridable** via Firestore `config/*` (default: yes, since `ConfigCubit` already overlays remote translations).
+
+### Backend Touchpoints *(include if feature talks to a backend)*
+
+- **REST endpoints** (base `https://criarte.filhos.app/api/v1/`): [List endpoint, method, expected request/response shape]
+- **Firestore collections**: [Only for chat or other realtime surfaces. Specify path patterns, e.g., `chats/{conversationId}/messages/{messageId}`]
+- **Firebase Storage paths**: [If uploading media, specify path convention]
+- **FCM topics / data payload keys**: [If push-notification driven, specify `eventable_id` / `eventable_type` semantics for deep linking]
+
+### Permissions & Approval Gate
+
+- Does this feature require `isApproval == true`? [Yes / No — explain]
+- Any deep-link or push handler added by this feature MUST short-circuit to `your_account_under_review` when `isApproval == false`.
+- Does it require any device permissions (camera, mic, storage, notifications, alarms)? [List]
 
 ### Key Entities *(include if feature involves data)*
 
-- **[Entity 1]**: [What it represents, key attributes without implementation]
+- **[Entity 1]**: [What it represents, key attributes without implementation]. [If extending an existing model in `lib/core/models/` or a feature `models/` folder, name it.]
 - **[Entity 2]**: [What it represents, relationships to other entities]
 
 ## Success Criteria *(mandatory)*
@@ -112,10 +149,10 @@
 
 ### Measurable Outcomes
 
-- **SC-001**: [Measurable metric, e.g., "Users can complete account creation in under 2 minutes"]
-- **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
-- **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
-- **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+- **SC-001**: [Measurable metric]
+- **SC-002**: [Measurable metric]
+- **SC-003**: [User satisfaction metric]
+- **SC-004**: [Business metric]
 
 ## Assumptions
 
@@ -125,7 +162,7 @@
   chosen when the feature description did not specify certain details.
 -->
 
-- [Assumption about target users, e.g., "Users have stable internet connectivity"]
-- [Assumption about scope boundaries, e.g., "Mobile support is out of scope for v1"]
-- [Assumption about data/environment, e.g., "Existing authentication system will be reused"]
-- [Dependency on existing system/service, e.g., "Requires access to the existing user profile API"]
+- [Assumption about target users]
+- [Assumption about scope boundaries]
+- [Assumption about data/environment]
+- [Dependency on existing system/service]

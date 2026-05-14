@@ -9,7 +9,7 @@ description: "Task list template for feature implementation"
 
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
-**Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
+**Tests**: Test tasks are OPTIONAL — the Criarte test suite is minimal today (`flutter_test` scaffolding only). Include tests where practical; don't block delivery on them unless the spec asks.
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
@@ -19,58 +19,53 @@ description: "Task list template for feature implementation"
 - **[Story]**: Which user story this task belongs to (e.g., US1, US2, US3)
 - Include exact file paths in descriptions
 
-## Path Conventions
+## Path Conventions (Criarte)
 
-- **Single project**: `src/`, `tests/` at repository root
-- **Web app**: `backend/src/`, `frontend/src/`
-- **Mobile**: `api/src/`, `ios/src/` or `android/src/`
-- Paths shown below assume single project - adjust based on plan.md structure
+- **Feature code**: `lib/features/<feature>/{presentation,data_sources,models}/`
+- **Shared infrastructure**: `lib/core/...`
+- **Localization keys**: `lib/core/localization/localization_keys.dart`
+- **Translation JSONs**: `assets/langs/{pt,en,ar}.json`
+- **DI registration**: `lib/init_dependencies.dart`
+- **Flavor entry points**: `lib/main.dart` (parents), `lib/main_professores.dart` (professores)
+- **Tests** (when added): `test/features/<feature>/`
 
 <!--
   ============================================================================
   IMPORTANT: The tasks below are SAMPLE TASKS for illustration purposes only.
-
-  The /speckit.tasks command MUST replace these with actual tasks based on:
-  - User stories from spec.md (with their priorities P1, P2, P3...)
-  - Feature requirements from plan.md
-  - Entities from data-model.md
-  - Endpoints from contracts/
-
-  Tasks MUST be organized by user story so each story can be:
-  - Implemented independently
-  - Tested independently
-  - Delivered as an MVP increment
-
+  The /speckit.tasks command MUST replace these with actual tasks derived from
+  spec.md (user stories), plan.md (technical context), data-model.md, contracts/.
   DO NOT keep these sample tasks in the generated tasks.md file.
   ============================================================================
 -->
 
 ## Phase 1: Setup (Shared Infrastructure)
 
-**Purpose**: Project initialization and basic structure
+**Purpose**: Scaffold the feature directory and wire it into the app.
 
-- [ ] T001 Create project structure per implementation plan
-- [ ] T002 Initialize [language] project with [framework] dependencies
-- [ ] T003 [P] Configure linting and formatting tools
+- [ ] T001 Create feature directory `lib/features/[feature]/{presentation/{bloc,widgets},data_sources,models}/` mirroring the closest sibling feature
+- [ ] T002 Add new localization keys to `lib/core/localization/localization_keys.dart`
+- [ ] T003 [P] Add Portuguese translations to `assets/langs/pt.json` (primary)
+- [ ] T004 [P] Add English translations to `assets/langs/en.json`
+- [ ] T005 [P] Add Arabic translations to `assets/langs/ar.json`
+- [ ] T006 Create `lib/features/[feature]/[feature]_di.dart` (**at feature root**, not under `data_sources/`) implementing `DependencyInjection`
+- [ ] T007 Register the new DI in `lib/init_dependencies.dart`
 
 ---
 
 ## Phase 2: Foundational (Blocking Prerequisites)
 
-**Purpose**: Core infrastructure that MUST be complete before ANY user story can be implemented
+**Purpose**: Models, repository contract, and Bloc plumbing that user stories build on.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-Examples of foundational tasks (adjust based on your project):
+- [ ] T010 Define models in `lib/features/[feature]/models/` (or extend existing `lib/core/models/` if cross-feature)
+- [ ] T011 Define repository contract `lib/features/[feature]/data_sources/[feature]_repository.dart` (or `[feature]_repo.dart` — both naming styles are in use; mirror the closest sibling)
+- [ ] T012 Implement `[feature]_impl.dart` using `NetworkClient.handleRequest` returning `Either<Failure, T>` (no manual auth headers — interceptors handle them)
+- [ ] T013 [P] Create Bloc/Cubit (`feature_bloc.dart`, `_event.dart`, `_state.dart`); use HydratedBloc with `toJson`/`fromJson` only if state must persist across cold starts
+- [ ] T014 If feature talks to Firestore (chat/realtime), define the collection path conventions and listener lifecycle
+- [ ] T015 If feature deep-links from a push notification, ensure the handler honors the `isApproval == false → your_account_under_review` gate
 
-- [ ] T004 Setup database schema and migrations framework
-- [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
-- [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
-
-**Checkpoint**: Foundation ready - user story implementation can now begin in parallel
+**Checkpoint**: Foundation ready — user story implementation can now begin in parallel
 
 ---
 
@@ -78,23 +73,21 @@ Examples of foundational tasks (adjust based on your project):
 
 **Goal**: [Brief description of what this story delivers]
 
-**Independent Test**: [How to verify this story works on its own]
+**Independent Test**: [How to verify this story works on its own — name the flavor(s) to test in]
 
-### Tests for User Story 1 (OPTIONAL - only if tests requested) ⚠️
+### Tests for User Story 1 (OPTIONAL)
 
-> **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
-
-- [ ] T010 [P] [US1] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T011 [P] [US1] Integration test for [user journey] in tests/integration/test_[name].py
+- [ ] T020 [P] [US1] Widget test for [screen] in `test/features/[feature]/[screen]_test.dart`
+- [ ] T021 [P] [US1] Unit test for [bloc/repo] in `test/features/[feature]/[unit]_test.dart`
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
-- [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
-- [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T016 [US1] Add validation and error handling
-- [ ] T017 [US1] Add logging for user story 1 operations
+- [ ] T022 [P] [US1] Implement screen `lib/features/[feature]/presentation/[screen]_screen.dart` (use `context.isParents` / `context.isProfessors` for any flavor-conditional UI)
+- [ ] T023 [P] [US1] Implement supporting widgets in `lib/features/[feature]/presentation/widgets/`
+- [ ] T024 [US1] Wire screen to Bloc events/states
+- [ ] T025 [US1] Pull theme from `ConfigCubit.styling` (no hardcoded colors); size with `flutter_screenutil` against 430×932
+- [ ] T026 [US1] Verify behavior in **both flavors** (parents and professores)
+- [ ] T027 [US1] Verify behavior for a user with `isApproval == false` (should not reach this screen)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
@@ -102,42 +95,31 @@ Examples of foundational tasks (adjust based on your project):
 
 ## Phase 4: User Story 2 - [Title] (Priority: P2)
 
-**Goal**: [Brief description of what this story delivers]
+**Goal**: [Brief description]
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 2 (OPTIONAL - only if tests requested) ⚠️
-
-- [ ] T018 [P] [US2] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T019 [P] [US2] Integration test for [user journey] in tests/integration/test_[name].py
-
 ### Implementation for User Story 2
 
-- [ ] T020 [P] [US2] Create [Entity] model in src/models/[entity].py
-- [ ] T021 [US2] Implement [Service] in src/services/[service].py
-- [ ] T022 [US2] Implement [endpoint/feature] in src/[location]/[file].py
-- [ ] T023 [US2] Integrate with User Story 1 components (if needed)
+- [ ] T030 [P] [US2] [Task]
+- [ ] T031 [US2] [Task]
+- [ ] T032 [US2] Verify in both flavors
 
-**Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
+**Checkpoint**: User Stories 1 AND 2 both work independently
 
 ---
 
 ## Phase 5: User Story 3 - [Title] (Priority: P3)
 
-**Goal**: [Brief description of what this story delivers]
+**Goal**: [Brief description]
 
 **Independent Test**: [How to verify this story works on its own]
 
-### Tests for User Story 3 (OPTIONAL - only if tests requested) ⚠️
-
-- [ ] T024 [P] [US3] Contract test for [endpoint] in tests/contract/test_[name].py
-- [ ] T025 [P] [US3] Integration test for [user journey] in tests/integration/test_[name].py
-
 ### Implementation for User Story 3
 
-- [ ] T026 [P] [US3] Create [Entity] model in src/models/[entity].py
-- [ ] T027 [US3] Implement [Service] in src/services/[service].py
-- [ ] T028 [US3] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T040 [P] [US3] [Task]
+- [ ] T041 [US3] [Task]
+- [ ] T042 [US3] Verify in both flavors
 
 **Checkpoint**: All user stories should now be independently functional
 
@@ -149,14 +131,19 @@ Examples of foundational tasks (adjust based on your project):
 
 ## Phase N: Polish & Cross-Cutting Concerns
 
-**Purpose**: Improvements that affect multiple user stories
+**Purpose**: Final verification and cleanup that spans user stories.
 
-- [ ] TXXX [P] Documentation updates in docs/
-- [ ] TXXX Code cleanup and refactoring
-- [ ] TXXX Performance optimization across all stories
-- [ ] TXXX [P] Additional unit tests (if requested) in tests/unit/
-- [ ] TXXX Security hardening
-- [ ] TXXX Run quickstart.md validation
+- [ ] TX01 Run `flutter analyze` — must pass with no new warnings
+- [ ] TX02 Build parents flavor: `flutter build apk --flavor parents -t lib/main.dart`
+- [ ] TX03 Build professores flavor: `flutter build apk --flavor professores -t lib/main_professores.dart`
+- [ ] TX04 Cold-start the app and verify any HydratedBloc state for this feature round-trips correctly (`toJson` → `fromJson`)
+- [ ] TX05 Verify Firestore listeners (if any) are properly disposed and don't leak
+- [ ] TX06 If new push-notification types were added, end-to-end test deep linking
+- [ ] TX07 [P] If launcher icon / splash changed, regenerate per-flavor:
+  - `flutter pub run flutter_launcher_icons -f flutter_launcher_icons-parents.yaml`
+  - `flutter pub run flutter_launcher_icons -f flutter_launcher_icons-professores.yaml`
+- [ ] TX08 [P] Documentation updates (CLAUDE.md if invariants changed)
+- [ ] TX09 Run `quickstart.md` validation if present
 
 ---
 
@@ -164,48 +151,47 @@ Examples of foundational tasks (adjust based on your project):
 
 ### Phase Dependencies
 
-- **Setup (Phase 1)**: No dependencies - can start immediately
-- **Foundational (Phase 2)**: Depends on Setup completion - BLOCKS all user stories
-- **User Stories (Phase 3+)**: All depend on Foundational phase completion
-  - User stories can then proceed in parallel (if staffed)
-  - Or sequentially in priority order (P1 → P2 → P3)
+- **Setup (Phase 1)**: No dependencies — can start immediately
+- **Foundational (Phase 2)**: Depends on Setup; BLOCKS all user stories
+- **User Stories (Phase 3+)**: All depend on Foundational
+  - Can proceed in parallel (if staffed) or sequentially in priority order (P1 → P2 → P3)
 - **Polish (Final Phase)**: Depends on all desired user stories being complete
 
 ### User Story Dependencies
 
-- **User Story 1 (P1)**: Can start after Foundational (Phase 2) - No dependencies on other stories
-- **User Story 2 (P2)**: Can start after Foundational (Phase 2) - May integrate with US1 but should be independently testable
-- **User Story 3 (P3)**: Can start after Foundational (Phase 2) - May integrate with US1/US2 but should be independently testable
+- **User Story 1 (P1)**: Can start after Foundational — no dependencies on other stories
+- **User Story 2 (P2)**: Can start after Foundational — may integrate with US1 but should be independently testable
+- **User Story 3 (P3)**: Can start after Foundational — may integrate with US1/US2 but should be independently testable
 
 ### Within Each User Story
 
 - Tests (if included) MUST be written and FAIL before implementation
-- Models before services
-- Services before endpoints
-- Core implementation before integration
+- Models before repository contract before Bloc before screen
+- Both flavors verified before the story is "done"
 - Story complete before moving to next priority
 
 ### Parallel Opportunities
 
-- All Setup tasks marked [P] can run in parallel
-- All Foundational tasks marked [P] can run in parallel (within Phase 2)
-- Once Foundational phase completes, all user stories can start in parallel (if team capacity allows)
-- All tests for a user story marked [P] can run in parallel
-- Models within a story marked [P] can run in parallel
-- Different user stories can be worked on in parallel by different team members
+- All Setup tasks marked [P] (translations across pt/en/ar) can run in parallel
+- All Foundational tasks marked [P] can run in parallel within Phase 2
+- Once Foundational completes, all user stories can start in parallel (if team capacity allows)
+- Tests for a user story marked [P] can run in parallel
+- Widgets within a screen marked [P] can run in parallel
+- Different user stories can be worked on in parallel by different developers
 
 ---
 
 ## Parallel Example: User Story 1
 
 ```bash
-# Launch all tests for User Story 1 together (if tests requested):
-Task: "Contract test for [endpoint] in tests/contract/test_[name].py"
-Task: "Integration test for [user journey] in tests/integration/test_[name].py"
+# Translations across three languages can be added in parallel:
+Task: "Add Portuguese translations to assets/langs/pt.json"
+Task: "Add English translations to assets/langs/en.json"
+Task: "Add Arabic translations to assets/langs/ar.json"
 
-# Launch all models for User Story 1 together:
-Task: "Create [Entity1] model in src/models/[entity1].py"
-Task: "Create [Entity2] model in src/models/[entity2].py"
+# Independent widgets for a screen can be built in parallel:
+Task: "Implement [WidgetA] in lib/features/[feature]/presentation/widgets/[widget_a].dart"
+Task: "Implement [WidgetB] in lib/features/[feature]/presentation/widgets/[widget_b].dart"
 ```
 
 ---
@@ -215,29 +201,27 @@ Task: "Create [Entity2] model in src/models/[entity2].py"
 ### MVP First (User Story 1 Only)
 
 1. Complete Phase 1: Setup
-2. Complete Phase 2: Foundational (CRITICAL - blocks all stories)
+2. Complete Phase 2: Foundational (CRITICAL — blocks all stories)
 3. Complete Phase 3: User Story 1
-4. **STOP and VALIDATE**: Test User Story 1 independently
-5. Deploy/demo if ready
+4. **STOP and VALIDATE**: Test User Story 1 independently in **both flavors**
+5. `flutter analyze` + per-flavor build
+6. Deploy/demo if ready
 
 ### Incremental Delivery
 
 1. Complete Setup + Foundational → Foundation ready
-2. Add User Story 1 → Test independently → Deploy/Demo (MVP!)
-3. Add User Story 2 → Test independently → Deploy/Demo
-4. Add User Story 3 → Test independently → Deploy/Demo
-5. Each story adds value without breaking previous stories
+2. Add User Story 1 → Test in both flavors → Deploy/Demo (MVP!)
+3. Add User Story 2 → Test in both flavors → Deploy/Demo
+4. Add User Story 3 → Test in both flavors → Deploy/Demo
 
 ### Parallel Team Strategy
-
-With multiple developers:
 
 1. Team completes Setup + Foundational together
 2. Once Foundational is done:
    - Developer A: User Story 1
    - Developer B: User Story 2
    - Developer C: User Story 3
-3. Stories complete and integrate independently
+3. Stories complete and integrate independently; each verifies both flavors before merging
 
 ---
 
@@ -246,7 +230,8 @@ With multiple developers:
 - [P] tasks = different files, no dependencies
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
-- Verify tests fail before implementing
+- **Verify in both flavors** before marking a story done
+- All user-visible strings must exist in pt/en/ar (constitution VI)
+- Repos return `Either<Failure, T>` via `NetworkClient.handleRequest` (constitution III)
 - Commit after each task or logical group
-- Stop at any checkpoint to validate story independently
-- Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence
+- Avoid: vague tasks, same-file conflicts, cross-story dependencies that break independence, hardcoded strings, hardcoded colors

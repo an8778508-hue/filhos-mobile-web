@@ -190,7 +190,7 @@ class LoginImpl extends LoginRepository {
           body: {
             'token': idToken,
             'provider': provider,
-            'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent',
+            'role': isProfessorsFlavor ? 'teacher' : 'parent',
             'platform': Platform.isAndroid ? 'android' : 'ios',
           },
         ),
@@ -215,7 +215,7 @@ class LoginImpl extends LoginRepository {
     try {
       final String iosClientId =
           // Use the correct client ID based on your app flavor
-          (mainKey.currentContext?.isProfessors ?? false)
+          isProfessorsFlavor
               ? "328842559224-h5603ru66f13lgcfavj5pg4rd8fmc7rg.apps.googleusercontent.com" // prof
               : "328842559224-hdbup6e2enp5cidaeh7oqua8220pflpf.apps.googleusercontent.com"; // parent
 
@@ -370,7 +370,7 @@ class LoginImpl extends LoginRepository {
             'email': event.email,
             'password': event.password,
             'password_confirmation': event.confirmPassword,
-            'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent',
+            'role': isProfessorsFlavor ? 'teacher' : 'parent',
           },
         ),
         onSuccess: (json) {
@@ -398,7 +398,7 @@ class LoginImpl extends LoginRepository {
         body: {
           'email': parameters.email,
           'password': parameters.password,
-          'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent',
+          'role': isProfessorsFlavor ? 'teacher' : 'parent',
         },
       );
 

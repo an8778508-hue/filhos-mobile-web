@@ -13,34 +13,47 @@
 ## Technical Context
 
 <!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
+  Pre-filled for Criarte (Flutter mobile, two flavors from one codebase).
+  Adjust per-feature only where the defaults don't apply.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]
+**Language/Version**: Dart `>=3.0.5 <4.0.0` · Flutter 3.29.3 (FVM-pinned via [.fvmrc](../../.fvmrc))
 
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]
+**Primary Dependencies**: `flutter_bloc` 9, `hydrated_bloc` 10, `get_it` 8, `dio` 5, `hive` 2, Firebase (`firebase_core`, `firebase_auth`, `cloud_firestore`, `firebase_storage`, `firebase_messaging`, `firebase_crashlytics`, `firebase_app_check`), `flutter_screenutil`
 
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]
+**Storage**: Hive (via `LocalDatabaseRepo`) for local key-value; HydratedBloc for persisted Cubit state; Firestore for chat; Firebase Storage for media; REST API at `https://criarte.filhos.app/api/v1/`
 
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]
+**Testing**: `flutter_test`. Real coverage is minimal today — note in the plan whether this feature adds tests, and what's deferred.
 
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
+**Target Platform**: iOS + Android, in **both flavors** (`parents` and `professores`). Design size 430×932 (`flutter_screenutil`).
 
-**Project Type**: [e.g., library/cli/web-service/mobile-app/compiler/desktop-app or NEEDS CLARIFICATION]
+**Project Type**: Flutter mobile app (single codebase, two product flavors)
 
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]
+**Performance Goals**: [Feature-specific — e.g., chat list scroll 60fps, image upload progress UX]
 
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]
+**Constraints**: [Feature-specific — e.g., offline behavior, large file uploads up to the 10h Dio timeout, alarm reliability]
 
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Scale/Scope**: [Feature-specific — number of screens added, number of new keys, number of new endpoints]
 
 ## Constitution Check
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify against [.specify/memory/constitution.md](../../.specify/memory/constitution.md):
+
+- [ ] **I. Feature-First Layout** — new code lands under `lib/features/<feature>/` mirroring a sibling
+- [ ] **II. Dependency Direction** — no feature-to-feature imports; shared code goes in `lib/core/`; DI wired in `lib/init_dependencies.dart`
+- [ ] **III. Networking Contract** — all REST calls via `NetworkClient.handleRequest` returning `Either<Failure, T>`; no manual auth headers
+- [ ] **IV. Persistence Discipline** — Hive only through `LocalDatabaseRepo`; HydratedBloc state round-trips `toJson`/`fromJson`
+- [ ] **V. Flavor Branching** — `context.isParents` / `context.isProfessors`, no string compares; both flavors verified
+- [ ] **VI. Localization** — every user-visible string added to `localization_keys.dart` + pt/en/ar JSONs
+- [ ] **VII. Chat Source of Truth** — any chat-adjacent work uses Firestore, not REST
+- [ ] **VIII. Approval Gate** — any deep-link / push handler respects `isApproval == false`
+- [ ] **IX. Medicine Reminders** — alarms use the native wrapper in `lib/core/custom_packages/`, not mixed with `flutter_local_notifications`
+- [ ] **X. Theming & Sizing** — `flutter_screenutil` 430×932 design; theme pulled from `ConfigCubit.styling`
+- [ ] **Quality Gates** — `flutter analyze` planned for both flavors; release build planned for both flavors before merge
+
+Any "no" answer requires an entry in **Complexity Tracking** below.
 
 ## Project Structure
 
@@ -57,57 +70,54 @@ specs/[###-feature]/
 ```
 
 ### Source Code (repository root)
-<!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
--->
 
 ```text
-# [REMOVE IF UNUSED] Option 1: Single project (DEFAULT)
-src/
-├── models/
-├── services/
-├── cli/
-└── lib/
+lib/
+├── core/                                      # Shared infrastructure (unchanged unless feature adds shared widgets/utils)
+│   ├── network/                               # NetworkClient + interceptors
+│   ├── local_db/                              # LocalDatabaseRepo (Hive)
+│   ├── localization/                          # localization_keys.dart  ← add new keys here
+│   ├── components/                            # Shared widgets (add here only if reused across features)
+│   ├── models/                                # Cross-feature domain models
+│   ├── theme/                                 # ConfigCubit-driven theme
+│   ├── notifications_service/                 # FCM + local notifications
+│   ├── user/                                  # UserBloc (HydratedCubit)
+│   ├── config/                                # ConfigCubit (HydratedCubit)
+│   └── ...
+│
+├── features/
+│   └── [feature_name]/                        # ← new feature lives here
+│       ├── [feature]_di.dart                  # DependencyInjection at feature root, registered in lib/init_dependencies.dart
+│       ├── presentation/
+│       │   ├── bloc/                          # feature_bloc.dart, _event.dart, _state.dart
+│       │   ├── widgets/
+│       │   └── [feature]_screen.dart
+│       ├── data_sources/
+│       │   ├── [feature]_repository.dart      # abstract contract (or [feature]_repo.dart — both styles in use)
+│       │   └── [feature]_impl.dart            # uses NetworkClient.handleRequest → Either<Failure, T>
+│       └── models/
+│
+├── flavors/
+│   └── app_flavors.dart                       # context.isParents / context.isProfessors
+├── init_dependencies.dart                     # ← register new feature_di here
+├── main.dart                                  # parents flavor entry
+└── main_professores.dart                      # professores flavor entry
 
-tests/
-├── contract/
-├── integration/
-└── unit/
+assets/langs/
+├── pt.json                                    # ← add translations (primary)
+├── en.json                                    # ← add translations
+└── ar.json                                    # ← add translations
 
-# [REMOVE IF UNUSED] Option 2: Web application (when "frontend" + "backend" detected)
-backend/
-├── src/
-│   ├── models/
-│   ├── services/
-│   └── api/
-└── tests/
-
-frontend/
-├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
-└── tests/
-
-# [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)
-api/
-└── [same as backend above]
-
-ios/ or android/
-└── [platform-specific structure: feature modules, UI flows, platform tests]
+test/                                          # flutter_test (real coverage is minimal today)
 ```
 
-**Structure Decision**: [Document the selected structure and reference the real
-directories captured above]
+**Structure Decision**: Document any deviations from the standard feature layout above (e.g., placing `bloc/` at the feature root like `onboard/`, or sharing widgets up into `lib/core/components/`).
 
 ## Complexity Tracking
 
 > **Fill ONLY if Constitution Check has violations that must be justified**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
-| [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
+| Violation                               | Why Needed         | Simpler Alternative Rejected Because        |
+| --------------------------------------- | ------------------ | ------------------------------------------- |
+| [e.g., feature-to-feature import]       | [current need]     | [why moving to lib/core/ is insufficient]   |
+| [e.g., REST call outside handleRequest] | [specific problem] | [why interceptor-based flow doesn't fit]    |

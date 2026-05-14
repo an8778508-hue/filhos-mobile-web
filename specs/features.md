@@ -53,6 +53,20 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 
 ---
 
+## register · B
+[lib/features/register/](../lib/features/register/) — Create-account flow reached from the login footer. Collects `name / email / password / password_confirmation`; submits `POST auth/register`; on success calls `UserBloc.loggedIn(userModel)` and routes to main (`isApproval == true`) or to `your_account_under_review`. Shares [LoginRepository](../lib/features/login/data_sources/login_repository.dart) — `RegisterBloc` is registered alongside `LoginBloc` in [login_di.dart](../lib/features/login/login_di.dart) so there is no separate `register_impl.dart`.
+
+### Tasks
+- [x] **(P0)** Replace `(mainKey.currentContext?.isProfessors ?? false)` in `LoginImpl.register` with `isProfessorsFlavor`. *Fixed 2026-05-14 alongside [login → T-fix-1](login/tasks.md#constitution-drift-fixes); the initial "14 sites swept" missed this file plus 3 others in `login_impl.dart`.*
+- [ ] **(P1)** Move `register` out of `LoginRepository` into a dedicated `RegisterRepository` so the abstraction matches the screen boundary. Today the only difference between login and register at the data layer is the endpoint path.
+- [ ] **(P1)** Surface server-side validation errors per field (email already in use, weak password, name length) instead of the generic `ServerFailure('Registration failed')` at [login_impl.dart:386](../lib/features/login/data_sources/login_impl.dart#L386).
+- [ ] **(P2)** Client-side validators currently mirror login's: email regex + ≥6-char password. Confirm parity with the server contract. *Confirm-password mismatch check is already present at [register_screen.dart:218-220](../lib/features/register/presentation/register_screen.dart#L218-L220) — initial entry incorrectly flagged this as missing.*
+- [ ] [B] Add a "back to login" CTA in the app bar (today reachable only by `Navigator.pop`).
+- [ ] [B] Document whether teachers can self-register or only school admins. Today the screen is identical for both flavors; the role header still distinguishes them server-side.
+- [x] [B] Surface terms / privacy consent at submission time. *Fixed 2026-05-14 — inline T&C / Privacy block added to register screen mirroring the login pattern. See [register/tasks.md T-fix-3](register/tasks.md).*
+
+---
+
 ## otp · B
 [lib/features/otp/](../lib/features/otp/) — SMS code entry, resend timer (Firebase Auth).
 
@@ -471,7 +485,7 @@ Detect: child absent N consecutive days; behavior-rating drop; missed medication
 - [x] **(P0)** Add `PrivacyInfo.xcprivacy` manifest. *Fixed 2026-05-14.*
 - [x] **(P0)** Pin Android `targetSdkVersion 34+`. *Fixed 2026-05-14: pinned to 34; AGP bumped to 7.4.2; Kotlin to 1.8.22.*
 - [x] **(P0)** Lower Dio timeouts. *Fixed 2026-05-14: 20s connect / 30s receive / 60s send.*
-- [x] **(P0)** Replace every `mainKey.currentContext?.isParents/isProfessors` call site. *Fixed 2026-05-14: new `core/user/current_role.dart` + process-wide `AppFlavor.current`; 14 sites swept.*
+- [x] **(P0)** Replace every `mainKey.currentContext?.isParents/isProfessors` call site. *Fixed 2026-05-14: new `core/user/current_role.dart` + process-wide `AppFlavor.current`; **18 sites swept** (initial sweep of 14 missed 4 sites in `login_impl.dart` — `sendSocialTokenToApi`, `signInWithGoogle` iOS client-ID branch, `register`, `loginWithEmail` — these were caught by the [login migration](login/tasks.md#constitution-drift-fixes) on 2026-05-14 and fixed in the same day's second sweep). Only commented-out references remain in `chat/data_sources/static_data.dart` and the wrapper-docs in `flavors/app_flavors.dart` + `core/user/current_role.dart`.*
 - [x] **(P0)** Stop logging `Authorization` header + request body in Crashlytics. *Fixed 2026-05-14 with `_redactHeaders` + `_redactBody`.*
 - [x] **(P0)** Handle 401 in `network_interceptor._handleOnError`. *Fixed 2026-05-14: forces `UserBloc.loggedOut()` once per session, re-entrancy-guarded.*
 - [ ] **(P0)** Stop closing singletons from `_MyAppState.dispose()` (`my_app.dart:33-37`).

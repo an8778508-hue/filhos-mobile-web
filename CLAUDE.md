@@ -66,7 +66,7 @@ Core models in [lib/core/models/](lib/core/models/) and feature `models/` folder
 
 ### 2.1 Stack
 
-- **Flutter** 3.13.6 · Dart SDK `>=3.0.5 <4.0.0`
+- **Flutter** 3.29.3 · Dart SDK `>=3.0.5 <4.0.0` (FVM-pinned via [.fvmrc](.fvmrc))
 - **State management:** `flutter_bloc` (BLoC + Cubit), with `hydrated_bloc` for persisted state (`UserBloc`, `ConfigCubit`)
 - **DI:** `get_it` (`di` singleton in [lib/core/dependency_injection/di.dart](lib/core/dependency_injection/di.dart))
 - **HTTP:** `dio` with custom interceptors
@@ -152,7 +152,7 @@ flutter build appbundle --flavor professores  -t lib/main_professores.dart
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
 
-Android flavor dimension `flavors` is declared in `android/app/build.gradle`. The repo uses **FVM** ([.fvm/](.fvm/) is present); prefer `fvm flutter …` if your environment is configured for it.
+Android flavor dimension `flavors` is declared in `android/app/build.gradle`. The repo uses **FVM** (pinned to Flutter 3.29.3 via [.fvmrc](.fvmrc) — there is no `.fvm/` directory); prefer `fvm flutter …` if your environment is configured for it.
 
 ---
 

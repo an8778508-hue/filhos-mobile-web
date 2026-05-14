@@ -64,8 +64,25 @@ class OTPBloc extends Cubit<OTPState> {
     }
 
     if (pendingOTPTime != null) {
-      // _startTimer();
+      _startTimer();
     }
+  }
+
+  void _startTimer() {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (_) {
+      final pendingTime = pendingOTPTime ?? otpTimeout;
+      if (pendingTime <= 0) {
+        localDatabase.delete(key: LocalKeys.last_otp_request);
+        localDatabase.delete(key: LocalKeys.last_otp_phone);
+        pendingOTPTime = null;
+        _timer?.cancel();
+        return;
+      }
+      if (pendingOTPTime != null) {
+        pendingOTPTime = pendingOTPTime! - 1;
+      }
+    });
   }
 
   Future<void> requestOTP({
@@ -88,13 +105,13 @@ class OTPBloc extends Cubit<OTPState> {
     }
     await localDatabase.write(key: LocalKeys.last_otp_request, value: DateTime.now().millisecondsSinceEpoch);
     await localDatabase.write(key: LocalKeys.last_otp_phone, value: phone);
-    // _startTimer();
+    pendingOTPTime = otpTimeout;
+    _startTimer();
 
     await loginRepository.requestOTP(
       phone: phone,
       onReady: () async {
-        //todo
-        // _startTimer();
+        _startTimer();
         ready.value = true;
         emit(OTPReady());
       },

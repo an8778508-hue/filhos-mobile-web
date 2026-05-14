@@ -35,10 +35,30 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       child: BlocListener<SplashBloc, SplashState>(
         listener: (BuildContext context, SplashState state) {
           if (state is SplashFailure) {
-            // Handle failure state, e.g., show a dialog or a snackbar
+            // Refresh from server failed (transient network/5xx). Surface the message,
+            // but don't strand the user — route based on persisted UserBloc state so
+            // they can still reach the app offline-first.
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.failure.message)),
             );
+            Timer(const Duration(seconds: 2), () {
+              final persistedUser = UserBloc.get.state.user;
+              if (persistedUser == null) {
+                ChooseLanguageScreen.push(context);
+              } else if (persistedUser.isApproval == true) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MainScreen()),
+                  (route) => false,
+                );
+              } else {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (_) => const YourAccountUnderReviewScreen()),
+                  (route) => false,
+                );
+              }
+            });
           }
           if (state is SplashSuccess) {
             Timer(const Duration(seconds: 2), () async {
