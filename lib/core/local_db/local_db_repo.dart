@@ -1,4 +1,5 @@
 import 'package:escola/core/models/user_model.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:path_provider/path_provider.dart';
 
 // To add model to the local database :
@@ -22,6 +23,9 @@ abstract class LocalDatabaseRepo {
   Future<void> delete({required String key});
 
   Future<String> dbPath() async {
+    // On web there is no filesystem; Hive uses IndexedDB and ignores the
+    // path argument. Returning a sentinel keeps the call sites uniform.
+    if (kIsWeb) return 'web';
     // Get the application's document directory
     var appDir = await getApplicationDocumentsDirectory();
     // Get the chosen sub-directory for database files

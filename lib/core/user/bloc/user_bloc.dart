@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:ui' show PlatformDispatcher;
 
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:escola/core/config/cubit/cubit.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
@@ -21,9 +23,11 @@ class UserBloc extends HydratedCubit<UserState> {
 
   UserBloc(this.localDatabaseRepo, this.userRepo)
       : super(UserState(
-          // initial device language
-          language: parseLang(Platform.localeName), //todo
-          languageWithCode: parseLang(Platform.localeName), //todo
+          // initial device language. Use `PlatformDispatcher.instance.locale`
+          // (from `dart:ui`) instead of `Platform.localeName` (from
+          // `dart:io`) because the latter throws on web.
+          language: parseLang(PlatformDispatcher.instance.locale.toString()),
+          languageWithCode: parseLang(PlatformDispatcher.instance.locale.toString()),
         )) {
     ConfigCubit.get.init(lang: state.languageWithCode);
   }
@@ -35,7 +39,17 @@ class UserBloc extends HydratedCubit<UserState> {
 
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
-    if (Platform.isIOS) {
+    // Web has no concept of vendor / Android id; `Platform.isIOS` throws on
+    // web. Use a web-specific id from device_info_plus, or fall back to a
+    // synthesized one keyed off browser + a timestamp.
+    if (kIsWeb) {
+      try {
+        final webDeviceInfo = await deviceInfo.webBrowserInfo;
+        uuid = webDeviceInfo.userAgent;
+      } catch (_) {
+        uuid = 'web-${DateTime.now().millisecondsSinceEpoch}';
+      }
+    } else if (Platform.isIOS) {
       final iosDeviceInfo = await deviceInfo.iosInfo;
       uuid = iosDeviceInfo.identifierForVendor;
     } else {

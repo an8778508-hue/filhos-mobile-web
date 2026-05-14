@@ -19,7 +19,13 @@ bool clearCache = false;
 Future initDependencies() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  HydratedBloc.storage = await HydratedStorage.build(storageDirectory: HydratedStorageDirectory((await getApplicationDocumentsDirectory()).path));
+  // Web has no filesystem, so HydratedBloc uses IndexedDB via the special
+  // `HydratedStorageDirectory.web` sentinel. Native uses the OS app docs dir.
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: kIsWeb
+        ? HydratedStorageDirectory.web
+        : HydratedStorageDirectory((await getApplicationDocumentsDirectory()).path),
+  );
 
   if (clearCache) {
     await HydratedBloc.storage.clear();
@@ -30,8 +36,11 @@ Future initDependencies() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Only activate App Check in release mode
-  if (kReleaseMode) {
+  // Only activate App Check in release mode. On web, `playIntegrity` does
+  // not apply — would need `ReCaptchaV3Provider('site-key')`. See
+  // specs/web-setup.md §4 for the external setup. Skipping on web until
+  // the reCAPTCHA site key is wired.
+  if (kReleaseMode && !kIsWeb) {
     await FirebaseAppCheck.instance.activate(
       androidProvider: AndroidProvider.playIntegrity,
     );
@@ -48,7 +57,12 @@ Future initDependencies() async {
     await di<LocalDatabaseRepo>().clearDB();
   }
 
-  await di<AlarmManager>().init();
+  // Native-only: the `alarm` package has no web implementation and the
+  // current init path uses `Platform.isAndroid` (dart:io) which behaves
+  // oddly on web. Medicine reminders are a no-op on web.
+  if (!kIsWeb) {
+    await di<AlarmManager>().init();
+  }
 
   // use this to upload local translations to remote firebase config
   // await uploadTranslations();
