@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(get-childitem -Force)",
-      "Bash(select-object name *)"
+      "Bash(select-object name *)",
+      "Bash(git rm *)"
     ]
   }
 }

@@ -28,45 +28,70 @@ class Message extends Equatable {
   @override
   List<Object?> get props => [id, dateTime, content, type, sender, reciever, timestamp, child];
 
-  // toJson
-  toJson() {
+  // toJson — uses Firestore's serverTimestamp sentinel so ordering doesn't
+  // depend on the client clock. Pass [forServer]: true on write paths to opt
+  // into the server timestamp; pass false (or omit) for local previews.
+  Map<String, dynamic> toJson({bool forServer = true}) {
     final utcTime = dateTime?.toUtc();
-    debugPrint('date time: $dateTime  timestamp: $timestamp content: $content  to utc time: $utcTime   to jsonnnn' );
-    final utcTimeTimestamp = utcTime?.millisecondsSinceEpoch;
     return {
       'id': id,
-      'dateTime': utcTime,
+      'dateTime': forServer ? FieldValue.serverTimestamp() : utcTime,
       'content': content,
       'type': type.toTypeString(),
-      'timestamp': utcTimeTimestamp,
+      // Numeric timestamp kept for back-compat with old readers; the
+      // server-side `dateTime` is the authority for ordering.
+      'timestamp': utcTime?.millisecondsSinceEpoch,
       'sender': sender.toJson(),
       'receiver': reciever.toJson(),
       "child": child?.toJson(),
     };
   }
 
-  // fromJson
+  // fromJson — tolerant: a single doc with a missing/wrong `dateTime` must
+  // not blank the entire conversation. Falls back to numeric `timestamp`
+  // then to "now" so the message renders at least somewhere.
   factory Message.fromJson(Map<String, dynamic> json) {
-    Timestamp firestoreTimestamp = json['dateTime'];
-    // DateTime localTime = firestoreTimestamp.toDate().toLocal();
-    DateTime utcTime = firestoreTimestamp.toDate();
-    debugPrint('date time: ${firestoreTimestamp.toDate()}   content: ${json['content']}   to utc time: $utcTime  from jsonnnn ' );
-    //todo
+    DateTime? localTime;
+    final raw = json['dateTime'];
+    if (raw is Timestamp) {
+      localTime = raw.toDate().toLocal();
+    } else if (raw is DateTime) {
+      localTime = raw.toLocal();
+    } else if (raw is int) {
+      localTime = DateTime.fromMillisecondsSinceEpoch(raw).toLocal();
+    } else if (json['timestamp'] is int) {
+      localTime = DateTime.fromMillisecondsSinceEpoch(json['timestamp'] as int).toLocal();
+    }
+
+    int? ts;
+    final rawTs = json['timestamp'];
+    if (rawTs is int) {
+      ts = rawTs;
+    } else if (rawTs is num) {
+      ts = rawTs.toInt();
+    } else if (localTime != null) {
+      ts = localTime.toUtc().millisecondsSinceEpoch;
+    }
+
     return Message(
-      id: json['id'].toString(),
-      timestamp: json['timestamp'] == null
-          ? null
-          : json['timestamp'] is int
-              ? json['timestamp']
-              : json['timestamp'].toInt(),
-      dateTime: utcTime,
-      content: json['content'],
-      type: json['type'].toString().toMessageType(),
-      sender: ChatUser.fromJson(json['sender']),
-      reciever: ChatUser.fromJson(json['receiver']),
-      child: json['child'] == null ? null : ChildModel.fromJson(json['child']),
+      id: json['id']?.toString() ?? '',
+      timestamp: ts,
+      dateTime: localTime,
+      content: json['content']?.toString() ?? '',
+      type: json['type']?.toString().toMessageType() ?? MessageType.text,
+      sender: ChatUser.fromJson(_asMap(json['sender'])),
+      reciever: ChatUser.fromJson(_asMap(json['receiver'])),
+      child: json['child'] is Map<String, dynamic>
+          ? ChildModel.fromJson(json['child'] as Map<String, dynamic>)
+          : null,
     );
   }
+
+  static Map<String, dynamic> _asMap(dynamic v) =>
+      v is Map<String, dynamic> ? v : <String, dynamic>{};
+
+  static Map<String, dynamic> _asMap(dynamic v) =>
+      v is Map<String, dynamic> ? v : <String, dynamic>{};
 
   // copy with
   Message copyWith({

@@ -1,0 +1,10 @@
+# Template for android/key.properties — DO NOT COMMIT the populated version.
+# CI should generate `android/key.properties` from secrets at build time
+# (e.g. GitHub Actions: `echo "$ANDROID_KEY_PROPERTIES_B64" | base64 -d > android/key.properties`).
+# The real key.keystore must NEVER be committed; pull it from a secrets store
+# (GitHub Actions encrypted secret, GCP Secret Manager, 1Password, etc.).
+
+storePassword=__REPLACE_ME__
+keyPassword=__REPLACE_ME__
+keyAlias=__REPLACE_ME__
+storeFile=__path_to_keystore_or_use_env__

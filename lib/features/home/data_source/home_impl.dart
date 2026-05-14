@@ -17,9 +17,6 @@ class HomeImpl extends HomeRepo {
 
   @override
   Future<Either<Failure, HomeModel>> getHomeData() async {
-    // final data = await rootBundle.loadString(
-    //     'assets/json/${mainKey.currentContext!.isProfessors ? 'home_professors' : 'home'}.json');
-
     return await networkClient.handleRequest(
       NetworkRequest(
         method: HttpMethod.get,

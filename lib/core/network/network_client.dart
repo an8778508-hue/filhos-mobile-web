@@ -41,7 +41,7 @@ class NetworkClient implements NetworkClientRepository {
         data: request.body,
         queryParameters: request.queryParameters,
         options: Options(
-          method: describeEnum(request.method),
+          method: request.method.name,
           headers: request.headers,
         ),
       );
@@ -52,11 +52,24 @@ class NetworkClient implements NetworkClientRepository {
     }
   }
 
+  // Defaults sized for JSON endpoints. For media uploads call `setTimeout(...)`
+  // with a larger value or use a dedicated multipart helper.
+  static const Duration _defaultConnectTimeout = Duration(seconds: 20);
+  static const Duration _defaultReceiveTimeout = Duration(seconds: 30);
+  static const Duration _defaultSendTimeout = Duration(seconds: 60);
+
   @override
   void setTimeout([int? seconds]) {
-    _dioInstance.options.connectTimeout = const Duration(hours: 10);
-    _dioInstance.options.receiveTimeout = const Duration(hours: 10);
-    _dioInstance.options.sendTimeout = const Duration(hours: 10);
+    if (seconds == null) {
+      _dioInstance.options.connectTimeout = _defaultConnectTimeout;
+      _dioInstance.options.receiveTimeout = _defaultReceiveTimeout;
+      _dioInstance.options.sendTimeout = _defaultSendTimeout;
+    } else {
+      final d = Duration(seconds: seconds);
+      _dioInstance.options.connectTimeout = d;
+      _dioInstance.options.receiveTimeout = d;
+      _dioInstance.options.sendTimeout = d;
+    }
   }
 
   NetworkResponse _adjustResponse(Response? response) {
@@ -171,7 +184,65 @@ class NetworkClient implements NetworkClientRepository {
     );
   }
 
+  /// Header keys we MUST strip before sending to Crashlytics — LGPD risk.
+  static const Set<String> _sensitiveHeaders = {
+    'authorization',
+    'cookie',
+    'set-cookie',
+    'x-api-key',
+    'school',
+    'school_id',
+  };
+
+  /// Body keys we MUST strip — Brazilian PII + medical data.
+  static const Set<String> _sensitiveBodyKeys = {
+    'password',
+    'token',
+    'access_token',
+    'refresh_token',
+    'cpf',
+    'cpf_num',
+    'phone',
+    'phone_number',
+    'email',
+    'medicine',
+    'medication',
+    'prescription',
+    'dosage',
+    'avatar',
+    'image',
+    'images',
+  };
+
+  Map<String, dynamic> _redactHeaders(Map<String, dynamic>? headers) {
+    if (headers == null) return const {};
+    return {
+      for (final entry in headers.entries)
+        entry.key:
+            _sensitiveHeaders.contains(entry.key.toLowerCase()) ? '[redacted]' : entry.value,
+    };
+  }
+
+  String _redactBody(dynamic body) {
+    if (body == null) return 'null';
+    if (body is FormData) {
+      return 'FormData(${body.fields.length} fields, ${body.files.length} files) [redacted]';
+    }
+    if (body is Map) {
+      final redacted = <String, dynamic>{};
+      body.forEach((k, v) {
+        redacted[k.toString()] =
+            _sensitiveBodyKeys.contains(k.toString().toLowerCase()) ? '[redacted]' : v;
+      });
+      return redacted.toString();
+    }
+    return '[non-map body redacted]';
+  }
+
   String _requestInfo(RequestOptions? requestOptions) {
-    return "Crashlytics :  Request url is : ${requestOptions?.baseUrl}${requestOptions?.path}\nRequest headers is : ${requestOptions?.headers}\nRequest Type is : ${requestOptions?.method}\nRequest Body is : ${requestOptions?.data}\n";
+    return "Crashlytics : Request url is : ${requestOptions?.baseUrl}${requestOptions?.path}"
+        "\nRequest headers is : ${_redactHeaders(requestOptions?.headers)}"
+        "\nRequest Type is : ${requestOptions?.method}"
+        "\nRequest Body is : ${_redactBody(requestOptions?.data)}\n";
   }
 }

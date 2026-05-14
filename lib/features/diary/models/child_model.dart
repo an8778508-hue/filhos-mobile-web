@@ -26,7 +26,7 @@ class ChildModel extends Equatable {
           : UserModel.fromJson(json['parent'], UserType.parent),
       id: validateInt(json['id']),
       name: validateString(json['name']),
-      age: validateString(json['age(']),
+      age: validateString(json['age']),
       avatar: validateString(json['avatar']),
       classRoom: validateString(json['class']),
     );

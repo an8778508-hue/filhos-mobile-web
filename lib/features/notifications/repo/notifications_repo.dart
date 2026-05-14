@@ -3,11 +3,10 @@ import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
 import 'package:escola/features/notifications/models/notification_model.dart';
-import 'package:escola/flavors/app_flavors.dart';
-import 'package:escola/my_app.dart';
 
 class NotificationsRepo {
-   String get  notificationsEndpoint => mainKey.currentContext?.isProfessors == true ?'auth/notifications':'auth/notifications';
+  // Endpoint is identical for both roles; flavor branching not required.
+  final String notificationsEndpoint = 'auth/notifications';
 
   final NetworkClientRepository networkClient;
   NotificationsRepo({required this.networkClient});

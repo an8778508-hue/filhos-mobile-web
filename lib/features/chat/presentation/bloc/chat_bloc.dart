@@ -8,6 +8,7 @@ import 'package:escola/core/local_db/local_db_repo.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/models/user_model.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
+import 'package:escola/core/user/current_role.dart';
 import 'package:escola/features/chat/data_sources/chat_repository.dart';
 import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/chat/models/last_message.dart';
@@ -16,7 +17,6 @@ import 'package:escola/features/chat/presentation/professor_contacts.dart';
 import 'package:escola/features/diary/models/child_model.dart';
 import 'package:escola/features/settings/my_children/repo/my_children_repo.dart';
 import 'package:escola/flavors/app_flavors.dart';
-import 'package:escola/my_app.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -88,7 +88,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
   // get Parent children
   Future<void> _getParentChildren(GetParentChildren event, Emitter<ChatState> emit) async {
-    if (mainKey.currentContext!.isParents) {
+    if (isCurrentUserParent) {
       emit(ChildrenLoading());
       final result = await myChildrenRepo.getChildren(1);
       return result.fold(

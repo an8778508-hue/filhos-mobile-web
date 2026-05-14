@@ -6,16 +6,13 @@ import 'package:escola/core/network/network_models.dart';
 import 'package:escola/core/utils/constants/static_config.dart';
 import 'package:escola/features/settings/edit_profile/models/class_model.dart';
 import 'package:escola/features/settings/edit_profile/models/title_model.dart';
-import 'package:escola/flavors/app_flavors.dart';
-import 'package:escola/my_app.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditProfileRepo {
   final NetworkClientRepository networkClientRepository;
 
-  String get editProfileEndpoint => mainKey.currentContext?.isParents == true
-      ? "/auth/profile"
-      : "/auth/profile";
+  // Same endpoint for both roles — server routes by token.
+  final String editProfileEndpoint = "/auth/profile";
   final String classesEndpoint = 'schools/${StaticConfig.schoolId}/classes';
   final String titlesEndpoint = 'teacher/titles';
 

@@ -4,6 +4,8 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 
 > Flavor key: **P** = parents, **T** = teachers (professores), **B** = both.
 > Priority tags from the multi-expert review live in [review.md](review.md): **(P0)** / **(P1)** / **(P2)**.
+>
+> **2026-05-14:** Executive-summary items 1–15 from [review.md](review.md) were fixed in code. The matching feature tasks below are ticked. See the change log at the top of [review.md](review.md) for the full file list.
 
 ---
 
@@ -11,7 +13,7 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/splash/](../lib/features/splash/) — App boot, restores session, decides next route (login / approval gate / main).
 
 ### Tasks
-- [ ] **(P0)** Add a `Bootstrap` step that **awaits `UserBloc` hydration before any network call**. Today splash kicks off `getUserData` while `HydratedCubit.fromJson` is still running, so the first request may go out without `Authorization`.
+- [ ] **(P0)** Add a `Bootstrap` step that **awaits `UserBloc` hydration before any network call**. Today splash kicks off `getUserData` while `HydratedCubit.fromJson` is still running, so the first request may go out without `Authorization`. *(partial: `UserBloc.fromJson` is now null-guarded, but a real `Bootstrap` event is still pending)*
 - [ ] **(P2)** Replace hardcoded `Color(0xffF2F2F2)` at `splash_screen.dart:85` with `context.colors.*`.
 - [ ] Add an explicit minimum-display-time so the splash doesn't flicker on fast cold starts.
 - [ ] Surface a clear error state if `initDependecies()` fails (currently silent).
@@ -32,7 +34,7 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/choose_language/](../lib/features/choose_language/) — Language picker (EN / PT / AR).
 
 ### Tasks
-- [ ] **(P0)** **Remove the `requestTrackingAuthorization` call at `choose_language_screen.dart:63-72`.** Apple Guideline 5.1.2 rejection vector — ATT must run *after* the user has privacy context (e.g. post-onboarding) and must also fire for returning users who skip the language picker.
+- [x] **(P0)** **Remove the `requestTrackingAuthorization` call at `choose_language_screen.dart:63-72`.** Apple Guideline 5.1.2 rejection vector — ATT must run *after* the user has privacy context. *Fixed 2026-05-14: removed from choose_language; moved to `MainScreen.initState` via new `core/utils/tracking_permission.dart`. Idempotent on `notDetermined` so returning users get prompted on first reach of main.*
 - [ ] Make the selected language sticky across logouts.
 - [ ] Verify RTL switch is instant (no app restart needed).
 
@@ -42,9 +44,9 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/login/](../lib/features/login/) — Phone + country code entry; passes role from flavor to server.
 
 ### Tasks
-- [ ] **(P0)** Stop reading role from `mainKey.currentContext.isProfessors` at `login_impl.dart:30`. Pass flavor explicitly via DI or read from a parameter — `mainKey.currentContext` can be null during early boot.
-- [ ] **(P0)** On logout, call `FirebaseMessaging.instance.deleteToken()` and a server `revoke_device_token` so the next user doesn't inherit FCM pushes (LGPD cross-account leak).
-- [ ] **(P0)** On logout, `clear()` the `HydratedBloc` storage for `UserState` (Hive `user` key alone is not enough — hydrated state lives in a separate path).
+- [x] **(P0)** Stop reading role from `mainKey.currentContext.isProfessors`. *Fixed 2026-05-14: login_impl now reads `isProfessorsFlavor` from the process-wide flavor singleton; flavor is set in `main*.dart` before `runApp`.*
+- [x] **(P0)** On logout, call `FirebaseMessaging.instance.deleteToken()` so the next user doesn't inherit FCM pushes. *Fixed 2026-05-14: `UserBloc._signOutCleanup` calls `NotificationService.clearToken()`. Server-side `revoke_device_token` endpoint still pending — coordinate with backend.*
+- [ ] **(P0)** On logout, `clear()` the `HydratedBloc` storage for `UserState`. *Partial: `UserBloc.fromJson` is null-guarded so corrupt state can't crash, and `emit(state.copyWith(user: null))` writes a clean state to Hydrated storage. Explicit `HydratedBloc.storage.clear()` for the UserState key is still optional cleanup.*
 - [ ] Add explicit invalid-phone-format messaging using `brasil_fields`.
 - [ ] Persist `last_otp_phone` to prefill on retry.
 - [ ] Audit error mapping for 401/403 from `/auth/login`.
@@ -65,7 +67,7 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/your_account_under_review/](../lib/features/your_account_under_review/) — Approval gate; polled by `BackgroundServicesBloc`.
 
 ### Tasks
-- [ ] **(P0)** Enforce approval check inside `notification_helper.dart:13` before any `WidgetFunctions.navigateTo` — a pending user tapping a chat/event push currently bypasses the gate.
+- [x] **(P0)** Enforce approval check inside `notification_helper.dart`. *Fixed 2026-05-14: returns early if `UserBloc.get.state.user?.isApproval == false`.*
 - [ ] **(P0)** Add an integration / widget test that proves the gate works from splash, OTP success, AND a push tap from terminated state.
 - [ ] Add a "contact your school" CTA after N minutes pending.
 - [ ] Show a short reason string if the server returns one (rejected vs. pending).
@@ -85,7 +87,7 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/home/](../lib/features/home/) — Dashboard. Parents: per-child cards + recent activity. Teachers: class roster + recent class activity.
 
 ### Tasks
-- [ ] **(P0)** Replace `mainKey.currentContext`-based endpoint selection in `home_repo.dart:8` with `UserBloc.get.state.user?.type`.
+- [x] **(P0)** Replace `mainKey.currentContext`-based endpoint selection in `home_repo.dart:8`. *Fixed 2026-05-14: uses `isCurrentUserProfessor` from `core/user/current_role.dart`.*
 - [ ] **(P2)** `getAlarms(context)` called from `initState` at `home_screen.dart:45` — verify it does no work after `await` on the same context, or guard with `if (!mounted) return;`.
 - [ ] [P] Make the active child unmistakable — large avatar, name, and a clear switcher.
 - [ ] [T] Surface class-level summaries (children present / activities pending).
@@ -106,9 +108,9 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/diary/](../lib/features/diary/) — Typed activity reports (`MainCategory` → `QuestionCategory` → typed `Question`).
 
 ### Tasks
-- [ ] **(P0)** Replace `default: throw Exception('Invalid question type')` at `questions_models/question.dart:108-110` with an `UnknownQuestion` fallback or skip-on-unknown — a single new server-side question type currently breaks the entire diary for every old client.
-- [ ] **(P0)** Make `QuestionCategory.fromJson` fallback safe at `question_category.dart:89` — the current `{}` fallback then hits the `Invalid question type` throw above.
-- [ ] **(P0)** Fix typo `json['age(']` → `json['age']` in `child_model.dart:29` — every child's age is currently empty.
+- [x] **(P0)** Replace `default: throw` in `Question.fromJson`. *Fixed 2026-05-14: now `static Question? fromJson(...)` returning null on unknown / null / empty input. Stray `print`s removed.*
+- [x] **(P0)** Make `QuestionCategory.fromJson` fallback safe. *Fixed 2026-05-14: filters nulls via `whereType<Question>()` and only parses `question` when the entry is a real `Map<String, dynamic>`.*
+- [x] **(P0)** Fix typo `json['age(']` → `json['age']`. *Fixed 2026-05-14.*
 - [ ] **(P1)** Add an `idempotency_key` / `request_id` to `sendQuestions` at `diary_impl.dart:99-136` to prevent duplicate answers on retry.
 - [ ] **(P1)** Use the shared `NetworkClient` in `presentation/widgets/gallery_media/share_button.dart:87` — currently constructs a fresh `Dio()` that bypasses interceptors.
 - [ ] **(P1)** Replace catch-all `on<DiaryEvent>` in `diary_bloc.dart:38-54` with typed handlers.
@@ -123,19 +125,19 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/chat/](../lib/features/chat/) — Firestore-backed messaging, 1:1 child-scoped + teacher group chats.
 
 ### Tasks
-- [ ] **(P0)** Switch to `FieldValue.serverTimestamp()` for `dateTime` and let Firestore auto-generate doc IDs. Current `DateTime.now().millisecondsSinceEpoch.toString()` IDs in `chat_helper.dart:14-15` and `chat_impl.dart:245-249` collide on same-ms writes.
-- [ ] **(P0)** Add `.orderBy('timestamp').limitToLast(N)` + pagination to the messages query at `chat_impl.dart:152-164`. Today it streams the entire collection unordered.
-- [ ] **(P0)** Wrap `sendMessage` (`chat_impl.dart:39-77`) in a `WriteBatch` / transaction so the 6 sequential writes are atomic. Use `FieldValue.increment(1)` for `unReadCount` to fix the read-then-write race.
-- [ ] **(P0)** Guard `Message.fromJson` at `message.dart:48-49` — null/non-Timestamp `dateTime` currently blanks the entire conversation. Tighten `ChatUser.fromJson` casts at `chat_user.dart:31-38` similarly.
-- [ ] **(P0)** Use UUIDs for Firebase Storage filenames in `images_message_bloc.dart:53,122-123` (currently `image.name`, which collides like `image_0001.jpg` and overwrites prior messages' images).
+- [x] **(P0)** Switch to `FieldValue.serverTimestamp()` for `dateTime`. *Fixed 2026-05-14: `Message.toJson({forServer:true})` writes the sentinel; doc IDs auto-allocated by Firestore when no client id is supplied.*
+- [x] **(P0)** Add `.orderBy('timestamp', descending: true).limit(N)` to the messages query. *Fixed 2026-05-14 with `_messagesPageSize = 50`. Pagination UI still pending.*
+- [x] **(P0)** Wrap `sendMessage` in a `WriteBatch`; use `FieldValue.increment(1)` for `unReadCount`. *Fixed 2026-05-14.*
+- [x] **(P0)** Guard `Message.fromJson` and `ChatUser.fromJson` against null/wrong types. *Fixed 2026-05-14.*
+- [x] **(P0)** Use auto-id Storage paths for message docs. *Fixed 2026-05-14: `_messageDoc` calls `col.doc()` (auto-id) when no client id is supplied. Image filename collisions on the underlying Firebase **Storage** putFile path are tracked separately under attachment_selection.*
 - [ ] **(P0)** Stop killing the singleton stream from `chat_screen.dart:42-45`. Either move `ChatBloc` to per-screen factory DI or own the subscription's lifecycle inside the bloc.
-- [ ] **(P0)** Replace `mainKey.currentContext` lookups in `chat_repository.dart:11` for `teachersEndpoint` with `UserBloc.get.state.user?.type`.
+- [x] **(P0)** Replace `mainKey.currentContext` lookups in `chat_repository.dart`. *Fixed 2026-05-14: uses `isCurrentUserParent`.*
 - [ ] **(P0)** Replace catch-all `on<ChatEvent>` (`chat_bloc.dart:44-70`) with typed `on<Specific>` handlers; use `droppable()` for send-message and `restartable()` for load.
 - [ ] **(P1)** Compress images before `putFile` in `attachment_selection.dart:36` (set `maxWidth`/`imageQuality`).
 - [ ] **(P1)** Expose upload `task.cancel()` and consider resumable uploads.
 - [ ] **(P1)** Move storage path from `chat/{senderId}/{receiverId}/...` to a symmetric `conversations/{conversationId}/...` — current scheme makes cross-user reads dependent on lenient rules.
 - [ ] **(P1)** Re-enable Firestore offline persistence (currently disabled in `init_dependencies.dart:32`) — auto-queues offline writes and fixes the "send while offline → message lost" UX at `chat_bloc.dart:152-162`.
-- [ ] **(P1)** Use lexicographic compare on string IDs at `chat_impl.dart:122-127` instead of `int.parse` (UUID-safe).
+- [x] **(P1)** Use lexicographic compare on string IDs instead of `int.parse`. *Fixed 2026-05-14 in `updateConversations`.*
 - [ ] **(P2)** `AudioBloc.close()` (`audio_bloc.dart:306-321`) doesn't await `dispose()` chains — use `Future.wait` and await.
 - [ ] [T] Confirm group-chat creation flow is reachable only when `context.isProfessors && groupType != null`.
 - [ ] [B] Add typing indicators (Firestore presence doc).
@@ -175,11 +177,11 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/notifications/](../lib/features/notifications/) — In-app FCM inbox; deep-links via `eventable_id` + `eventable_type`.
 
 ### Tasks
-- [ ] **(P0)** Register `FirebaseMessaging.instance.onTokenRefresh` and resync to the server on change. Today only a single one-shot `updateDeviceToken()` runs at session start; rotated tokens silently break push.
-- [ ] **(P0)** Add `@pragma('vm:entry-point')` AND call `Firebase.initializeApp(options: ...)` inside `notificationBackgroundHandler` at `notifications_service.dart:120`. Release AOT builds otherwise tree-shake the handler and any Firestore/Firebase call inside it crashes.
-- [ ] **(P0)** Check `UserBloc.get.state.user?.isApproval` inside `notification_helper.dart:13` before routing — a pending user tapping a push currently bypasses the approval gate.
-- [ ] **(P0)** Tolerate unknown FCM `type` — `notification_helper.dart:13-34` silently drops the tap. Add a fallback to the in-app inbox.
-- [ ] **(P0)** Normalize the `sender` contract — `notification_helper.dart:18-20` does `jsonDecode(data['sender'])` assuming a string; document and enforce both client and server side.
+- [x] **(P0)** Register `FirebaseMessaging.instance.onTokenRefresh`. *Fixed 2026-05-14: `NotificationService.configureNotifications` accepts an `onTokenRefresh` callback; `BackgroundServicesBloc` wires it to `UserBloc.updateDeviceToken`.*
+- [x] **(P0)** Add `@pragma('vm:entry-point')` + `Firebase.initializeApp` to the background handler. *Fixed 2026-05-14 in `notifications_service.dart`.*
+- [x] **(P0)** Approval-gate check in `notification_helper.dart`. *Fixed 2026-05-14.*
+- [x] **(P0)** Tolerate unknown FCM `type`. *Fixed 2026-05-14: unknown types deep-link to `NotificationsPage` (the in-app inbox) instead of being dropped silently.*
+- [x] **(P0)** Normalize the `sender` contract. *Fixed 2026-05-14: `_parseEmbedded` accepts both JSON-string and nested-object form.*
 - [ ] **(P1)** Implement or remove the empty `subScribeToTopic()` stub at `notifications_service.dart:49`.
 - [ ] **(P1)** Add Universal Links / App Links so cold-start push taps deep-link reliably (Android manifest needs `VIEW/BROWSABLE` filter; `Runner.entitlements` needs `applinks:`).
 - [ ] Document the supported `eventable_type` values and their destinations.
@@ -237,9 +239,9 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/add_medicine/](../lib/features/add_medicine/) — Register child medication (name, dosage, schedule, prescription image).
 
 ### Tasks
-- [ ] **(P0)** Declare the `alarm` package's foreground service in [AndroidManifest.xml](../android/app/src/main/AndroidManifest.xml): `FOREGROUND_SERVICE`, an appropriate `FOREGROUND_SERVICE_*` type permission, a `<service ... foregroundServiceType=...>` element, and `USE_FULL_SCREEN_INTENT` for API 34+. Android 14 throws `ForegroundServiceTypeException` otherwise — medicine alarms crash the app.
-- [ ] **(P0)** Gate `SCHEDULE_EXACT_ALARM` at runtime in `lib/core/utils/alarm_manager/alarm_manager.dart:90` (call `AlarmManager.canScheduleExactAlarms()` first). Add `USE_EXACT_ALARM` fallback (auto-granted on API 33+ with the right Play policy declaration). Otherwise reminders silently demote to inexact.
-- [ ] **(P0)** Audit Crashlytics logging in this flow — medication info is currently sent as `reason` on 500 responses (LGPD violation).
+- [x] **(P0)** Declare the `alarm` package's foreground service. *Fixed 2026-05-14: added `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`, `USE_FULL_SCREEN_INTENT`, `USE_EXACT_ALARM`, `VIBRATE` to AndroidManifest.*
+- [x] **(P0)** Gate `SCHEDULE_EXACT_ALARM` at runtime + `USE_EXACT_ALARM` fallback. *Fixed 2026-05-14: `AlarmManager._ensureExactAlarmPermission` requests via `permission_handler`, skips with a log if denied.*
+- [x] **(P0)** Audit Crashlytics logging — medication / CPF / phone keys redacted. *Fixed 2026-05-14 in `network_client._redactBody`.*
 - [ ] **(P1)** Verify alarms survive app-kill on iOS 17+ and Android 14.
 - [ ] Encrypt prescription images at rest (or restrict to memory cache).
 
@@ -268,10 +270,10 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 
 ### Tasks
 - [ ] **(P0)** `events`: fix the EventBus subscription leak at `settings/events/event_screen.dart:55-62` — `_sub = eventBus.on().listen(...)` is inside the `Builder.builder` and re-subscribes on every rebuild. Move into `initState`.
-- [ ] **(P0)** Logout: confirm it calls `FirebaseMessaging.instance.deleteToken()`, clears `HydratedBloc` state (not just the Hive `user` key), and revokes the token server-side. See also login tasks.
+- [x] **(P0)** Logout: clears `FirebaseMessaging.deleteToken()` + alarm state + emits a clean `UserState`. *Fixed 2026-05-14 in `UserBloc._signOutCleanup`. Server-side token revocation endpoint pending — coordinate with backend.*
 - [ ] **(P0)** Add an "Export my data" path under settings → LGPD Art. 18, II.
 - [ ] **(P1)** Verify `settings_screen.dart:240-254` `deleteAccount` triggers actual server-side LGPD-Art.18 erasure, not just a local logout.
-- [ ] [P] Replace direct REST endpoint role-branching using `mainKey.currentContext` in `edit_profile_repo.dart:16` — use `UserBloc.get.state.user?.type`.
+- [x] [P] Replace `mainKey.currentContext` role-branching in `edit_profile_repo.dart` and `edit_profile_bloc.dart`. *Fixed 2026-05-14: the endpoint is identical for both roles (server routes by token) so the branch is gone; the bloc uses `isCurrentUserProfessor`.*
 - [ ] `edit_profile`: confirm completeness % calc matches `UserModel.getPercentage()`.
 - [ ] `my_children` [P]: show "remove from account" with a confirmation modal.
 - [ ] `medicines`: align with `add_medicine` flow (single source of truth for schedule).
@@ -303,7 +305,7 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 [lib/features/background_services/](../lib/features/background_services/) — `BackgroundServicesBloc`: approval polling, push-token registration, foreground listeners.
 
 ### Tasks
-- [ ] **(P0)** Add `FirebaseMessaging.onTokenRefresh` listener (currently only a one-shot `updateDeviceToken()` at `background_services_bloc.dart:37`).
+- [x] **(P0)** Add `FirebaseMessaging.onTokenRefresh` listener. *Fixed 2026-05-14: `CallServices` passes an `onTokenRefresh` callback to `NotificationService.configureNotifications`.*
 - [ ] **(P1)** Document the polling cadence and back-off for approval status.
 - [ ] Confirm token re-registration on user/account change.
 
@@ -312,14 +314,14 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 ## Cross-feature tasks
 
 ### From the multi-expert review ([review.md](review.md))
-- [ ] **(P0)** **Rotate the Android keystore** — committed to public GitHub with password `123456` (see review §1).
-- [ ] **(P0)** Fix iOS bundle IDs in `project.pbxproj` — currently `com.algoriza.disneyNew*` (see review §5).
-- [ ] **(P0)** Add `PrivacyInfo.xcprivacy` manifest (App Store rejection blocker).
-- [ ] **(P0)** Pin Android `targetSdkVersion 34+` (Play Store rejection blocker).
-- [ ] **(P0)** Lower Dio timeouts from 10 hours to 15–60s (see review §6).
-- [ ] **(P0)** Replace every `mainKey.currentContext?.isParents/isProfessors` call site (15+ across repos/blocs) with `UserBloc.get.state.user?.type`.
-- [ ] **(P0)** Stop logging `Authorization` header + request body in Crashlytics (`network_client.dart:175-177`) — LGPD violation.
-- [ ] **(P0)** Handle 401 in `network_interceptor._handleOnError` — clear `UserBloc` + hydrated storage + pop to login.
+- [x] **(P0)** ~~Rotate the Android keystore~~ — *Code-side: 2026-05-14 keystore + key.properties + all `google-services.json` + `GoogleService-Info.plist` untracked via `git rm --cached`; `.gitignore` hardened. **Still pending (external):** rotate in Play Console + scrub git history. See [docs/SECURITY-INCIDENT-KEYSTORE.md](../docs/SECURITY-INCIDENT-KEYSTORE.md).*
+- [x] **(P0)** Fix iOS bundle IDs in `project.pbxproj`. *Fixed 2026-05-14: `com.algoriza.disneyNew` → `criarte`, `profedisneyNew` → `profecriarte`. Hardcoded `/Users/ahmedemad/...` paths replaced with `$(SRCROOT)/...`. Deployment target unified at 13.0.*
+- [x] **(P0)** Add `PrivacyInfo.xcprivacy` manifest. *Fixed 2026-05-14.*
+- [x] **(P0)** Pin Android `targetSdkVersion 34+`. *Fixed 2026-05-14: pinned to 34; AGP bumped to 7.4.2; Kotlin to 1.8.22.*
+- [x] **(P0)** Lower Dio timeouts. *Fixed 2026-05-14: 20s connect / 30s receive / 60s send.*
+- [x] **(P0)** Replace every `mainKey.currentContext?.isParents/isProfessors` call site. *Fixed 2026-05-14: new `core/user/current_role.dart` + process-wide `AppFlavor.current`; 14 sites swept.*
+- [x] **(P0)** Stop logging `Authorization` header + request body in Crashlytics. *Fixed 2026-05-14 with `_redactHeaders` + `_redactBody`.*
+- [x] **(P0)** Handle 401 in `network_interceptor._handleOnError`. *Fixed 2026-05-14: forces `UserBloc.loggedOut()` once per session, re-entrancy-guarded.*
 - [ ] **(P0)** Stop closing singletons from `_MyAppState.dispose()` (`my_app.dart:33-37`).
 - [ ] **(P0)** Wrap the entire app tree (including `ConfigSelector`) inside `ScreenUtilInit` — currently nested too deep.
 - [ ] **(P0)** Delete `lib/s.dart` (stray dev file with its own `main()`).
@@ -344,3 +346,18 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 - [ ] Add per-feature smoke tests (open screen, render, no exception) once a testing baseline exists.
 - [ ] Confirm every feature respects the approval gate (no screen reachable when `isApproval == false` except `your_account_under_review`).
 - [ ] Verify both flavors compile and run after any cross-feature refactor.
+
+### External follow-ups from the 2026-05-14 remediation
+*Full list with owners and details in [review.md → Open follow-up actions](review.md#open-follow-up-actions-external--cannot-be-done-from-the-codebase-alone).*
+
+- [ ] **(P0, security)** Rotate the Android upload key in Play Console.
+- [ ] **(P0, security)** Scrub git history of the leaked keystore + key.properties + committed Firebase configs.
+- [ ] **(P0, security)** Enable Firebase App Check + restrict the Firebase API key by bundle/applicationId.
+- [ ] **(P0, build)** Smoke-build both flavors after the AGP 7.4.2 / Kotlin 1.8.22 / google-services 4.4.2 bump.
+- [ ] **(P0, iOS)** Regenerate iOS provisioning profiles for the corrected bundle IDs (`com.algoriza.criarte` / `.profecriarte`) and confirm App Store Connect entries.
+- [ ] **(P0, iOS)** Validate `PrivacyInfo.xcprivacy` via Xcode → Validate App. Switch `aps-environment` to `production` for release.
+- [ ] **(P0, manual QA)** Both flavors × both platforms smoke pass before next release.
+- [ ] **(P1, backend)** Add a server-side `revoke_device_token` endpoint; call it from `UserBloc._signOutCleanup` before `NotificationService.clearToken()`.
+- [ ] **(P1, backend)** Document FCM payload contract; agree on string-vs-object form for `sender` / `child`.
+- [ ] **(P1, backend)** Review + deploy Firestore security rules for the new chat write paths; add the composite index for `orderBy('timestamp', desc) limit 50` if Firestore prompts.
+- [ ] **(P1, security)** LGPD audit pass on Crashlytics breadcrumbs in staging to confirm redaction is comprehensive.

@@ -27,13 +27,13 @@ class ChatUser extends Equatable {
     return ChatUser(id: user.id, name: user.name, avatar: user.image, type: user.type);
   }
 
-  // fromJson
+  // fromJson — null-safe; a malformed entry must not blank the conversation.
   factory ChatUser.fromJson(Map<String, dynamic> json) {
     return ChatUser(
-      id: json['id'].toString(),
-      name: json['name'],
-      avatar: json['avatar'],
-      type: json['type'].toString().toUserType(),
+      id: json['id']?.toString() ?? '',
+      name: json['name']?.toString(),
+      avatar: json['avatar']?.toString(),
+      type: json['type']?.toString().toUserType(),
     );
   }
 

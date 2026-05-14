@@ -92,10 +92,25 @@ class DioInterceptorImpl implements NetworkInterceptor {
     printR('Request parameters is :', '${req.queryParameters}');
   }
 
+  // Guards against re-entrant logout loops: a 401 on the logout request itself
+  // (or on a token-revoke) must not trigger another forced-logout cascade.
+  bool _loggingOut = false;
+
   _handleOnError(
     DioException error,
     ErrorInterceptorHandler handler,
   ) async {
+    final status = error.response?.statusCode;
+    if (status == 401 && !_loggingOut && UserBloc.get.state.user != null) {
+      _loggingOut = true;
+      try {
+        await UserBloc.get.loggedOut();
+      } catch (e) {
+        printR('401 forced-logout failed', e);
+      } finally {
+        _loggingOut = false;
+      }
+    }
     return handler.next(error);
   }
 }

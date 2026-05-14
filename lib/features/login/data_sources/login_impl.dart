@@ -12,17 +12,9 @@ import 'package:escola/features/login/models/login_requset.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
 import 'package:escola/flavors/app_flavors.dart';
-import 'package:escola/my_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
-import '../../../core/errors/exceptions.dart';
-import '../../register/bloc/register_event.dart';
-import '../models/login_email_paramaters.dart';
 
 class LoginImpl extends LoginRepository {
   final NetworkClientRepository networkClient;
@@ -51,7 +43,8 @@ class LoginImpl extends LoginRepository {
         'phone': request.phone,
         'country_code': request.country_code.toUpperCase(),
         'device_token': deviceToken,
-        'role': (mainKey.currentContext?.isProfessors ?? false) ? 'teacher' : 'parent',
+        // Pre-login: no UserBloc user yet — role comes from the flavor binary.
+        'role': isProfessorsFlavor ? 'teacher' : 'parent',
       }, headers: {
         'school': StaticConfig.schoolId
       }),

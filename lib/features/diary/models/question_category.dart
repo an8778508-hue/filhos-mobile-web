@@ -85,8 +85,14 @@ class QuestionCategory extends Equatable {
       totalCount: totalCount.toString(),
       value: categoryData?['attendance_type'],
       answer: answersOfQuestions,
-      questions: List<Question>.from(questionAnswers.map((x) => Question.fromJson(x))),
-      question: Question.fromJson(json['question'] ?? {}),
+      questions: List<Question>.from(
+        (questionAnswers as Iterable)
+            .map((x) => Question.fromJson(x as Map<String, dynamic>))
+            .whereType<Question>(),
+      ),
+      question: json?['question'] is Map<String, dynamic>
+          ? Question.fromJson(json!['question'] as Map<String, dynamic>)
+          : null,
     );
   }
 

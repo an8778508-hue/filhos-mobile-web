@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:escola/core/errors/failures.dart';
+import 'package:escola/core/user/current_role.dart';
 import 'package:escola/features/chat/models/chat_user.dart';
 import 'package:escola/features/chat/models/message.dart';
-import 'package:escola/my_app.dart';
-import 'package:escola/flavors/app_flavors.dart';
 
 abstract class ChatRepo {
   final String sendNotificationEndpoint = '/auth/chat';
-  String get teachersEndpoint => mainKey.currentContext?.isParents == true?'parent/children/teachers':'teacher/children-teachers';
+  String get teachersEndpoint =>
+      isCurrentUserParent ? 'parent/children/teachers' : 'teacher/children-teachers';
   final String usersCollection = 'chatUsers';
   final String messagesCollection = 'messages';
   final String contactsCollection = 'contacts';

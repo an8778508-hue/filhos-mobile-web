@@ -11,26 +11,98 @@ Each finding is tagged with a **priority** and an **area / feature**. Feature-sc
 
 ---
 
+## Change log
+
+### 2026-05-14 — Executive summary §0 items 1–15 fixed
+
+Code-level remediation for every item in the §0 table. Cross-cutting fixes touched (non-exhaustive):
+
+| Area | Files |
+|------|-------|
+| Diary parsers | `lib/features/diary/models/questions_models/question.dart`, `question_category.dart`, `child_model.dart` |
+| Android manifest + Gradle | `android/app/src/main/AndroidManifest.xml`, `android/app/build.gradle`, `android/build.gradle`, `android/app/proguard-rules.pro` (new) |
+| Alarms | `lib/core/utils/alarm_manager/alarm_manager.dart` |
+| Networking | `lib/core/network/network_client.dart`, `lib/core/network/network_interceptor.dart` |
+| FCM lifecycle | `lib/core/notifications_service/notifications_service.dart`, `notification_helper.dart`, `lib/features/background_services/bloc/background_services_bloc.dart` |
+| User / session | `lib/core/user/bloc/user_bloc.dart`, `lib/core/user/current_role.dart` (new) |
+| iOS privacy | `ios/Runner/PrivacyInfo.xcprivacy` (new) |
+| Chat | `lib/features/chat/data_sources/chat_impl.dart`, `chat_repository.dart`, `lib/features/chat/models/message.dart`, `chat_user.dart` |
+| Role-from-context refactor (15+ sites) | `lib/flavors/app_flavors.dart`, `lib/main*.dart`, plus repo/bloc files under chat, home, settings, notifications, add_form, user, login, config |
+| ATT relocation | `lib/features/choose_language/presentation/choose_language_screen.dart`, `lib/features/main/presentation/main_screen.dart`, `lib/core/utils/tracking_permission.dart` (new) |
+| iOS bundle IDs + deployment target | `ios/Runner.xcodeproj/project.pbxproj` |
+| Secrets hygiene | `.gitignore`, `android/key.properties.example` (new), `docs/SECURITY-INCIDENT-KEYSTORE.md` (new); `git rm --cached` for keystore, key.properties, all `google-services.json` and `GoogleService-Info.plist` |
+
+---
+
+## Open follow-up actions (external — cannot be done from the codebase alone)
+
+These items remain after the 2026-05-14 code remediation. Tick each as it lands; add the date + actor / PR link inline. Tracked here (not in features.md) because they are repo-wide or external-system actions, not feature-scoped work.
+
+### Security / secrets (ref §1)
+
+- [ ] **Rotate the Android upload signing key in Play Console.** Use Play Console → Setup → App integrity → Request upload key reset. Generate a new keystore with `keytool` and store it in CI secrets. **Owner:** release engineer. **Severity:** P0 — leaked key + plaintext password `123456` exist in public git history.
+- [ ] **Scrub git history** of `android/key.keystore`, `android/key.properties`, all committed `google-services.json` and `GoogleService-Info.plist`. Use `git filter-repo --invert-paths …` on a mirror clone, then `git push --force --all && git push --force --tags`. Coordinate with the team first — this invalidates every existing clone, PR, and feature branch. **Owner:** repo admin. Commands in [docs/SECURITY-INCIDENT-KEYSTORE.md](../docs/SECURITY-INCIDENT-KEYSTORE.md).
+- [ ] **Enable Firebase App Check** for every Firebase product the app uses (Auth, Firestore, Storage, Messaging). Configure DeviceCheck/AppAttest for iOS and Play Integrity for Android. **Owner:** Firebase admin.
+- [ ] **Restrict the Firebase API key** in Google Cloud Console → Credentials → "Firebase API Key" → "Application restrictions" to the Android `applicationId` and the iOS `bundleId` of both flavors. **Owner:** Firebase admin.
+- [ ] **Audit GitHub for clones / forks** that still contain the keystore (`gh search code "key.keystore" --repo Evunity/filhos-mobile`). Notify any third party who cloned the repo. **Owner:** security.
+- [ ] **Verify CI secrets injection** for the new keystore and per-flavor Firebase configs once CI is set up. **Owner:** release engineer (blocks on the "Add CI pipeline" task in features.md cross-feature list).
+
+### Build verification (ref §4, §5, §6, §7)
+
+- [ ] **Run `flutter pub get` + `flutter build appbundle --flavor parents -t lib/main.dart`** on the Nour_main branch. The AGP 7.4.2 / Kotlin 1.8.22 / google-services 4.4.2 / crashlytics-gradle 3.0.2 bump (from AGP 7.3.0 / Kotlin 1.7.10) needs a real Gradle shake-out. **Owner:** release engineer.
+- [ ] Same for `--flavor professores -t lib/main_professores.dart`.
+- [ ] **Verify per-flavor Firebase config is picked up at runtime.** After the `google-services` plugin is applied, the FCM senderId/appId at runtime must match `com.algoriza.criarte` (parents) and `com.algoriza.profecriarte` (professores), not the single parents-app values from `firebase_options.dart`. Add a one-time log of `FirebaseMessaging.instance.getAPNSToken()` / `getToken()` per flavor to confirm.
+- [ ] **Verify exact-alarm permission flow on Android 12+ device.** Run the parents app on Android 12, schedule a medicine reminder, confirm the system permission dialog appears and the alarm fires at the scheduled time. Repeat on Android 14 to confirm the foreground service declaration in the manifest is sufficient (no `ForegroundServiceTypeException`).
+
+### iOS signing & store (ref §2, §3, §5)
+
+- [ ] **Regenerate iOS provisioning profiles** in Apple Developer for the corrected bundle IDs `com.algoriza.criarte` (parents) and `com.algoriza.profecriarte` (professores). Update `PROVISIONING_PROFILE_SPECIFIER` in Xcode if needed. **Owner:** iOS release engineer.
+- [ ] **Confirm App Store Connect listings** for both flavors point at the new bundle IDs. If new listings need to be created, the old `disneyNew` listings (if any) should be retired.
+- [ ] **Validate `PrivacyInfo.xcprivacy` against current bundled dependencies.** Open Xcode → Product → Archive → Validate App; Apple's validator will flag any required-reason API the manifest doesn't cover. Add new entries if any direct dep added since 2026-05-14 (e.g., a future addition of clipboard or active-keyboard APIs).
+- [ ] **Switch `aps-environment` to `production`** in `Runner.entitlements` for App Store distribution (currently `development`). Either edit the entitlement or rely on the provisioning-profile override at archive time — pick one and document.
+- [ ] **Build & ship a TestFlight build** of each flavor to confirm the ATT prompt fires once on first reach of `MainScreen` and never again.
+
+### Backend coordination (ref §10, §13)
+
+- [ ] **Add (or wire up) a server-side `revoke_device_token` endpoint** and call it from `UserBloc._signOutCleanup` before `NotificationService.clearToken()`. Without it, the server still has the old token in its push targets list and may try to deliver to a dead token for some retention window. **Owner:** backend + mobile.
+- [ ] **Confirm 401 contract**: does the server emit 401 only on token expiry, or also on policy violations (e.g., approval revoked)? If the latter, the forced-logout in `network_interceptor._handleOnError` may surprise users — re-scope to 401 + a specific `error_code`. **Owner:** backend + mobile.
+- [ ] **Document FCM payload contract** (`type`, `eventable_id`, `eventable_type`, `sender`, `child`) in a backend-shared doc. The client now tolerates both JSON-string and nested-object `sender`, but the server should still pick one and stick to it. **Owner:** backend.
+
+### Firestore (ref §11)
+
+- [ ] **Review & deploy Firestore security rules** that enforce the new chat write paths (`users/{uid}/contacts/{contactId}/messages/{auto-id}`). The rules must reject writes where `request.auth.uid != sender.id`, and reject reads where the requester isn't one of `{sender.id, receiver.id}`. **Owner:** backend.
+- [ ] **Add a composite index** if Firestore complains on the new `.orderBy('timestamp', descending: true)` query in either the per-user contact path or the per-child group path. (Firestore CLI: `firebase deploy --only firestore:indexes`.) **Owner:** backend.
+- [ ] **Backfill `dateTime` as serverTimestamp on legacy messages**, or document that pre-2026-05-14 messages will order by `timestamp` (millis) only. The mixed-mode rendering is handled in the client (`Message.fromJson` falls back), but ordering across the cutover should be sanity-checked.
+
+### Manual QA gates before next release
+
+- [ ] **Both flavors, both platforms, smoke test**: login → approval gate → home → diary write → chat send (text + audio + image) → medicine alarm → push tap from terminated state → logout. Confirm no regression after the 1–15 fixes. **Owner:** QA.
+- [ ] **LGPD audit pass** on Crashlytics breadcrumbs / non-fatal reports to confirm the redaction is comprehensive. Trigger a 500 in staging and inspect what arrives in Crashlytics. **Owner:** security.
+
+---
+
 ## 0. Executive summary — what must change before next release
 
-| # | Finding | Area | Source |
-|---|---------|------|--------|
-| 1 | **Android upload keystore + plaintext password `123456` are committed to GitHub.** Keystore is permanently in git history. Treat as compromised; rotate via Play Console; scrub history. | security | DevOps |
-| 2 | **iOS `PRODUCT_BUNDLE_IDENTIFIER` is `com.algoriza.disneyNew` / `com.algoriza.profedisneyNew`** across `project.pbxproj` while Firebase plists and intended store identity use `com.algoriza.criarte` / `…profecriarte`. FCM token registration fails on iOS and the app cannot be submitted under the stated identity. | iOS | Mobile |
-| 3 | **No `PrivacyInfo.xcprivacy` manifest** — Apple has required this since May 2024 for apps using "required reason APIs" (UserDefaults, file timestamps, system boot time, network APIs). App Store will reject. | iOS | Mobile |
-| 4 | **Android `targetSdkVersion` is implicit (`flutter.targetSdkVersion`)** → resolves to 33 on the toolchain in use. Play Store rejects uploads with target SDK < 34 since Aug 2024 (35 since Aug 2025). | Android | Mobile |
-| 5 | **No `POST_NOTIFICATIONS` permission** declared → push silently never appears on Android 13+. | Android push | Mobile |
-| 6 | **`google-services` Gradle plugin not applied**; per-flavor `google-services.json` is ignored. Both flavors register against the parents Firebase app. Crashlytics symbols not uploaded. | Firebase | Mobile |
-| 7 | **`alarm` package will crash on Android 14** (no `FOREGROUND_SERVICE_*` permission/type declared) and exact alarms silently demote (no runtime check on `SCHEDULE_EXACT_ALARM`, no `USE_EXACT_ALARM` fallback). Medicine reminders break. | alarms | Mobile |
-| 8 | **ATT prompt fires on the language picker** (Apple Guideline 5.1.2 rejection vector) and is never re-fired for returning users. | iOS privacy | Mobile |
-| 9 | **Dio timeouts set to 10 HOURS** for connect/receive/send. Any network blip hangs the UI indefinitely. | network | Flutter / Backend |
-| 10 | **No auto-logout on 401**; the app wedges in a half-authenticated state forever after token expiry. | auth | Backend |
-| 11 | **Chat messages are not ordered or paginated**; doc IDs and timestamps come from the device clock. Out-of-order messages, ID collisions, unbounded reads. | chat | Backend |
-| 12 | **`Question.fromJson` throws on unknown type** → any backend-added diary question type breaks the entire diary screen for all clients. Same risk pattern in `Message.fromJson` and `ChildModel.fromJson` (`'age('` typo). | diary, chat | Backend |
-| 13 | **FCM token not cleared / re-registered on logout or rotation.** Push intended for a previous user is delivered to the next user on the same device — LGPD cross-account leak. | notifications, LGPD | Backend |
-| 14 | **Crashlytics 500 reports include full `Authorization` headers, request bodies (CPF, phone, medication info).** LGPD violation. | observability, LGPD | Backend |
-| 15 | **`mainKey.currentContext!.isParents`** is force-unwrapped in 15+ repo/bloc sites for endpoint selection. Background isolates / early calls → NPE crash. Flavor/role should come from `UserBloc` state, not a widget key. | core, chat, home, settings | Flutter / Backend |
-| 16 | **No CI/CD, zero tests, no release tags.** 28 features merge straight to main with no automated guardrails. | CI, testing | DevOps |
+Status: ✅ = fixed in code on 2026-05-14 · 🟡 = code fixed, external follow-up required · ⏳ = not yet started.
+
+| # | Status | Finding | Area | Source |
+|---|--------|---------|------|--------|
+| 1 | 🟡 | **Android upload keystore + plaintext password `123456` are committed to GitHub.** `git rm --cached` + `.gitignore` hardening done in code. **External follow-up tracked below** in [Open follow-up actions § Security / secrets](#security--secrets-ref-1); playbook in [docs/SECURITY-INCIDENT-KEYSTORE.md](../docs/SECURITY-INCIDENT-KEYSTORE.md). | security | DevOps |
+| 2 | ✅ | **iOS `PRODUCT_BUNDLE_IDENTIFIER` was `com.algoriza.disneyNew` / `…profedisneyNew`** in `project.pbxproj`. Replaced with `com.algoriza.criarte` / `…profecriarte`. Also fixed hardcoded `/Users/ahmedemad/...` `FLUTTER_TARGET` paths and unified `IPHONEOS_DEPLOYMENT_TARGET` to 13.0. Provisioning profiles will need regeneration in Apple Developer. | iOS | Mobile |
+| 3 | ✅ | **No `PrivacyInfo.xcprivacy` manifest.** Added at [ios/Runner/PrivacyInfo.xcprivacy](../ios/Runner/PrivacyInfo.xcprivacy) declaring required-reason API usage (UserDefaults / FileTimestamp / SystemBootTime / DiskSpace) and collected data types. Tracking explicitly set to `false`. | iOS | Mobile |
+| 4 | ✅ | **Android `targetSdkVersion` was implicit.** Pinned to `34` in `android/app/build.gradle`. AGP bumped to 7.4.2, Kotlin to 1.8.22 (required for target 34). | Android | Mobile |
+| 5 | ✅ | **No `POST_NOTIFICATIONS` permission.** Added to `AndroidManifest.xml` (plus `USE_EXACT_ALARM`, `USE_FULL_SCREEN_INTENT`, `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE`, `VIBRATE`). | Android push | Mobile |
+| 6 | ✅ | **`google-services` + `firebase-crashlytics` Gradle plugins applied** in `android/app/build.gradle`. Classpaths added to root `android/build.gradle`. Created [android/app/proguard-rules.pro](../android/app/proguard-rules.pro) with keep rules for Firebase, Hive, just_audio, record, alarm package. | Firebase | Mobile |
+| 7 | ✅ | **Alarm exact-permission gating + foreground service.** Manifest declares the FGS permissions; `AlarmManager.setAlarm` now checks `Permission.scheduleExactAlarm.status` before scheduling and bails with a log if denied. | alarms | Mobile |
+| 8 | ✅ | **ATT prompt moved.** Removed from `choose_language_screen.dart`; new helper [`core/utils/tracking_permission.dart`](../lib/core/utils/tracking_permission.dart) called from `MainScreen.initState` post-login, idempotent on `notDetermined`. | iOS privacy | Mobile |
+| 9 | ✅ | **Dio timeouts split**: 20s connect / 30s receive / 60s send (down from 10h each). `setTimeout(int)` still available for upload-heavy requests. Replaced deprecated `describeEnum` with `.name`; removed dead `dart:ffi` import. | network | Flutter / Backend |
+| 10 | ✅ | **401 handler** added to `network_interceptor.dart` — forces `UserBloc.loggedOut()` once per session (re-entrancy guarded) so the app exits the half-authenticated state cleanly. | auth | Backend |
+| 11 | ✅ | **Chat re-architected.** Messages query is now `.orderBy('timestamp', descending: true).limit(50).snapshots()`. `sendMessage` is a `WriteBatch` with `FieldValue.serverTimestamp()` on the canonical `dateTime` and `FieldValue.increment(1)` on `unReadCount` (no read-then-write race). Message doc IDs auto-allocated when client doesn't supply one. `Message.fromJson` / `ChatUser.fromJson` are null-safe and tolerate missing/wrong types. Lexicographic compare for conversation id (no more `int.parse`). | chat | Backend |
+| 12 | ✅ | **Diary parsers tolerant.** `Question.fromJson` returns `Question?` (no more thrown `Exception('Invalid question type')`); `QuestionCategory.fromJson` filters nulls and guards the `question` fallback. Fixed `ChildModel.fromJson` typo `'age('` → `'age'`. Removed stray `print` statements. | diary, chat | Backend |
+| 13 | ✅ | **FCM lifecycle.** `NotificationService.configureNotifications` now registers `onTokenRefresh` (routed to `UserBloc.updateDeviceToken`). `UserBloc._signOutCleanup` calls `NotificationService.clearToken()` so the next user on the device doesn't inherit pushes. Background isolate handler now has `@pragma('vm:entry-point')` and re-initialises Firebase. Push tap routing checks `isApproval` and falls back to the inbox on unknown `type`. | notifications, LGPD | Backend |
+| 14 | ✅ | **PII redacted from Crashlytics 500 reports.** `network_client._requestInfo` strips `Authorization`, `Cookie`, `school*`, `x-api-key` headers and `password`, `cpf*`, `phone*`, `email`, `medicine/medication/prescription`, `token*`, and image keys from the body. FormData reduced to a count summary. | observability, LGPD | Backend |
+| 15 | ✅ | **`mainKey.currentContext` removed from non-widget code.** New [`core/user/current_role.dart`](../lib/core/user/current_role.dart) exposes `isCurrentUserParent` / `isCurrentUserProfessor` which read from `UserBloc.state.user?.type` and fall back to a process-wide `AppFlavor.current` (set from `main*.dart` before `runApp`). Swept 14 call sites across chat, home, settings, notifications, add_form, user, login, config. | core, chat, home, settings | Flutter / Backend |
+| 16 | ⏳ | **No CI/CD, zero tests, no release tags.** Not in the 1–15 scope; left as-is for a separate workstream. | CI, testing | DevOps |
 
 Everything below expands these and lists the rest.
 

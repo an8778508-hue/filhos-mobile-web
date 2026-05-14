@@ -4,6 +4,7 @@ import 'package:escola/my_app.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  await initDependencies();
-  runApp(const AppFlavor(appType: AppType.professores, child: MyApp()));
+  AppFlavor.setCurrent(AppType.professores);
+  await initDependecies();
+  runApp(AppFlavor(appType: AppType.professores, child: const MyApp()));
 }

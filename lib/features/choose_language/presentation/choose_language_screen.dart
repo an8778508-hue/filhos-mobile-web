@@ -1,3 +1,6 @@
+import 'package:escola/core/components/icons/common_image.dart';
+import 'package:escola/core/config/widgets/config_builder.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/core/components/buttons/button_with_icon.dart';
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/components/widgets/app_bar.dart';
@@ -57,18 +60,9 @@ class ChooseLanguageScreen extends StatefulWidget {
 }
 
 class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with TickerProviderStateMixin {
-  @override
-  void initState() {
-    // WidgetsFlutterBinding.ensureInitialized().addPostFrameCallback((_) => requestTrackingPermission());
-    super.initState();
-  }
-
-  // Future<void> requestTrackingPermission() async {
-  //   final TrackingStatus status = await AppTrackingTransparency.trackingAuthorizationStatus;
-  //   if (status == TrackingStatus.notDetermined && mounted && Platform.isIOS) {
-  //     await AppTrackingTransparency.requestTrackingAuthorization();
-  //   }
-  // }
+  // ATT prompt was previously fired here. Apple Guideline 5.1.2 requires the
+  // user to have privacy context before the system prompt — moved to
+  // `MainScreen` (post-login). See `core/utils/tracking_permission.dart`.
 
   @override
   Widget build(BuildContext context) {

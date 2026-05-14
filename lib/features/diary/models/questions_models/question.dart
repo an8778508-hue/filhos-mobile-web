@@ -27,14 +27,18 @@ abstract class Question extends Equatable {
     // this.mainCategory,
   });
 
-  // from Json
-  factory Question.fromJson(Map<String, dynamic> json) {
+  // from Json — tolerant: returns null for null/empty input or unknown type so
+  // a single backend-added question type can't break the whole diary screen.
+  static Question? fromJson(Map<String, dynamic> json) {
+    if (json.isEmpty) return null;
     final questionData = json['question_type'] ?? json;
-    print('Question.fromJson 1   $json');
-    print('Question.fromJson ${questionData['title']}');
-    final MainCategory? mainCategory = json['category'] == null ? null : MainCategory.fromJson(json['category']);
+    if (questionData is! Map) return null;
+    final MainCategory? mainCategory =
+        json['category'] == null ? null : MainCategory.fromJson(json['category']);
+    final type = questionData['type'];
+    if (type == null) return null;
 
-    switch (questionData?['type']) {
+    switch (type) {
       case 'checkbox':
         return CheckQuestion(
           id: questionData['id'],
@@ -124,7 +128,7 @@ abstract class Question extends Equatable {
           icon_value: json['icon_value'].toString(),
         );
       default:
-        throw Exception('Invalid question type');
+        return null;
     }
   }
 

@@ -12,10 +12,9 @@ import 'package:escola/features/add_form/add_form_screen.dart';
 import 'package:escola/features/add_form/models/add_form_model.dart';
 import 'package:escola/features/add_form/models/collection_model.dart';
 import 'package:escola/features/add_form/models/params.dart';
+import 'package:escola/core/user/current_role.dart';
 import 'package:escola/features/diary/models/child_model.dart';
 import 'package:escola/features/settings/my_children/repo/my_children_repo.dart';
-import 'package:escola/flavors/app_flavors.dart';
-import 'package:escola/my_app.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
@@ -30,7 +29,7 @@ class AddFormRepo {
     switch (addFormType) {
       case AddFormType.medicine:
         final eventsForm = jsonDecode(await rootBundle.loadString('assets/medicines_fields.json'));
-        if (mainKey.currentContext?.isParents == true) {
+        if (isCurrentUserParent) {
           final f = await myChildrenRepo.getChildren(1);
           final children = f.fold((l) => <ChildModel>[], (r) => r);
           eventsForm['data'][0]['values'] = [

@@ -25,8 +25,10 @@ class BackgroundServicesBloc
   // call services
   void _callServices(
       CallServices event, Emitter<BackgroundServicesState> emit) async {
-    // configure notitifcations
-    notificationService.configureNotifications();
+    // configure notitifcations + react to token rotation
+    notificationService.configureNotifications(
+      onTokenRefresh: (_) => userBloc.updateDeviceToken(),
+    );
 
     if (userBloc.state.user == null) return;
     // get Last Messages

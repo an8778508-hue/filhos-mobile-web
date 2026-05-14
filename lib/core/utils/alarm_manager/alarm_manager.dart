@@ -9,6 +9,7 @@ import 'package:escola/core/utils/alarm_manager/alarm_repo.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/flavors/app_flavors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../debouncer.dart';
 
@@ -63,6 +64,22 @@ class AlarmManager {
     });
   }
 
+  /// On Android 12+ (API 31+), exact alarms require `SCHEDULE_EXACT_ALARM`
+  /// (user-revocable) or `USE_EXACT_ALARM` (auto-granted on API 33+ for
+  /// alarm-clock / medication reminder use cases). If neither is granted we
+  /// skip scheduling rather than silently demoting to an inexact alarm that
+  /// would fire late and miss the medication window.
+  Future<bool> _ensureExactAlarmPermission() async {
+    if (!Platform.isAndroid) return true;
+    final status = await Permission.scheduleExactAlarm.status;
+    if (status.isGranted) return true;
+    final result = await Permission.scheduleExactAlarm.request();
+    if (!result.isGranted) {
+      debugPrint('[AlarmManager] SCHEDULE_EXACT_ALARM not granted — skipping alarm');
+    }
+    return result.isGranted;
+  }
+
   setAlarm({
     required int id,
     required String title,
@@ -73,6 +90,7 @@ class AlarmManager {
       if (Platform.isIOS) {
         await NativeIOSAlarm.setAlarm(id.toString(), alarmDate, title, description);
       } else {
+        if (!await _ensureExactAlarmPermission()) return;
         final alarmSettings = AlarmSettings(
           id: id,
           dateTime: alarmDate,

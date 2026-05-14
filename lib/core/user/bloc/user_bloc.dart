@@ -73,21 +73,19 @@ class UserBloc extends HydratedCubit<UserState> {
     ));
   }
 
-  loggedOut() async {
+  Future<void> _signOutCleanup() async {
     await localDatabaseRepo.removeUser();
-    await Future.delayed(const Duration(seconds: 1));
     await FirebaseAuth.instance.signOut();
     await di<AlarmManager>().removeAllAlarms();
+    // Drop the FCM token so pushes intended for the previous user don't reach
+    // the next user on this device (LGPD cross-account leak).
+    await NotificationService.clearToken();
     emit(state.copyWith(user: null, userNullable: true));
   }
 
-  deleteAccount() async {
-    await localDatabaseRepo.removeUser();
-    await Future.delayed(const Duration(seconds: 1));
-    await FirebaseAuth.instance.signOut();
-    await di<AlarmManager>().removeAllAlarms();
-    emit(state.copyWith(user: null, userNullable: true));
-  }
+  loggedOut() => _signOutCleanup();
+
+  deleteAccount() => _signOutCleanup();
 
   selectLang(String code,String codeWithLocale) async {
     final oldLang = state.language;
@@ -101,9 +99,11 @@ class UserBloc extends HydratedCubit<UserState> {
 
   @override
   UserState? fromJson(Map<String, dynamic> json) => UserState(
-        user: UserModel.fromJson(json['user']),
-        language: validateString(json['language'].toString(), 'pt'),
-    languageWithCode: validateString(json['languageWithCode'].toString(), 'pt_BR'),
+        user: json['user'] is Map<String, dynamic>
+            ? UserModel.fromJson(json['user'] as Map<String, dynamic>)
+            : null,
+        language: validateString(json['language']?.toString(), 'pt'),
+        languageWithCode: validateString(json['languageWithCode']?.toString(), 'pt_BR'),
       );
 
   @override

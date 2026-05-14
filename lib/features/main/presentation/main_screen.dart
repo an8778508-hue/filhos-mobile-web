@@ -1,6 +1,7 @@
 import 'package:escola/core/components/true_automatic_keep_alive.dart';
 import 'package:escola/core/config/config.dart';
 import 'package:escola/core/config/widgets/config_builder.dart';
+import 'package:escola/core/utils/tracking_permission.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/background_services/bloc/background_services_bloc.dart';
 import 'package:escola/features/diary/presentation/dairy_screen.dart';
@@ -35,6 +36,11 @@ class _MainScreenState extends State<MainScreen> {
     _pageController = PageController();
 
     BlocProvider.of<FeaturedEventsBloc>(context).fetch();
+
+    // Ask for tracking permission AFTER the user reaches the app's main
+    // surface — they've seen onboarding, login, terms/privacy by this point.
+    // No-op on non-iOS and idempotent when already decided.
+    WidgetsBinding.instance.addPostFrameCallback((_) => ensureTrackingPermission());
 
     super.initState();
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/notifications_service/notification_helper.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/my_app.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -13,7 +14,6 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
-import 'package:escola/flavors/app_flavors.dart';
 
 import '../user/bloc/user_bloc.dart';
 
@@ -154,11 +154,13 @@ class LocalNotificationHelper {
   }
 
   static showFlashWhenNotificationAppear(String title, String body) async {
-    final String appIcon = navigatorKey.currentContext!.isParents
+    final ctx = navigatorKey.currentContext;
+    if (ctx == null) return; // app may not have a live navigator yet
+    final String appIcon = isParentsFlavor
         ? Assets.appIcon.appIconParents.path
         : Assets.appIcon.appIconProfessors.path;
 
-    navigatorKey.currentContext!.showFlash<bool>(
+    ctx.showFlash<bool>(
       barrierDismissible: true,
       duration: const Duration(seconds: 3),
       builder: (context, controller) => FlashBar(

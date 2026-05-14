@@ -1,11 +1,10 @@
 import 'package:escola/core/config/app_info.dart';
 import 'package:escola/core/config/langs.dart';
 import 'package:escola/core/dependency_injection/di.dart';
+import 'package:escola/core/user/current_role.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/home/models/card_model.dart';
 import 'package:escola/features/home/models/section_model.dart';
-import 'package:escola/flavors/app_flavors.dart';
-import 'package:escola/my_app.dart';
 
 import 'cubit/cubit.dart';
 import 'onboard.dart';
@@ -47,7 +46,7 @@ class Config {
 
   // todo
   AppInfo get appInfo => AppInfo(
-      validateMap(_appInfoJson[mainKey.currentContext?.isProfessors == true ? 'teacher_app_info' : 'parent_app_info']));
+      validateMap(_appInfoJson[isCurrentUserProfessor ? 'teacher_app_info' : 'parent_app_info']));
 
   Map<String, dynamic> get translations => validateMap(json['translations']);
 
