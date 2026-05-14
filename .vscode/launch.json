@@ -1,31 +1,100 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-       
-        {
-            
-            "name": "Flutter parents",
-            "type": "dart",
-            "request": "launch",
-            "program": "lib/main.dart",
-            "args": [
-                "--flavor",
-                "parents" 
-            ]
-        },
-        {
-            "name": "Flutter Professores",
-            "type": "dart",
-            "request": "launch",
-            "program": "lib/main_professores.dart",
-            "args": [
-                "--flavor",
-                "professores" 
-            ]
-        },
-     
-    ]
+  // Criarte launch configurations.
+  //
+  // Two flavors (parents / professores) × three Flutter modes (debug / profile / release)
+  // for native (Android + iOS), plus two web entries.
+  //
+  // Notes
+  //   * Android/iOS flavors are configured in android/app/build.gradle and
+  //     iOS schemes; do NOT remove --flavor for native targets.
+  //   * Flutter "flavor" is a native concept; web ignores it. Web entries
+  //     use -t to pick the entry point instead.
+  //   * Web builds need --no-tree-shake-icons (some IconData in the codebase
+  //     is non-const). Until those sites are made const, keep this flag.
+  //   * Web runtime is partially functional: FCM push, alarms, audio
+  //     recording, and native splash are no-ops on web. See specs/web-setup.md
+  //     for the external config still needed (Firebase Web App, OAuth client
+  //     IDs, FCM service worker, backend CORS).
+  "version": "0.2.0",
+  "configurations": [
+    //
+    // ── Parents flavor (com.algoriza.criarte) ─────────────────────────────
+    //
+    {
+      "name": "parents · debug (native)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "args": ["--flavor", "parents"]
+    },
+    {
+      "name": "parents · profile (native)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "profile",
+      "args": ["--flavor", "parents"]
+    },
+    {
+      "name": "parents · release (native)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "flutterMode": "release",
+      "args": ["--flavor", "parents"]
+    },
+    //
+    // ── Professores flavor (com.algoriza.profecriarte) ────────────────────
+    //
+    {
+      "name": "professores · debug (native)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main_professores.dart",
+      "args": ["--flavor", "professores"]
+    },
+    {
+      "name": "professores · profile (native)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main_professores.dart",
+      "flutterMode": "profile",
+      "args": ["--flavor", "professores"]
+    },
+    {
+      "name": "professores · release (native)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main_professores.dart",
+      "flutterMode": "release",
+      "args": ["--flavor", "professores"]
+    },
+    //
+    // ── Web (Chrome) ──────────────────────────────────────────────────────
+    // Web doesn't honor --flavor; we still pass it as a --dart-define so
+    // the codebase can branch on flavor at runtime if needed.
+    //
+    {
+      "name": "parents · web (Chrome)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main.dart",
+      "deviceId": "chrome",
+      "args": [
+        "--no-tree-shake-icons",
+        "--dart-define=FLAVOR=parents"
+      ]
+    },
+    {
+      "name": "professores · web (Chrome)",
+      "type": "dart",
+      "request": "launch",
+      "program": "lib/main_professores.dart",
+      "deviceId": "chrome",
+      "args": [
+        "--no-tree-shake-icons",
+        "--dart-define=FLAVOR=professores"
+      ]
+    }
+  ]
 }

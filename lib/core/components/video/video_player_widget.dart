@@ -1,8 +1,23 @@
-import 'package:appinio_video_player_plus/appinio_video_player_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
+/// Network-URL video player.
+///
+/// Swapped from `appinio_video_player_plus` to the stock `video_player`
+/// package on 2026-05-14 so `flutter build web` compiles (appinio's
+/// `web_video_player/native_web_video_player.dart` referenced
+/// `ui.platformViewRegistry` which was moved out of `dart:ui` in newer
+/// Flutter versions).
+///
+/// This implementation drops the custom controls (settings button,
+/// fullscreen button, duration overlays) that appinio provided. If those
+/// are needed, layer a controls UI on top of `VideoPlayer(controller)`,
+/// or pull in a maintained controls package (e.g. `chewie`).
 class VideoPlayerWidget extends StatefulWidget {
   final String url;
+
+  /// When true, suppresses controls (taps are absorbed). Kept for
+  /// API-compat with the previous appinio-based widget.
   final bool showJustImage;
 
   const VideoPlayerWidget({super.key, required this.url, this.showJustImage = false});
@@ -12,43 +27,42 @@ class VideoPlayerWidget extends StatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  CustomVideoPlayerController? _customVideoPlayerController;
+  VideoPlayerController? _controller;
 
   @override
   void initState() {
     super.initState();
     final uri = Uri.tryParse(widget.url);
-    CachedVideoPlayerPlusController? videoPlayerController;
     if (uri != null) {
-      videoPlayerController = CachedVideoPlayerPlusController.networkUrl(
+      _controller = VideoPlayerController.networkUrl(
         uri,
         videoPlayerOptions: VideoPlayerOptions(),
-      )..initialize().then((value) => setState(() {}));
-    }
-    if (videoPlayerController != null) {
-      _customVideoPlayerController = CustomVideoPlayerController(
-          context: context,
-          videoPlayerController: videoPlayerController,
-          customVideoPlayerSettings: CustomVideoPlayerSettings(
-            customAspectRatio: 16 / 9,
-            showDurationPlayed: !widget.showJustImage,
-            settingsButtonAvailable: !widget.showJustImage,
-            showDurationRemaining: !widget.showJustImage,
-            showFullscreenButton: !widget.showJustImage,
-          ));
+      )..initialize().then((_) {
+          if (mounted) setState(() {});
+        });
     }
   }
 
   @override
   void dispose() {
-    _customVideoPlayerController?.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return _customVideoPlayerController?.videoPlayerController.value.isInitialized == true
-        ? AbsorbPointer(absorbing: widget.showJustImage, child: CustomVideoPlayer(customVideoPlayerController: _customVideoPlayerController!))
-        : const Center(child: CircularProgressIndicator());
+    final controller = _controller;
+    if (controller == null || !controller.value.isInitialized) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    final aspect = controller.value.aspectRatio == 0 ? 16 / 9 : controller.value.aspectRatio;
+    final player = AspectRatio(
+      aspectRatio: aspect,
+      child: VideoPlayer(controller),
+    );
+    return AbsorbPointer(
+      absorbing: widget.showJustImage,
+      child: player,
+    );
   }
 }
