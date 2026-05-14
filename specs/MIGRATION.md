@@ -26,40 +26,102 @@ Per-feature trios (`specs/<feature>/spec.md` + `plan.md` + `tasks.md`) are gener
 
 ## Implemented features
 
-Sorted by file count (largest first) to make the cost of each migration visible up front. File counts from a `find lib/features/<feature> -name '*.dart' | wc -l` on 2026-05-14.
+Sorted by file count (largest first). All 28 features migrated to per-feature trios as of 2026-05-15.
 
-| Feature | Code | Flavor | .dart files | Source-of-truth (features.md) | Trio status |
+| Feature | Code | Flavor (code) | .dart files | Source-of-truth | Trio |
 |---|---|---|---:|---|:---:|
-| settings | [lib/features/settings/](../lib/features/settings/) | B | 91 | [#settings--b](features.md#settings--b) | 🔴 |
-| diary | [lib/features/diary/](../lib/features/diary/) | B | 68 | [#diary--b](features.md#diary--b) → [specs/diary/](diary/) | 🟢 |
-| add_form | [lib/features/add_form/](../lib/features/add_form/) | B | 47 | [#add_form--b](features.md#add_form--b) | 🔴 |
-| chat | [lib/features/chat/](../lib/features/chat/) | B | 44 | [#chat--b](features.md#chat--b) → [specs/chat/](chat/) | 🟢 |
-| home | [lib/features/home/](../lib/features/home/) | B | 16 | [#home--b](features.md#home--b) | 🔴 |
-| login | [lib/features/login/](../lib/features/login/) | B | 11 | [#login--b](features.md#login--b) → [specs/login/](login/) | 🟢 |
-| add_address | [lib/features/add_address/](../lib/features/add_address/) | P | 9 | [#add_address--p](features.md#add_address--p) | 🔴 |
-| otp | [lib/features/otp/](../lib/features/otp/) | B | 8 | [#otp--b](features.md#otp--b) → [specs/otp/](otp/) | 🟢 |
-| my_addresses | [lib/features/my_addresses/](../lib/features/my_addresses/) | P | 8 | [#my_addresses--p](features.md#my_addresses--p) | 🔴 |
-| search | [lib/features/search/](../lib/features/search/) | B | 7 | [#search--b](features.md#search--b) | 🔴 |
-| search_for_filter | [lib/features/search_for_filter/](../lib/features/search_for_filter/) | B | 7 | [#search_for_filter--b](features.md#search_for_filter--b) | 🔴 |
-| notifications | [lib/features/notifications/](../lib/features/notifications/) | B | 6 | [#notifications--b](features.md#notifications--b) → [specs/notifications/](notifications/) | 🟢 |
-| main | [lib/features/main/](../lib/features/main/) | B | 6 | [#main--b](features.md#main--b) | 🔴 |
-| all_children | [lib/features/all_children/](../lib/features/all_children/) | P | 6 | [#all_children--p](features.md#all_children--p) | 🔴 |
-| gallery | [lib/features/gallery/](../lib/features/gallery/) | P | 5 | [#gallery--p](features.md#gallery--p) | 🔴 |
-| terms_and_condtions | [lib/features/terms_and_condtions/](../lib/features/terms_and_condtions/) | B | 5 | [#terms_and_condtions--b](features.md#terms_and_condtions--b) | 🔴 |
-| splash | [lib/features/splash/](../lib/features/splash/) | B | 4 | [#splash--b](features.md#splash--b) → [specs/splash/](splash/) | 🟢 |
-| register | [lib/features/register/](../lib/features/register/) | B | 4 | [#register--b](features.md#register--b) → [specs/register/](register/) | 🟢 |
-| featured_events | [lib/features/featured_events/](../lib/features/featured_events/) | B | 4 | [#featured_events--b](features.md#featured_events--b) | 🔴 |
-| background_services | [lib/features/background_services/](../lib/features/background_services/) | B | 4 | [#background_services--b](features.md#background_services--b) | 🔴 |
-| gallery_images | [lib/features/gallery_images/](../lib/features/gallery_images/) | P | 3 | [#gallery_images--p](features.md#gallery_images--p) | 🔴 |
-| add_medicine | [lib/features/add_medicine/](../lib/features/add_medicine/) | P | 2 | [#add_medicine--p](features.md#add_medicine--p) | 🔴 |
-| your_account_under_review | [lib/features/your_account_under_review/](../lib/features/your_account_under_review/) | B | 1 | [#your_account_under_review--b](features.md#your_account_under_review--b) | 🔴 |
-| select_attendants | [lib/features/select_attendants/](../lib/features/select_attendants/) | B | 1 | [#select_attendants--b](features.md#select_attendants--b) | 🔴 |
-| privacy_policy | [lib/features/privacy_policy/](../lib/features/privacy_policy/) | B | 1 | [#privacy_policy--b](features.md#privacy_policy--b) | 🔴 |
-| onboard | [lib/features/onboard/](../lib/features/onboard/) | B | 1 | [#onboard--b](features.md#onboard--b) | 🔴 |
-| choose_language | [lib/features/choose_language/](../lib/features/choose_language/) | B | 1 | [#choose_language--b](features.md#choose_language--b) | 🔴 |
-| attendants_selection | [lib/features/attendants_selection/](../lib/features/attendants_selection/) | B | 1 | [#attendants_selection--b](features.md#attendants_selection--b) | 🔴 |
+| settings | [lib/features/settings/](../lib/features/settings/) | B | 91 | [#settings--b](features.md#settings--b) | [specs/settings/](settings/) 🟢 |
+| diary | [lib/features/diary/](../lib/features/diary/) | B | 68 | [#diary--b](features.md#diary--b) | [specs/diary/](diary/) 🟢 |
+| add_form | [lib/features/add_form/](../lib/features/add_form/) | B | 47 | [#add_form--b](features.md#add_form--b) | [specs/add_form/](add_form/) 🟢 |
+| chat | [lib/features/chat/](../lib/features/chat/) | B | 44 | [#chat--b](features.md#chat--b) | [specs/chat/](chat/) 🟢 |
+| home | [lib/features/home/](../lib/features/home/) | B | 16 | [#home--b](features.md#home--b) | [specs/home/](home/) 🟢 |
+| login | [lib/features/login/](../lib/features/login/) | B | 11 | [#login--b](features.md#login--b) | [specs/login/](login/) 🟢 |
+| add_address | [lib/features/add_address/](../lib/features/add_address/) | **B** (features.md says P — drift) | 9 | [#add_address--p](features.md#add_address--p) | [specs/add_address/](add_address/) 🟢 |
+| otp | [lib/features/otp/](../lib/features/otp/) | B | 8 | [#otp--b](features.md#otp--b) | [specs/otp/](otp/) 🟢 |
+| my_addresses | [lib/features/my_addresses/](../lib/features/my_addresses/) | **B** (features.md says P — drift) | 8 | [#my_addresses--p](features.md#my_addresses--p) | [specs/my_addresses/](my_addresses/) 🟢 |
+| search | [lib/features/search/](../lib/features/search/) | B | 7 | [#search--b](features.md#search--b) | [specs/search/](search/) 🟢 |
+| search_for_filter | [lib/features/search_for_filter/](../lib/features/search_for_filter/) | B | 7 | [#search_for_filter--b](features.md#search_for_filter--b) | [specs/search_for_filter/](search_for_filter/) 🟢 |
+| notifications | [lib/features/notifications/](../lib/features/notifications/) | B | 6 | [#notifications--b](features.md#notifications--b) | [specs/notifications/](notifications/) 🟢 |
+| main | [lib/features/main/](../lib/features/main/) | B | 6 | [#main--b](features.md#main--b) | [specs/main/](main/) 🟢 |
+| all_children | [lib/features/all_children/](../lib/features/all_children/) | **T** (features.md says P — drift) | 6 | [#all_children--p](features.md#all_children--p) | [specs/all_children/](all_children/) 🟢 |
+| gallery | [lib/features/gallery/](../lib/features/gallery/) | P (stub — entry-point `if(false)`-gated) | 5 | [#gallery--p](features.md#gallery--p) | [specs/gallery/](gallery/) 🟢 |
+| terms_and_condtions | [lib/features/terms_and_condtions/](../lib/features/terms_and_condtions/) | B | 5 | [#terms_and_condtions--b](features.md#terms_and_condtions--b) | [specs/terms_and_condtions/](terms_and_condtions/) 🟢 |
+| splash | [lib/features/splash/](../lib/features/splash/) | B | 4 | [#splash--b](features.md#splash--b) | [specs/splash/](splash/) 🟢 |
+| register | [lib/features/register/](../lib/features/register/) | B | 4 | [#register--b](features.md#register--b) | [specs/register/](register/) 🟢 |
+| featured_events | [lib/features/featured_events/](../lib/features/featured_events/) | B | 4 | [#featured_events--b](features.md#featured_events--b) | [specs/featured_events/](featured_events/) 🟢 |
+| background_services | [lib/features/background_services/](../lib/features/background_services/) | B | 4 | [#background_services--b](features.md#background_services--b) | [specs/background_services/](background_services/) 🟢 |
+| gallery_images | [lib/features/gallery_images/](../lib/features/gallery_images/) | P (stub — cataas.com) | 3 | [#gallery_images--p](features.md#gallery_images--p) | [specs/gallery_images/](gallery_images/) 🟢 |
+| add_medicine | [lib/features/add_medicine/](../lib/features/add_medicine/) | P | 2 | [#add_medicine--p](features.md#add_medicine--p) | [specs/add_medicine/](add_medicine/) 🟢 |
+| your_account_under_review | [lib/features/your_account_under_review/](../lib/features/your_account_under_review/) | B | 1 | [#your_account_under_review--b](features.md#your_account_under_review--b) | [specs/your_account_under_review/](your_account_under_review/) 🟢 |
+| select_attendants | [lib/features/select_attendants/](../lib/features/select_attendants/) | B (placeholder stub) | 1 | [#select_attendants--b](features.md#select_attendants--b) | [specs/select_attendants/](select_attendants/) 🟢 |
+| privacy_policy | [lib/features/privacy_policy/](../lib/features/privacy_policy/) | B | 1 | [#privacy_policy--b](features.md#privacy_policy--b) | [specs/privacy_policy/](privacy_policy/) 🟢 |
+| onboard | [lib/features/onboard/](../lib/features/onboard/) | P (teachers skip upstream) | 1 | [#onboard--b](features.md#onboard--b) | [specs/onboard/](onboard/) 🟢 |
+| choose_language | [lib/features/choose_language/](../lib/features/choose_language/) | B | 1 | [#choose_language--b](features.md#choose_language--b) | [specs/choose_language/](choose_language/) 🟢 |
+| attendants_selection | [lib/features/attendants_selection/](../lib/features/attendants_selection/) | B (scaffold — multi-select half missing) | 1 | [#attendants_selection--b](features.md#attendants_selection--b) | [specs/attendants_selection/](attendants_selection/) 🟢 |
 
-**Coverage**: 7 / 28 features migrated to per-feature trios ([login](login/), [otp](otp/), [splash](splash/), [register](register/), [notifications](notifications/), [chat](chat/), [diary](diary/)).
+**Settings sub-trios** (the parent shell at [specs/settings/](settings/) routes to these):
+- [specs/settings/edit_profile/](settings/edit_profile/) 🟢
+- [specs/settings/my_children/](settings/my_children/) 🟢
+- [specs/settings/medicines/](settings/medicines/) 🟢 (covers parent `medicines/` + teacher `medicines_professors/`)
+- [specs/settings/announcements/](settings/announcements/) 🟢 (reachable from Home tiles + push, not the Settings shell)
+- [specs/settings/events/](settings/events/) 🟢 (the bottom-nav events tab, not a Settings row)
+- [specs/settings/about/](settings/about/) 🟢
+
+**Coverage**: 28 / 28 features migrated to per-feature trios. 81 trio files written across `specs/`.
+
+## Drift surfaced during migration (action required in features.md)
+
+Flavor tags in [features.md](features.md) disagree with code reality for **four** features. Code is the source of truth; features.md should be patched.
+
+| Feature | features.md | Code reality | Evidence |
+|---|---|---|---|
+| `add_address` | P | **B** | `settings_screen.dart:96-107` is not gated by `if (context.isParents)` |
+| `my_addresses` | P | **B** | same site as above |
+| `all_children` | P | **T** | Settings entry guarded by `if (context.isProfessors)` at `settings_screen.dart:134`; endpoint is `teacher/questions/data` |
+| `onboard` | B | **P** | teachers skip onboarding upstream |
+
+## Stub / unwired features (P0 — production blockers)
+
+These features exist in code and have trios, but cannot ship without backend or wiring fixes:
+
+| Feature | Status | Blocker |
+|---|---|---|
+| `gallery` | Shipped-but-disabled | Settings entry wrapped in `if(false)` at `settings_screen.dart:144`; repo returns `cataas.com` cat memes after a 1-second `Future.delayed` |
+| `gallery_images` | Production-blocking stub | `GalleryRepo.getGalleryImages` returns hardcoded `cataas.com` URLs; real `NetworkClient.handleRequest` block is commented out |
+| `settings/about` | Empty surface | `AboutRepo.getAbout()` REST call commented out; contact rows never render |
+| `select_attendants` | `Placeholder()` (10 LOC) | Zero implementation, zero callers. Collides with `attendants_selection` — must resolve naming + intent before either ships |
+| `attendants_selection` | Scaffold only | UI half exists; multi-select state, confirm CTA, and pop-with-selection are missing |
+
+## P0 bugs / fixes surfaced during migration
+
+Carried as `T-fix-N` items in each feature's `tasks.md`:
+
+| Feature | P0 finding |
+|---|---|
+| `add_form` | Double `/api/v1/` prefix on `/api/v1/teacher/announcements` endpoint (NetworkClient already prepends base URL) |
+| `settings/events` | EventBus subscription leak — `eventBus.on().listen(...)` inside `Builder.builder` re-subscribes on every rebuild ([event_screen.dart:55-62](../lib/features/settings/events/event_screen.dart#L55-L62)) |
+| `add_address` | Duplicate `"city"` JSON key — `region_id` silently overwrites Brazil's `city` text in the same request body |
+| `my_addresses` | Delete is dead-wired — button commented out, dialog confirm leads to `//todo`, no backend endpoint |
+| `settings/medicines` | `rejectRequest(id, reason, attachments)` discards attachments; `reason` sent in `queryParameters` not body |
+| `settings/medicines` | First-time parents can't add — `add_medicine` CTA is inside `if (medicines.isNotEmpty)` (empty state has no add affordance) |
+| `settings/about` | Contact rows never render (REST call commented out) |
+| `gallery` / `gallery_images` | Both backed by `cataas.com` stubs in production code |
+| `background_services` | Wake-up is **mount-driven only** — a pending user has no auto-discovery of approval (re-mount = re-poll); `NotificationService.configureNotifications` may leak `onTokenRefresh` subscriptions |
+| `search` | `SearchScreen` always hits the *teacher* endpoint even on parents flavor; `ProfessorSearch` event exists but is unwired |
+
+## features.md description drift (other patches)
+
+- `main`: features.md says "Tab shell with `bottom_navy_bar`". Reality: hand-rolled `CustomBottomNavigation`; `bottom_navy_bar` is a dead pubspec dependency.
+- `home`: features.md lists "Pull-to-refresh on the home feed" as open. Already shipped at [home_screen.dart:128-132](../lib/features/home/home_screen.dart#L128-L132).
+- `featured_events`: features.md lists "Track 'seen' featured events in Hive" as open. Already shipped (`seenFeaturedEvents` Hive key).
+- `terms_and_condtions`: features.md implies it's a WebView like `privacy_policy`. Reality: REST + `flutter_html` via `TextHtml`. Separate code path.
+
+## Status legend
+
+- 🔴 **Not migrated** — source-of-truth lives only in [features.md](features.md)
+- 🟡 **In progress** — partial trio under `specs/<feature>/`
+- 🟢 **Migrated** — full `spec.md` / `plan.md` / `tasks.md` trio under `specs/<feature>/`
+- 💡 **Proposed** — not yet implemented; use `/speckit.specify`, not migrate
 
 ## Proposed features (not yet implemented)
 
@@ -91,40 +153,30 @@ From [features.md "NOT building" section](features.md#not-building--explicit-non
 - ❌ **HR / payroll module** — scope creep
 - ❌ **Full discovery / marketplace pivot** — different business model
 
-## Suggested migration order
+## Migration history
 
-Recommended sequence for the first few migrations — small and self-contained first to validate the spec-kit template, then up the complexity ladder:
+| Date | Wave | Features | Highlights |
+|---|---|---|---|
+| 2026-05-14 | 1 | `login`, `otp`, `splash`, `register`, `notifications` | Proved template format on small features |
+| 2026-05-14 | 2 | `chat`, `diary` | Surfaced duplicate `_asMap` compile bug in chat; hardcoded `childId: 1`, O(n² log n) sort in diary |
+| 2026-05-15 | 3 (final) | All 21 remaining features | 81 trio files written; surfaced 4 flavor-tag drifts, 5 stub/unwired surfaces, 10 P0 bugs (see tables above) |
 
-1. ~~**`login`** (11 files, well-documented in features.md, clean P0 task list) — proves the template format~~ ✅ Migrated 2026-05-14 → [specs/login/](login/)
-2. ~~**`otp`** or **`splash`** — small, clear boundaries~~ ✅ Both migrated 2026-05-14 → [specs/otp/](otp/), [specs/splash/](splash/)
-3. ~~**`register`** (4 files, shares LoginRepository)~~ ✅ Migrated 2026-05-14 → [specs/register/](register/)
-4. ~~**`notifications`** — exercises the FCM / deep-link / approval-gate axes~~ ✅ Migrated 2026-05-14 → [specs/notifications/](notifications/)
-5. ~~**`chat`** — first complex Firestore-backed feature; stresses the "backend touchpoints" template section~~ ✅ Migrated 2026-05-14 → [specs/chat/](chat/). **Surfaced blocking compile bug: duplicate `_asMap` declaration in `message.dart` ([T-fix-1](chat/tasks.md))**.
-6. ~~**`diary`** — typed-question domain; will surface any template gaps for schema-driven UI~~ ✅ Migrated 2026-05-14 → [specs/diary/](diary/). **Surfaced bugs**: hardcoded `childId: 1` in template fetch, `activities.sort` in loop (O(n² log n)), 200+ lines of commented-out `sendQuestions`, missing idempotency on submit.
-7. **`settings`** — largest (91 files); split into sub-features (`edit_profile`, `my_children`, `medicines`, `announcements`, `events`, `about`) per the source-of-truth in features.md
+## Cross-feature work (still tracked in features.md)
 
-~~`register` is **not yet in [features.md](features.md)**~~ ✅ Anchor added and feature migrated 2026-05-14 → [specs/register/](register/).
+The "Cross-feature tasks" section at the bottom of [features.md](features.md#cross-feature-tasks) — CI, testing baseline, lint rules, package upgrades, license/readme, i18n key sync, analytics — is **not** a per-feature migration target. Surface those items into a project-level plan when ready; they don't belong in any one `specs/<feature>/`. Items addressed during the 2026-05-14 remediation are ticked in features.md.
 
-## Stale claims in existing `specs/` (resolved 2026-05-14)
+## Stale claims in existing `specs/` (resolved)
 
-✅ [specs/system.md §1](system.md#1-stack-snapshot) reconciled to `Flutter 3.29.3` + `.fvmrc`.
+- ✅ 2026-05-14: [specs/system.md §1](system.md#1-stack-snapshot) reconciled to `Flutter 3.29.3` + `.fvmrc`.
+- ✅ 2026-05-14: [CLAUDE.md §2.1 Stack](../CLAUDE.md) and §2.5 build/run note reconciled to `Flutter 3.29.3` + `.fvmrc`.
+- ✅ 2026-05-15: [specs/business.md](business.md) and [specs/system.md](system.md) rewritten from migrated trios.
 
-✅ [CLAUDE.md §2.1 Stack](../CLAUDE.md) and §2.5 build/run note reconciled to `Flutter 3.29.3` + `.fvmrc`.
+Constitution v1.2.0, [system.md](system.md), [business.md](business.md), and [CLAUDE.md](../CLAUDE.md) agree.
 
-Constitution v1.1.0, [system.md](system.md), and [CLAUDE.md](../CLAUDE.md) now agree.
+## Next steps
 
-## Cross-feature work (already tracked in features.md)
-
-The "Cross-feature tasks" section at the bottom of [features.md](features.md#cross-feature-tasks) — covering CI, testing baseline, lint rules, package upgrades, license/readme, i18n key sync, analytics — is **not** a per-feature migration target. Surface those items into a project-level plan when ready; they don't belong in any one `specs/<feature>/`.
-
-## Next step
-
-Pick a feature from the **Suggested migration order** above and run `/speckit.brownfield.migrate <feature>`. The command will:
-
-1. Read the matching [features.md](features.md) section as primary source
-2. Cross-reference code in `lib/features/<feature>/`
-3. Generate `specs/<feature>/spec.md`, `plan.md`, `tasks.md` using the customized templates in [.specify/templates/](../.specify/templates/)
-4. Mark tasks already-complete (✓) when they correspond to ticked items in features.md
-5. Surface gaps as `[NEEDS CLARIFICATION]` markers
-
-Re-run `/speckit.brownfield.validate` after each migration to confirm artifacts match reality.
+1. **Patch [features.md](features.md)** to fix the four flavor-tag drifts and four description-drift items listed above. Code is the source of truth.
+2. **Resolve the `select_attendants` / `attendants_selection` naming collision** — pick one folder, delete the other, decide whether the picker is for children or for guardians. Blocks any feature that uses an attendant picker (events, RSVPs, QR-pickup).
+3. **Wire the four stub surfaces** (`gallery` repo, `gallery_images` repo, `settings/about` REST call, `select_attendants`/`attendants_selection` implementation) — each has a tracked `T-fix-N` task in its trio.
+4. **Run the P0 fixes** from the table above as a single follow-up branch: `add_form` double-prefix, `settings/events` rebuild leak, `add_address` duplicate `city` key, `my_addresses` dead delete, `settings/medicines` reject-attachments drop + empty-state CTA, `background_services` mount-only wake-up, `search` flavor-incorrect endpoint.
+5. **Use `/speckit.specify`** (not `/speckit.brownfield.migrate`) for any new feature from the proposed-features table.
