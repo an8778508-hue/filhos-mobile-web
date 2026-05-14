@@ -102,13 +102,34 @@ class CommonImage extends StatelessWidget {
         },
       );
     } else if (imageUrl.endsWith('.svg')) {
-      return network
-          ? SvgPicture.network(imageUrl, width: width, color: color, height: height)
-          : SvgPicture.asset(imageUrl,
-              width: width,
-              height: height,
-              colorFilter: color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
-              fit: fit ?? BoxFit.contain);
+      if (network) {
+        // `SvgPicture.network` has no error callback in this flutter_svg
+        // version — a CORS / 404 / DNS failure throws all the way up to
+        // the framework error handler, which on web tends to silently
+        // crash the surrounding widget subtree. Wrap with a placeholder
+        // builder + fallback so a flag/icon failure never kills the page.
+        final fallback = errorWidget ??
+            (fallBackImagePath != null
+                ? CommonImage(
+                    imageUrl: fallBackImagePath!,
+                    width: width,
+                    height: height,
+                    fit: fit,
+                  )
+                : SizedBox(width: width, height: height));
+        return _SafeSvgNetwork(
+          url: imageUrl,
+          width: width,
+          height: height,
+          color: color,
+          fallback: fallback,
+        );
+      }
+      return SvgPicture.asset(imageUrl,
+          width: width,
+          height: height,
+          colorFilter: color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+          fit: fit ?? BoxFit.contain);
     }
     return fallBackImagePath != null
         ? CommonImage(
@@ -118,5 +139,36 @@ class CommonImage extends StatelessWidget {
             height: height,
           )
         : const SizedBox();
+  }
+}
+
+/// Loads a network SVG with explicit error handling. On any fetch failure
+/// (CORS, 404, DNS, etc.) renders `fallback` instead of bubbling the error
+/// up to the framework's ErrorWidget (which on web tends to kill the
+/// surrounding subtree silently).
+class _SafeSvgNetwork extends StatelessWidget {
+  final String url;
+  final double? width;
+  final double? height;
+  final Color? color;
+  final Widget fallback;
+
+  const _SafeSvgNetwork({
+    required this.url,
+    required this.width,
+    required this.height,
+    required this.color,
+    required this.fallback,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.network(
+      url,
+      width: width,
+      height: height,
+      color: color,
+      placeholderBuilder: (_) => SizedBox(width: width, height: height),
+    );
   }
 }

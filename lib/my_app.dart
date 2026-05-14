@@ -12,6 +12,7 @@ import 'package:escola/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:escola/features/featured_events/bloc/featured_events_bloc.dart';
 import 'package:escola/features/main/bloc/main_bloc.dart';
 import 'package:escola/features/splash/presentation/splash_screen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_theme/flutter_custom_theme.dart';
@@ -43,14 +44,16 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: providers,
-      child: Builder(
-        builder: (context) => ConfigSelector(
-          selector: (config) => config.styling,
-          builder: (context, colors) => CustomThemes(
-            data: [MyTheme(colors: colors.colors)],
-            child: ScreenUtilInit(
-              designSize: const Size(430, 932),
-              builder: (context, _) => const MaterialAppWidget(),
+      child: WebMobileFrame(
+        child: Builder(
+          builder: (context) => ConfigSelector(
+            selector: (config) => config.styling,
+            builder: (context, colors) => CustomThemes(
+              data: [MyTheme(colors: colors.colors)],
+              child: ScreenUtilInit(
+                designSize: const Size(430, 932),
+                builder: (context, _) => const MaterialAppWidget(),
+              ),
             ),
           ),
         ),
@@ -65,6 +68,66 @@ class _MyAppState extends State<MyApp> {
     BlocProvider<UserBloc>(create: (context) => di<UserBloc>()),
     BlocProvider<FeaturedEventsBloc>(create: (context) => di<FeaturedEventsBloc>()),
   ];
+}
+
+/// On web with a wide viewport (desktop browser), constrains the app to a
+/// phone-sized canvas (430×932 — matching the `flutter_screenutil` design
+/// size) so the mobile-first UI doesn't get stretched across a 1080p screen.
+///
+/// On native (Android / iOS) and on mobile browsers (viewport ≤ 600), this
+/// is a transparent passthrough.
+///
+/// To disable the frame (e.g., to develop a desktop-native layout), wrap
+/// child instead of returning the framed version.
+class WebMobileFrame extends StatelessWidget {
+  final Widget child;
+
+  /// Viewport widths at or below this go through unframed (mobile browser).
+  static const double wideBreakpoint = 600;
+
+  /// Phone canvas size — must match `ScreenUtilInit.designSize` upstream
+  /// (currently `Size(430, 932)` in MyApp).
+  static const double phoneWidth = 430;
+  static const double phoneHeight = 932;
+
+  const WebMobileFrame({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    if (!kIsWeb) return child;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Mobile browser / narrow window — no frame.
+        if (constraints.maxWidth <= wideBreakpoint) return child;
+
+        // Desktop browser — render the app in a centered phone-sized canvas
+        // with a subtle bezel + shadow.
+        return ColoredBox(
+          color: const Color(0xFF2A2A2A),
+          child: Center(
+            child: Container(
+              width: phoneWidth,
+              height: phoneHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: const [
+                  BoxShadow(
+                    blurRadius: 32,
+                    spreadRadius: 2,
+                    color: Colors.black54,
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: child,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
 
 class MaterialAppWidget extends StatelessWidget {
