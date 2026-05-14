@@ -7,6 +7,7 @@ import 'package:escola/core/network/network_client.dart';
 import 'package:escola/core/network/network_models.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/user/data_source/user_repo.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class UserDataImpl extends UserRepo {
   final NetworkClientRepository networkClient;
@@ -29,7 +30,8 @@ class UserDataImpl extends UserRepo {
 
   @override
   Future<Either<Failure, void>> updateDeviceToken(String token,String? oldDeviceToken, String uuid) async {
-    String deviceType = Platform.isIOS ? 'ios' : 'android';
+    // dart:io's `Platform.isIOS` throws on web; default to 'web' there.
+    final String deviceType = kIsWeb ? 'web' : (Platform.isIOS ? 'ios' : 'android');
     return await networkClient.handleRequest<void>(
       NetworkRequest(method: HttpMethod.post, url: updateDeviceTokenEndpoint, body: {
         'device_id': uuid,

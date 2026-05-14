@@ -1,24 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Criarte — Brazilian school↔home communication app">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -31,16 +19,91 @@
 
   <title>escola</title>
   <link rel="manifest" href="manifest.json">
+
+  <!--
+    Mobile-first canvas on web.
+
+    On viewports wider than the phone breakpoint (601px), the Flutter canvas
+    is constrained to a centered 430×932 "phone" with rounded corners and a
+    soft shadow on a dark backdrop. On phone-class viewports the canvas
+    fills the screen.
+
+    Constraining at the CSS level (rather than wrapping with widgets) means
+    Flutter's FlutterView reports the right canvas size to the framework —
+    so `MediaQuery`, layout, hit testing, and Overlay all agree.
+  -->
+  <style>
+    :root {
+      --phone-width: 430px;
+      --phone-height: 932px;
+      --bezel-radius: 24px;
+      --bezel-shadow: 0 0 32px 2px rgba(0, 0, 0, 0.54);
+      --backdrop: #2A2A2A;
+    }
+
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--backdrop);
+    }
+
+    /*
+      Phone-class viewports (≤ 600px): full bleed, no frame.
+    */
+    @media (max-width: 600px) {
+      body {
+        background: transparent;
+      }
+      body > * {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    }
+
+    /*
+      Desktop / tablet (≥ 601px): centered phone-sized canvas with bezel.
+      Body becomes a flex centering container; every direct child of body
+      (flutter-view in current Flutter web; flt-glass-pane / flt-scene-host
+      in earlier renderers; the loading shim) is sized to 430×932.
+
+      `!important` is needed to defeat Flutter's inline `width:100%;
+      height:100%` on flutter-view.
+    */
+    @media (min-width: 601px) {
+      body {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+      }
+      body > flutter-view,
+      body > flt-glass-pane,
+      body > flt-scene-host,
+      body > * {
+        flex: 0 0 auto !important;
+        width: var(--phone-width) !important;
+        max-width: var(--phone-width) !important;
+        height: var(--phone-height) !important;
+        max-height: var(--phone-height) !important;
+        border-radius: var(--bezel-radius);
+        overflow: hidden;
+        box-shadow: var(--bezel-shadow);
+        background: #000;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
-
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

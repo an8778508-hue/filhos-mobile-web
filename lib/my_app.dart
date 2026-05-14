@@ -44,16 +44,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: providers,
-      child: WebMobileFrame(
-        child: Builder(
-          builder: (context) => ConfigSelector(
-            selector: (config) => config.styling,
-            builder: (context, colors) => CustomThemes(
-              data: [MyTheme(colors: colors.colors)],
-              child: ScreenUtilInit(
-                designSize: const Size(430, 932),
-                builder: (context, _) => const MaterialAppWidget(),
-              ),
+      child: Builder(
+        builder: (context) => ConfigSelector(
+          selector: (config) => config.styling,
+          builder: (context, colors) => CustomThemes(
+            data: [MyTheme(colors: colors.colors)],
+            child: ScreenUtilInit(
+              designSize: const Size(430, 932),
+              builder: (context, _) => const MaterialAppWidget(),
             ),
           ),
         ),
@@ -70,65 +68,16 @@ class _MyAppState extends State<MyApp> {
   ];
 }
 
-/// On web with a wide viewport (desktop browser), constrains the app to a
-/// phone-sized canvas (430×932 — matching the `flutter_screenutil` design
-/// size) so the mobile-first UI doesn't get stretched across a 1080p screen.
+/// Mobile-first canvas on web is now handled by CSS in `web/index.html`
+/// (a `@media (min-width: 601px)` rule constrains `flutter-view` to
+/// 430×932 with rounded corners + shadow). This means Flutter's
+/// `FlutterView` reports the correct canvas size to the framework, so
+/// `MediaQuery`, layout, and hit-testing all agree.
 ///
-/// On native (Android / iOS) and on mobile browsers (viewport ≤ 600), this
-/// is a transparent passthrough.
-///
-/// To disable the frame (e.g., to develop a desktop-native layout), wrap
-/// child instead of returning the framed version.
-class WebMobileFrame extends StatelessWidget {
-  final Widget child;
-
-  /// Viewport widths at or below this go through unframed (mobile browser).
-  static const double wideBreakpoint = 600;
-
-  /// Phone canvas size — must match `ScreenUtilInit.designSize` upstream
-  /// (currently `Size(430, 932)` in MyApp).
-  static const double phoneWidth = 430;
-  static const double phoneHeight = 932;
-
-  const WebMobileFrame({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    if (!kIsWeb) return child;
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        // Mobile browser / narrow window — no frame.
-        if (constraints.maxWidth <= wideBreakpoint) return child;
-
-        // Desktop browser — render the app in a centered phone-sized canvas
-        // with a subtle bezel + shadow.
-        return ColoredBox(
-          color: const Color(0xFF2A2A2A),
-          child: Center(
-            child: Container(
-              width: phoneWidth,
-              height: phoneHeight,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: const [
-                  BoxShadow(
-                    blurRadius: 32,
-                    spreadRadius: 2,
-                    color: Colors.black54,
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(24),
-                child: child,
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
+/// The earlier widget-tree wrapper here caused a layout/hit-test
+/// mismatch (MaterialApp's internal MediaQuery used the full browser
+/// viewport while the SizedBox constrained layout to 430×932 — buttons
+/// rendered in one position but tap zones were elsewhere).
 
 class MaterialAppWidget extends StatelessWidget {
   const MaterialAppWidget({super.key});

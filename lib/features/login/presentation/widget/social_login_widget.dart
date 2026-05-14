@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -77,8 +78,8 @@ class SocialLoginButtons extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                   ),
-                if (Platform.isIOS && state.appleEnabled) SizedBox(width: 30.w),
-                if (Platform.isIOS && state.appleEnabled)
+                if (!kIsWeb && Platform.isIOS && state.appleEnabled) SizedBox(width: 30.w),
+                if (!kIsWeb && Platform.isIOS && state.appleEnabled)
                   InkWell(
                     onTap: onAppleLogin,
                     child: CommonImage(

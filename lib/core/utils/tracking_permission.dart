@@ -27,6 +27,9 @@ import 'package:flutter/foundation.dart';
 /// risk — but the moment one is added (e.g., a third-party analytics SDK
 /// that reads the IDFA), this must be restored.
 Future<void> ensureTrackingPermission() async {
+  // Web doesn't expose ATT and `Platform.isIOS` throws via dart:io stubs
+  // on web — short-circuit first.
+  if (kIsWeb) return;
   if (!Platform.isIOS) return;
   if (kDebugMode) {
     debugPrint('ATT helper is a no-op (app_tracking_transparency commented out in pubspec)');
