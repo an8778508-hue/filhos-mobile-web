@@ -188,3 +188,8 @@ Android flavor dimension `flavors` is declared in `android/app/build.gradle`. Th
 | Push notification handling | `lib/core/notifications_service/` |
 | Adding a translated string | `lib/core/localization/localization_keys.dart` + `assets/langs/*.json` |
 | Flavor-specific behavior | `context.isParents` / `context.isProfessors` from `lib/flavors/app_flavors.dart` |
+
+<!-- SPECKIT START -->
+For additional context about technologies to be used, project structure,
+shell commands, and other important information, read the current plan
+<!-- SPECKIT END -->
