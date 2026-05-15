@@ -29,7 +29,7 @@ Server role is set from the flavor at login time — see [lib/features/login/dat
 - **Sign-in:** Phone-number + country code → SMS OTP (Firebase Auth) → server returns `accessToken` + `UserModel`. New/teacher accounts may land on **`your_account_under_review`** until an admin approves them; a background poll updates approval state.
 - **Multi-child:** A parent can have several enrolled children. The home screen lets them switch between children; teacher accounts work across a class roster instead.
 - **Diary (atividades):** Teachers post structured daily reports per child (feeding, sleep, mood, behavior, activities). The diary is a typed-question system (`CheckQuestion`, `RatingQuestion`, `SelectQuestion`, `NumberQuestion`, `DurationQuestion`, `ImageQuestion`, `InfoQuestion`) organized into `MainCategory` → `QuestionCategory`. Parents read; teachers write.
-- **Chat:** 1:1 messaging between a parent and a teacher in the context of a specific child, plus class-group chats for teachers. Backed by **Firestore** (real-time). Supports text, image, file, and audio messages (`flutter_sound` + `record`).
+- **Chat:** 1:1 messaging between a parent and a teacher in the context of a specific child, plus class-group chats for teachers. Backed by **Firestore** (real-time). Supports text, image, file, and audio messages (audio capture via `record`, playback via `just_audio`; `flutter_sound` is commented out in pubspec).
 - **Events:** Teachers create school events (trips, meetings, celebrations) with optional RSVP/approval. Parents RSVP via the `add_form` engine and `select_attendants`.
 - **Gallery:** Teachers upload photos per child; parents browse the gallery for their children.
 - **Announcements:** Broadcast notices delivered via Firebase Cloud Messaging + an in-app inbox.
@@ -171,7 +171,7 @@ Android flavor dimension `flavors` is declared in `android/app/build.gradle`. Th
 ### 3.2 Things to be careful about
 
 - **Flavor-specific behavior is easy to forget.** Before shipping a feature, sanity-check both flavors — many screens render differently, and only one flavor may surface a regression.
-- **Firestore is the chat source of truth**, not the REST API. Chat queries and message writes go through `cloud_firestore`; don't add a parallel REST chat path.
+- **Firestore is the source of truth for realtime social surfaces** (constitution Principle VII), not the REST API. This covers chat (queries + message writes) AND diary reactions/comments (`diary_reactions/*`, `diary_comments/*`, added 2026-05-15). Don't add a parallel REST realtime/polling path for any of them.
 - **Approval gate.** After login, a user with `isApproval == false` is routed to `your_account_under_review`. Any deep-link / push-handler you add must respect this gate or it will land users on screens they aren't authorized to see.
 - **Medicine alarms use the device-native alarm wrapper** in `lib/core/custom_packages/`. Don't mix it with `flutter_local_notifications` schedules for the same reminder.
 - **Translations are remote-overridable** via Firestore `config/*`. If a string seems wrong in production but right in the bundled `assets/langs/*.json`, the remote config is overriding it.
@@ -191,5 +191,6 @@ Android flavor dimension `flavors` is declared in `android/app/build.gradle`. Th
 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+shell commands, and other important information, read the current plan:
+[specs/diary/plan.md](specs/diary/plan.md) — active feature: **diary competitive enhancements** (FR-EN-01 … FR-EN-37). Phase 0/1 artifacts: [research.md](specs/diary/research.md), [data-model.md](specs/diary/data-model.md), [contracts/](specs/diary/contracts/), [quickstart.md](specs/diary/quickstart.md). Feature dir tracked in `.specify/feature.json` (`specs/diary`).
 <!-- SPECKIT END -->

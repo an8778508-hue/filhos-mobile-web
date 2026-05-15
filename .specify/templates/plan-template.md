@@ -47,7 +47,7 @@ Verify against [.specify/memory/constitution.md](../../.specify/memory/constitut
 - [ ] **IV. Persistence Discipline** — Hive only through `LocalDatabaseRepo`; HydratedBloc state round-trips `toJson`/`fromJson`
 - [ ] **V. Flavor Branching** — `context.isParents` / `context.isProfessors`, no string compares; both flavors verified
 - [ ] **VI. Localization** — every user-visible string added to `localization_keys.dart` + pt/en/ar JSONs
-- [ ] **VII. Chat Source of Truth** — any chat-adjacent work uses Firestore, not REST
+- [ ] **VII. Realtime Surfaces Source of Truth** — chat AND diary reactions/comments (and any new realtime social surface) use Firestore, not a parallel REST realtime path
 - [ ] **VIII. Approval Gate** — any deep-link / push handler respects `isApproval == false`
 - [ ] **IX. Medicine Reminders** — alarms use the native wrapper in `lib/core/custom_packages/`, not mixed with `flutter_local_notifications`
 - [ ] **X. Theming & Sizing** — `flutter_screenutil` 430×932 design; theme pulled from `ConfigCubit.styling`
