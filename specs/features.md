@@ -119,7 +119,7 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 ---
 
 ## diary · B
-[lib/features/diary/](../lib/features/diary/) — Typed activity reports (`MainCategory` → `QuestionCategory` → typed `Question`).
+[lib/features/diary/](../lib/features/diary/) — Typed activity reports (`MainCategory` → `QuestionCategory` → typed `Question`). Full trio: [specs/diary/](diary/). The 2026-05-15 competitive-enhancement pass added **FR-EN-01 … FR-EN-37** under [diary/spec.md](diary/spec.md) and **T-EN-01 … T-EN-37 + T-EN-X1..X4** under [diary/tasks.md](diary/tasks.md); summary anchor in [business.md §5.1.1 Layer B](business.md#511-diary-value-add-planned).
 
 ### Tasks
 - [x] **(P0)** Replace `default: throw` in `Question.fromJson`. *Fixed 2026-05-14: now `static Question? fromJson(...)` returning null on unknown / null / empty input. Stray `print`s removed.*
@@ -128,10 +128,20 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 - [ ] **(P1)** Add an `idempotency_key` / `request_id` to `sendQuestions` at `diary_impl.dart:99-136` to prevent duplicate answers on retry.
 - [ ] **(P1)** Use the shared `NetworkClient` in `presentation/widgets/gallery_media/share_button.dart:87` — currently constructs a fresh `Dio()` that bypasses interceptors.
 - [ ] **(P1)** Replace catch-all `on<DiaryEvent>` in `diary_bloc.dart:38-54` with typed handlers.
-- [ ] [T] Add a "save as draft" path so partial entries don't lose data.
+- [ ] [T] ~~Add a "save as draft" path so partial entries don't lose data~~ → **locked as [FR-EN-08 … FR-EN-13](diary/spec.md) (hybrid local-first w/ server sync)** — see [diary/tasks.md T-EN-08 … T-EN-13](diary/tasks.md).
 - [ ] [T] Auto-populate the date with the current school day.
-- [ ] [P] Add a weekly digest view (mood/sleep/food trends).
+- [ ] [P] ~~Add a weekly digest view (mood/sleep/food trends)~~ → **part of [business.md §5.1.1 Layer A](business.md#511-diary-value-add-planned) (still abstract — not yet a per-feature FR-EN; tracked there).**
 - [ ] [B] Cache the question schema so the editor opens offline.
+
+### 2026-05-15 competitive enhancements (new scope under diary)
+
+Driven by a `/speckit-clarify` competitive-enhancement pass on 2026-05-15. Decisions logged in [diary/spec.md Clarifications](diary/spec.md#clarifications); implementation tasks in [diary/tasks.md Phase 8](diary/tasks.md). All require backend coordination.
+
+- [ ] **[B] Reactions + comments on diary entries** *(InstaKidz parity)* — Firestore-backed; report-abuse flag only in v1; full moderation v2. **FR-EN-01 … FR-EN-07 / T-EN-01 … T-EN-07.**
+- [ ] **[T] Save-as-draft (hybrid)** *(iCare parity)* — local-first, server-sync every 5s idle + on app background; cross-device with last-write-wins + soft warning. **FR-EN-08 … FR-EN-13 / T-EN-08 … T-EN-13.**
+- [ ] **[B] Soft-delete + resend** *(high-trust recovery — not a competitor item)* — no in-place edit; retracts the entry with a 24 h ghost-line; reactions/comments carry over to a resend within 24 h. **FR-EN-14 … FR-EN-20 / T-EN-14 … T-EN-20.**
+- [ ] **[T] Voice + short video question types** *(InstaKidz richness parity)* — new `AudioQuestion` (≤60 s) + `VideoQuestion` (≤30 s). Reuses chat audio capture. **FR-EN-21 … FR-EN-30 / T-EN-21 … T-EN-30.**
+- [ ] **[T] Read receipts (aggregate)** *(iCare engagement-analytics parity)* — "Visto por X de Y famílias" teacher-side; per-family detail lives in admin web (out of mobile scope); parents never see receipts. **FR-EN-31 … FR-EN-37 / T-EN-31 … T-EN-37.**
 
 ---
 
