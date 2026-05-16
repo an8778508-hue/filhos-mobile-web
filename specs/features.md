@@ -20,7 +20,7 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 
 ---
 
-## onboard · B
+## onboard · P
 [lib/features/onboard/](../lib/features/onboard/) — First-run carousel introducing the product.
 
 ### Tasks
@@ -109,7 +109,7 @@ One entry per feature under [lib/features/](../lib/features/). Each entry has a 
 
 ---
 
-## all_children · P
+## all_children · T
 [lib/features/all_children/](../lib/features/all_children/) — List of children linked to the parent account.
 
 ### Tasks
@@ -271,7 +271,7 @@ Driven by a `/speckit-clarify` competitive-enhancement pass on 2026-05-15. Decis
 
 ---
 
-## add_address · P
+## add_address · B
 [lib/features/add_address/](../lib/features/add_address/) — Add a parent address with CEP lookup (`search_cep`).
 
 ### Tasks
@@ -280,7 +280,7 @@ Driven by a `/speckit-clarify` competitive-enhancement pass on 2026-05-15. Decis
 
 ---
 
-## my_addresses · P
+## my_addresses · B
 [lib/features/my_addresses/](../lib/features/my_addresses/) — List of saved addresses.
 
 ### Tasks
