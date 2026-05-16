@@ -64,3 +64,13 @@ secrets/
 **/google-services.json
 ios/config/**/GoogleService-Info.plist
 ios/Runner/GoogleService-Info.plist
+
+# Playwright harness — committed source, ignored runtime artefacts.
+# `/build/` above already excludes the per-flavor web bundles the harness
+# produces under build/web-parents/ and build/web-professores/.
+playwright/node_modules/
+playwright/artifacts/
+playwright/test-results/
+playwright/playwright-report/
+playwright/.cache/
+playwright/*.tsbuildinfo

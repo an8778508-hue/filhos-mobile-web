@@ -1,0 +1,25 @@
+{
+  "browser": {
+    "browserName": "chromium",
+    "isolated": true,
+    "launchOptions": {
+      "headless": false,
+      "args": ["--force-renderer-accessibility"]
+    },
+    "contextOptions": {
+      "viewport": { "width": 1280, "height": 900 },
+      "locale": "pt-BR",
+      "timezoneId": "America/Sao_Paulo",
+      "serviceWorkers": "block"
+    }
+  },
+  "capabilities": ["core", "pdf", "vision", "devtools"],
+  "timeouts": {
+    "action": 15000,
+    "navigation": 60000
+  },
+  "outputDir": "./playwright/artifacts/mcp",
+  "saveTrace": true,
+  "saveSession": true,
+  "codegen": "typescript"
+}

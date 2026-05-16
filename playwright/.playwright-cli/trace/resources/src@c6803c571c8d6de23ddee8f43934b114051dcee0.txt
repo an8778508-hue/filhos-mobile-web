@@ -1,0 +1,16 @@
+// DIAGNOSTIC — throwaway, deleted after heal cycle 1. Captures the real
+// in-harness (pt fallback) Login semantics so specs can be corrected.
+import { test, expect } from '../../../../src/fixtures/index.js';
+import { reachLogin } from '../../../../src/helpers/parentsFlow.js';
+
+test.describe('diag', () => {
+  test('dump login semantics', async ({ app, page }) => {
+    await page.route('**/api/v1/**', (route) =>
+      route.fulfill({ status: 503, contentType: 'application/json', body: '{}' }),
+    );
+    await reachLogin(app, page);
+    const snap = await page.ariaSnapshot({ mode: 'ai' });
+    await test.info().attach('login.aria.txt', { body: snap, contentType: 'text/plain' });
+    expect(snap.length).toBeGreaterThan(0);
+  });
+});

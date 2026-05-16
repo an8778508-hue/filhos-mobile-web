@@ -1,0 +1,19 @@
+node_modules/
+.logs/
+test-results/
+playwright-report/
+.pids/
+.cache/
+*.tsbuildinfo
+
+# Per-run output written by playwright.config.ts (`outputDir`, html reporter,
+# json reporter) and by the aria-drift reporter. Never source — every file
+# under here is named with a runId timestamp and reproducible from a rerun.
+artifacts/
+
+# Ad-hoc run captures developers redirect to disk while iterating. These have
+# slipped into the repo before; the patterns below stop the bleeding without
+# blocking the workflow.
+*.out
+diag-*.log
+baseline-*.out

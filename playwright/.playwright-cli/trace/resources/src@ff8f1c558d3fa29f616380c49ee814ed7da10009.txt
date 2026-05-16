@@ -1,0 +1,122 @@
+import type { Page } from '@playwright/test';
+
+import type { AppPage } from '../fixtures/appPage.js';
+
+/**
+ * Shared parents-flavor flow helpers for generated specs.
+ *
+ * Why this exists: every parents spec must (a) mock the Filhos REST API
+ * (`ApiConst.baseUrl` is a hard-coded prod `const` — see README §"Known
+ * limitations"), and (b) walk the boot → language → onboard → login path,
+ * which has no URL routing (imperative `Navigator.push`). Centralising it
+ * keeps specs declarative and means a single edit re-heals all of them when
+ * the semantics tree shifts.
+ *
+ * Authentication note: the release web build the harness serves never wires
+ * the Firebase Auth emulator, so the phone-OTP UI fails with
+ * `billing-not-enabled` against prod Firebase. The only deterministically
+ * automatable authenticated entry is **email login** (`auth/login-with-email`,
+ * pure REST, fully mockable). See memory `pw-otp-not-emulated`.
+ */
+
+/** UserModel-shaped `data` payload for `auth/login*`. `is_approval:true`
+ *  routes to MainScreen; `false` routes to your_account_under_review. */
+export function userPayload(opts: { approved: boolean } = { approved: true }) {
+  return {
+    data: {
+      id: '1',
+      name: 'Ana Test',
+      phone: '1099887766',
+      email: 'ana@test.com',
+      access_token: 'tok-test',
+      is_approval: opts.approved,
+      country_code: 'EG',
+      role: 'parent',
+    },
+  };
+}
+
+/**
+ * Register the defensive REST catch-all FIRST (Playwright checks routes in
+ * reverse registration order, so later, more specific `mockJson` calls win).
+ * Anything not explicitly mocked returns 503 instead of reaching prod.
+ */
+export async function guardRest(page: Page): Promise<void> {
+  await page.route('**/api/v1/**', (route) =>
+    route.fulfill({ status: 503, contentType: 'application/json', body: '{}' }),
+  );
+}
+
+/** Mock one REST endpoint. Call AFTER `guardRest` so it takes precedence. */
+export async function mockJson(
+  page: Page,
+  urlGlob: string,
+  body: unknown,
+  status = 200,
+): Promise<void> {
+  await page.route(urlGlob, (route) =>
+    route.fulfill({
+      status,
+      contentType: 'application/json',
+      body: typeof body === 'string' ? body : JSON.stringify(body),
+    }),
+  );
+}
+
+/**
+ * The parents Login screen title in the in-harness locale. The harness has
+ * no Firestore, so translations are the bundled `assets/langs/pt.json`
+ * fallback: `login_title`("Login") + " " + `parents`("Pais").
+ */
+export const LOGIN_TITLE = 'Login Pais';
+
+/**
+ * Boot the parents app and walk to the Login screen.
+ *
+ * IN-HARNESS REALITY (discovered in heal cycle 1):
+ *  - `ChooseLanguageScreen` only ever offers **Portuguese** + **English**
+ *    here (bundled fallback config — there is no Firestore in the harness;
+ *    a live device with remote config shows a different set).
+ *  - `UserBloc.selectLang` only `await`s `ConfigCubit.init` (a
+ *    `FirebaseFirestore...doc('criarte_parents').get()`) **when the language
+ *    changes**. The harness has no Firestore, so selecting a *non-default*
+ *    language hangs that fetch and the screen never navigates. Selecting the
+ *    **default** language ("Portuguese", since the harness locale is pt-BR)
+ *    short-circuits the fetch and navigates immediately.
+ *  - The fallback config has no onboarding slides, so Portuguese goes
+ *    straight to `LoginScreen` (no Skip/Next).
+ *
+ * Net: click "Portuguese", then wait for the pt Login title.
+ */
+export async function reachLogin(app: AppPage, page: Page): Promise<void> {
+  await app.coldStart();
+  await page.getByRole('button', { name: 'Portuguese' }).click();
+  await app.semanticText(LOGIN_TITLE).first().waitFor({ state: 'visible', timeout: 20_000 });
+}
+
+/**
+ * From the Login screen, switch to the email/password form. The social row's
+ * toggle is an unlabeled image button; it is always rendered last in that row
+ * (`social_login_widget.dart`), i.e. the button immediately before the
+ * "Create account" button. We click the second-to-last button on screen.
+ */
+export async function openEmailForm(page: Page): Promise<void> {
+  const buttons = page.getByRole('button');
+  const count = await buttons.count();
+  // …, <google?>, <email/phone toggle>, "create_account"  → toggle = count-2.
+  await buttons.nth(count - 2).click();
+  // pt labels: email→"E-mail", password→"Senha".
+  await page
+    .getByRole('textbox', { name: 'E-mail' })
+    .waitFor({ state: 'visible', timeout: 10_000 });
+}
+
+/** Fill + submit the email login form. Assumes `openEmailForm` already ran. */
+export async function submitEmailLogin(
+  page: Page,
+  creds: { email: string; password: string },
+): Promise<void> {
+  await page.getByRole('textbox', { name: 'E-mail' }).fill(creds.email);
+  await page.getByRole('textbox', { name: 'Senha' }).fill(creds.password);
+  await page.getByRole('button', { name: 'Login' }).click();
+}

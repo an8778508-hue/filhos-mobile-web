@@ -1,0 +1,28 @@
+{
+  "name": "filhos-playwright",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Playwright end-to-end harness for the Filhos (Criarte) Flutter web build. Drives the live release-build through Flutter's semantics tree, against the Firebase Auth emulator for deterministic OTP. Scaffolded empty; add specs per-flavor under tests/generated/{parents,professores}/<feature>/ — conventions documented in README and .claude/commands/.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "generated": "playwright test --project=parents-generated --project=professores-generated",
+    "generated:parents": "playwright test --project=parents-generated",
+    "generated:professores": "playwright test --project=professores-generated",
+    "snapshot": "playwright test --project=parents-snapshot --project=professores-snapshot",
+    "snapshot:update": "playwright test --project=parents-snapshot --project=professores-snapshot --update-snapshots",
+    "report": "playwright show-report",
+    "install:browsers": "playwright install --with-deps chromium",
+    "install:browsers:win": "playwright install chromium",
+    "doctor": "node ./src/doctor.mjs",
+    "trace": "playwright trace",
+    "test:debug": "playwright test --debug=cli"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  }
+}

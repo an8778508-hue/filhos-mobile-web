@@ -1,0 +1,8 @@
+{
+  "_comment": "Playwright-local Firebase emulator config. Kept separate from the project's top-level firebase.json (which configures Flutter platforms + hosting for prod) so test infrastructure never leaks into release configuration. Reference: playwright/src/lifecycle/emulators.ts spawns `firebase emulators:start --config <this file>`. Auth-only by default — the Filhos backend is a REST API at criarte.filhos.app, not Cloud Functions. Add `firestore` / `storage` / `functions` blocks when a scenario needs them.",
+  "emulators": {
+    "auth": { "port": 9099 },
+    "ui": { "enabled": true, "port": 4000 },
+    "singleProjectMode": true
+  }
+}
