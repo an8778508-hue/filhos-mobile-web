@@ -192,5 +192,5 @@ Android flavor dimension `flavors` is declared in `android/app/build.gradle`. Th
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-[specs/diary/plan.md](specs/diary/plan.md) — active feature: **diary competitive enhancements** (FR-EN-01 … FR-EN-37). Phase 0/1 artifacts: [research.md](specs/diary/research.md), [data-model.md](specs/diary/data-model.md), [contracts/](specs/diary/contracts/), [quickstart.md](specs/diary/quickstart.md). Feature dir tracked in `.specify/feature.json` (`specs/diary`).
+[specs/aabar/plan.md](specs/aabar/plan.md) — active feature: **AABAR in-app ABA chat agent** (FR-001 … FR-023). Phase 0/1 artifacts: [research.md](specs/aabar/research.md), [data-model.md](specs/aabar/data-model.md), [contracts/](specs/aabar/contracts/), [quickstart.md](specs/aabar/quickstart.md). Feature dir tracked in `.specify/feature.json` (`specs/aabar`).
 <!-- SPECKIT END -->
