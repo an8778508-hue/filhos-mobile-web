@@ -17,7 +17,7 @@ created: 2026-05-19
 
 **Input**: User description (paraphrased): *"Send OTP numbers through email and clearly indicate that OTP was sent to email when the school is configured for email-OTP instead of SMS, because some countries have issues with the SMS provider. We plan to use Firebase to send the email, or pick another provider — recommend based on stability and free tier."*
 
-Cross-references: [specs/otp/spec.md](../otp/spec.md) (existing SMS OTP), [specs/login/spec.md](../login/spec.md), [CLAUDE.md §1.2 Sign-in flow](../../CLAUDE.md#12-core-user-flows).
+Cross-references: [specs/otp/spec.md](../otp/spec.md) (existing SMS OTP), [specs/login/spec.md](../login/spec.md), [CLAUDE.md §1.2 Sign-in flow](../../CLAUDE.md#12-core-user-flows). **For per-team responsibilities + setup checklists** see [contracts/integration-contract.md](contracts/integration-contract.md).
 
 ## Flavor Scope *(mandatory for Criarte)*
 
