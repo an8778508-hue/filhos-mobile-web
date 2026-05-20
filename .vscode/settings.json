@@ -1,4 +1,5 @@
 {
+    // ─── Speckit / Claude Code ──────────────────────────────────────────
     "chat.promptFilesRecommendations": {
         "speckit.constitution": true,
         "speckit.specify": true,
@@ -10,6 +11,82 @@
         ".specify/scripts/bash/": true,
         ".specify/scripts/powershell/": true
     },
-    "java.configuration.updateBuildConfiguration": "interactive"
+
+    // ─── Java (Android Gradle) ──────────────────────────────────────────
+    "java.configuration.updateBuildConfiguration": "interactive",
+
+    // ─── Dart / Flutter ─────────────────────────────────────────────────
+    // If you use FVM, set this to ".fvm/flutter_sdk" (relative). If you use
+    // a global Flutter install, leave commented and the Dart extension
+    // auto-detects.
+    // "dart.flutterSdkPath": ".fvm/flutter_sdk",
+
+    "dart.lineLength": 80,
+    "dart.previewFlutterUiGuides": true,
+    "dart.previewFlutterUiGuidesCustomTracking": true,
+    "dart.openDevTools": "flutter",
+    "dart.runPubGetOnPubspecChanges": "prompt",
+    "dart.warnWhenEditingFilesOutsideWorkspace": false,
+
+    // Format on save for Dart and JSON (translation files in assets/langs/).
+    "[dart]": {
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2,
+        "editor.rulers": [80],
+        "editor.defaultFormatter": "Dart-Code.dart-code",
+        "editor.codeActionsOnSave": {
+            "source.fixAll": "explicit"
+        }
+    },
+    "[json]": {
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+    "[yaml]": {
+        "editor.formatOnSave": true,
+        "editor.tabSize": 2
+    },
+    "[markdown]": {
+        "editor.formatOnSave": false,
+        "editor.wordWrap": "on",
+        "editor.quickSuggestions": {
+            "comments": "off",
+            "strings": "off",
+            "other": "off"
+        }
+    },
+
+    // ─── Workspace hygiene ──────────────────────────────────────────────
+    // Hide build artifacts from the file explorer (still searchable if needed).
+    "files.exclude": {
+        "**/.dart_tool": true,
+        "**/.flutter-plugins": true,
+        "**/.flutter-plugins-dependencies": true,
+        "**/.packages": true,
+        "**/build": true,
+        "**/.idea": true,
+        "**/hs_err_pid*.log": true
+    },
+    "search.exclude": {
+        "**/.dart_tool": true,
+        "**/build": true,
+        "**/node_modules": true,
+        "**/.fvm": true,
+        "**/ios/Pods": true
+    },
+    "files.watcherExclude": {
+        "**/.dart_tool/**": true,
+        "**/build/**": true,
+        "**/node_modules/**": true,
+        "**/.fvm/**": true
+    },
+
+    // ─── Editor defaults ────────────────────────────────────────────────
+    "editor.formatOnSave": true,
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
 }
 

@@ -73,6 +73,154 @@ Chrome (or Edge) — already installed on most dev machines. The repo's web plat
 
 ---
 
+## 1.5 IDE setup — VS Code (recommended)
+
+VS Code is the team's primary IDE. The repo ships with pre-configured `.vscode/launch.json`, `.vscode/settings.json`, and `.vscode/extensions.json` — open the project and VS Code will prompt you to install the recommended extensions automatically.
+
+> **Alternative**: Android Studio / IntelliJ IDEA Ultimate also work fine — install the Flutter and Dart plugins from the marketplace. The launch.json equivalent is "Edit Configurations…" — add `--flavor parents` (or `professores`) in "Additional run args" and pick the matching entry-point file.
+
+### Open the project
+
+```powershell
+# Either open the folder directly:
+code e:/Happiness_Project_/Git_code/filhos-mobile
+
+# Or open the workspace file (loads any future multi-root setup):
+code e:/Happiness_Project_/Git_code/filhos-mobile/filhos-mobile.code-workspace
+```
+
+On first open, VS Code shows a notification: **"This workspace has extension recommendations. Do you want to install them?"** → click **Install All**.
+
+### Required extensions
+
+These two are mandatory — without them Dart files won't get language services:
+
+| Extension | ID | Purpose |
+|---|---|---|
+| **Dart** | `Dart-Code.dart-code` | Dart language server, syntax, completion, refactoring |
+| **Flutter** | `Dart-Code.flutter` | Flutter-specific tooling: hot reload buttons, DevTools integration, launch profiles |
+
+### Recommended extensions (installed by `extensions.json`)
+
+| Extension | ID | What you get |
+|---|---|---|
+| **Error Lens** | `usernamehw.errorlens` | Inline error/warning messages right on the offending line — much faster than hovering for tooltips |
+| **Awesome Flutter Snippets** | `Nash.awesome-flutter-snippets` | Type `statelessW` → expand to a full StatelessWidget scaffold, etc. |
+| **Flutter Snippets (alexisvt)** | `alexisvt.flutter-snippets` | More snippets including BLoC patterns |
+| **Prettier** | `esbenp.prettier-vscode` | Formats JSON, YAML, Markdown |
+| **YAML** | `redhat.vscode-yaml` | YAML language server (pubspec, flavor configs, Firebase config) |
+| **Makefile Tools** | `ms-vscode.makefile-tools` | IntelliSense + run targets directly from the Makefile |
+| **GitLens** | `eamodio.gitlens` | Inline blame, history navigation |
+| **Markdown All in One** | `yzhang.markdown-all-in-one` | Markdown formatting, TOC generation (helpful for spec.md files) |
+| **markdownlint** | `DavidAnson.vscode-markdownlint` | Lints the spec markdown — matches the warnings you see in this repo |
+| **Claude Code** | `anthropic.claude-code` | If you use Claude alongside the IDE — same agent that authored these docs |
+| **GitHub Copilot** | `GitHub.copilot` | Inline AI completion (subscription required) |
+
+### Configured `settings.json` highlights
+
+The committed [`.vscode/settings.json`](../.vscode/settings.json) sets:
+
+| Setting | Why |
+|---|---|
+| `dart.lineLength: 80` | Matches the analyzer config (`analysis_options.yaml`) and project convention |
+| `[dart].editor.formatOnSave: true` | Auto-formats Dart on save — never commit unformatted code |
+| `[dart].editor.codeActionsOnSave.source.fixAll: explicit` | Auto-applies the analyzer's quick-fix suggestions on save |
+| `dart.previewFlutterUiGuides: true` | Renders nested-widget guide lines in the editor (visual debugging) |
+| `dart.openDevTools: flutter` | Auto-opens DevTools in your default browser when you start `flutter run` |
+| `dart.runPubGetOnPubspecChanges: prompt` | Prompts to run `pub get` after editing pubspec.yaml |
+| `files.exclude` | Hides `.dart_tool/`, `build/`, `.idea/` from the file explorer (still searchable) |
+| `search.exclude` | Skips `node_modules/`, `ios/Pods/`, `.fvm/` from search results |
+| `files.trimTrailingWhitespace: true` | Strip trailing spaces on save |
+
+### Using FVM with VS Code
+
+If you use FVM (recommended — keeps you pinned to Flutter 3.29.3), uncomment this line in [`.vscode/settings.json`](../.vscode/settings.json):
+
+```json
+"dart.flutterSdkPath": ".fvm/flutter_sdk"
+```
+
+This tells the Dart extension to use FVM's symlink rather than your global Flutter. After uncommenting, reload VS Code: **Cmd/Ctrl+Shift+P** → "Developer: Reload Window".
+
+Alternatively, if Flutter is on your global PATH at the right version, leave the line commented and the extension auto-detects.
+
+### Pre-configured launch profiles
+
+The committed [`.vscode/launch.json`](../.vscode/launch.json) provides **8 ready-to-run profiles**. Open the **Run & Debug** sidebar (Ctrl+Shift+D / Cmd+Shift+D), pick from the dropdown:
+
+| Profile | Entry | Mode | Flavor |
+|---|---|---|---|
+| **parents · debug (native)** | `lib/main.dart` | debug | parents |
+| **parents · profile (native)** | `lib/main.dart` | profile | parents |
+| **parents · release (native)** | `lib/main.dart` | release | parents |
+| **professores · debug (native)** | `lib/main_professores.dart` | debug | professores |
+| **professores · profile (native)** | `lib/main_professores.dart` | profile | professores |
+| **professores · release (native)** | `lib/main_professores.dart` | release | professores |
+| **parents · web (Chrome)** | `lib/main.dart` | debug | (web — flavor passed as `--dart-define=FLAVOR=parents`) |
+| **professores · web (Chrome)** | `lib/main_professores.dart` | debug | (web — flavor passed as `--dart-define=FLAVOR=professores`) |
+
+Click the green ▶ Play button to launch. **F5** is the keyboard shortcut.
+
+> **Web entries pass `--no-tree-shake-icons`** because the codebase uses dynamic `IconData` from `my_icon.dart`. This flag is documented inline in launch.json.
+
+### Useful VS Code shortcuts
+
+| Shortcut (Windows / Linux) | Shortcut (macOS) | What it does |
+|---|---|---|
+| `Ctrl+Shift+P` | `Cmd+Shift+P` | Open command palette (your gateway to everything) |
+| `Ctrl+P` | `Cmd+P` | Quick file open by name |
+| `F5` | `F5` | Start debug session |
+| `Ctrl+F5` | `Cmd+F5` | Start without debugging |
+| `Shift+F5` | `Shift+F5` | Stop debug session |
+| `Ctrl+Shift+F5` | `Shift+Cmd+F5` | Restart (hot restart) |
+| `F10` / `F11` | `F10` / `F11` | Step over / Step into |
+| `Ctrl+.` | `Cmd+.` | Show quick fixes / refactors at cursor |
+| `F2` | `F2` | Rename symbol (project-wide) |
+| `Shift+F12` | `Shift+F12` | Find all references |
+| `Ctrl+Shift+O` | `Cmd+Shift+O` | Go to symbol in file |
+| `Ctrl+T` | `Cmd+T` | Go to symbol in workspace |
+| `Ctrl+B` | `Cmd+B` | Toggle sidebar |
+| `Ctrl+`` ` | `Ctrl+`` ` | Toggle integrated terminal |
+
+### Useful command palette commands
+
+Open the palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and type:
+
+| Command | Effect |
+|---|---|
+| **Flutter: New Project** | Scaffold a new project (not for this repo) |
+| **Flutter: Get Packages** | Equivalent to `flutter pub get` |
+| **Flutter: Run Flutter Doctor** | Diagnose the toolchain |
+| **Flutter: Select Device** | Pick which device the next launch targets |
+| **Dart: Open Recent Project** | Switch between projects |
+| **Dart: Restart Analysis Server** | Fix when IntelliSense gets stuck |
+| **Developer: Reload Window** | Fix when settings/extensions don't apply |
+| **Tasks: Run Task** | Execute a task from `.vscode/tasks.json` (none configured yet) |
+
+### Integrated terminal
+
+Open the integrated terminal with **Ctrl+`** (backtick). It opens in the project root. Run any of the commands from [COMMANDS.md](COMMANDS.md) here:
+
+```powershell
+fvm flutter run -t lib/main.dart --flavor parents
+```
+
+Multiple terminals: click the ➕ icon in the terminal panel. Useful for running both flavors simultaneously (one terminal per flavor).
+
+### Common VS Code gotchas
+
+| Problem | Fix |
+|---|---|
+| Dart files show no syntax highlighting / no completion | Extensions not installed → install Dart + Flutter extensions, then **Developer: Reload Window** |
+| "Could not resolve URI: package:..." errors | Run `Flutter: Get Packages` from the command palette, then **Dart: Restart Analysis Server** |
+| Wrong Flutter version detected | Set `dart.flutterSdkPath` in settings.json (see "Using FVM with VS Code" above), then reload window |
+| `flutter run` works in terminal but launch profile fails | The launch profile uses the SDK from `dart.flutterSdkPath` — make sure that path is correct |
+| Hot reload button doesn't appear in the toolbar | Flutter extension not installed, or no Dart file is active |
+| Format on save not working for Dart | Make sure the Dart extension is the default formatter: `[dart].editor.defaultFormatter = "Dart-Code.dart-code"` (already set in `.vscode/settings.json`) |
+| File explorer shows `build/` and `.dart_tool/` clutter | `files.exclude` in settings.json should hide these — if it's not working, reload the window |
+
+---
+
 ## 2. First-time setup
 
 After cloning the repo:
