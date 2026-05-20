@@ -162,6 +162,7 @@ class _MedicinesRequestsPageState extends State<MedicinesRequestsPage> with Auto
                                         );
                                       },
                                       onDecline: () async {
+                                        final medProfBloc = BlocProvider.of<MedicinesProfessorsBloc>(context);
                                         final b = await showModalBottomSheet(
                                           backgroundColor: context.colors.background,
                                           context: context,
@@ -180,9 +181,9 @@ class _MedicinesRequestsPageState extends State<MedicinesRequestsPage> with Auto
                                         );
                                         if (b == true) {
                                           if (mounted) {
-                                            BlocProvider.of<MedicinesProfessorsBloc>(context).loadReminders(RequestType.reload);
-                                            BlocProvider.of<MedicinesProfessorsBloc>(context).loadRequests(RequestType.reload);
-                                            BlocProvider.of<MedicinesProfessorsBloc>(context).loadHistory(RequestType.reload);
+                                            medProfBloc.loadReminders(RequestType.reload);
+                                            medProfBloc.loadRequests(RequestType.reload);
+                                            medProfBloc.loadHistory(RequestType.reload);
                                           }
                                         }
                                       },

@@ -25,6 +25,8 @@ class Config {
 
   String? get logo_horizontal => json['logo_horizontal'];
 
+  bool get emailOtpGloballyVisible => json['email_otp_globally_visible'] == true;
+
   Styling get styling => Styling(validateMap(json['styling']));
 
   final _appInfoJson = const {

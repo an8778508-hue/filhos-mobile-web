@@ -53,9 +53,10 @@ class _EventsScreenState extends State<EventsScreen> {
         ..add(FetchDayEvent(date: dateTime.value, filterModel: filterModelNotifier.value))
         ..add(FetchDataEvent(filterModel: filterModelNotifier.value)),
       child: Builder(builder: (context) {
+        final eventsBloc = BlocProvider.of<EventsBloc>(context);
         _sub = eventBus.on().listen((event) {
           if (event is EventAcceptedOrRejected || event is EventAdded) {
-            BlocProvider.of<EventsBloc>(context)
+            eventsBloc
               ..add(FetchDayEvent(date: dateTime.value, filterModel: filterModelNotifier.value))
               ..add(FetchDataEvent(filterModel: filterModelNotifier.value));
           }

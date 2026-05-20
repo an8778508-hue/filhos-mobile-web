@@ -194,6 +194,11 @@ class NetworkClient implements NetworkClientRepository {
     'school_id',
   };
 
+  /// Paths whose request/response bodies are fully redacted (LGPD — email + OTP codes).
+  static const Set<String> _sensitivePathPrefixes = {
+    'auth/email-otp/',
+  };
+
   /// Body keys we MUST strip — Brazilian PII + medical data.
   static const Set<String> _sensitiveBodyKeys = {
     'password',
@@ -212,6 +217,7 @@ class NetworkClient implements NetworkClientRepository {
     'avatar',
     'image',
     'images',
+    'firebase_id_token',
   };
 
   Map<String, dynamic> _redactHeaders(Map<String, dynamic>? headers) {
@@ -239,10 +245,18 @@ class NetworkClient implements NetworkClientRepository {
     return '[non-map body redacted]';
   }
 
+  bool _isSensitivePath(String? path) {
+    if (path == null) return false;
+    return _sensitivePathPrefixes.any((p) => path.contains(p));
+  }
+
   String _requestInfo(RequestOptions? requestOptions) {
+    final body = _isSensitivePath(requestOptions?.path)
+        ? '[fully redacted — sensitive endpoint]'
+        : _redactBody(requestOptions?.data);
     return "Crashlytics : Request url is : ${requestOptions?.baseUrl}${requestOptions?.path}"
         "\nRequest headers is : ${_redactHeaders(requestOptions?.headers)}"
         "\nRequest Type is : ${requestOptions?.method}"
-        "\nRequest Body is : ${_redactBody(requestOptions?.data)}\n";
+        "\nRequest Body is : $body\n";
   }
 }

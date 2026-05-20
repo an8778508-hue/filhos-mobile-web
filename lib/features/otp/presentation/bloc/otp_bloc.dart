@@ -7,6 +7,7 @@ import 'package:escola/core/local_db/local_db_repo.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
 import 'package:escola/features/login/models/login_requset.dart';
+import 'package:escola/features/otp/models/otp_delivery_mode.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,6 +23,8 @@ class OTPBloc extends Cubit<OTPState> {
   int? pendingOTPTime;
   bool rememberMe = false;
   ValueNotifier<bool> ready = ValueNotifier(false);
+  OTPDeliveryMode currentMode = OTPDeliveryMode.sms;
+  String? currentMaskedEmail;
 
   OTPBloc(this.loginRepository, this.localDatabase) : super(OTPInitial()) {
     // on<OTPEvent>((event, emit) async {
@@ -38,7 +41,11 @@ class OTPBloc extends Cubit<OTPState> {
 
   _successOTP(OTPRequest model, String countryCode) async {
     final loginResponse =
-        await loginRepository.login(LoginRequest(phone: model.phoneNumber, country_code: countryCode));
+        await loginRepository.login(LoginRequest(
+          phone: model.phoneNumber,
+          country_code: countryCode,
+          firebaseIdToken: model.firebaseIdToken,
+        ));
     await loginResponse.fold((l) async => emit(OTPFailure(l)), (user) async {
       localDatabase.delete(key: LocalKeys.last_otp_request);
       localDatabase.delete(key: LocalKeys.last_otp_phone);
@@ -153,6 +160,81 @@ class OTPBloc extends Cubit<OTPState> {
       },
       (r) => _successOTP(r, countryCode),
     );
+  }
+
+  // ── Email OTP ──────────────────────────────────────────────
+
+  Future<void> _initEmailCooldown(String email) async {
+    final lastRequest = await localDatabase.read(key: LocalKeys.last_email_otp_request);
+    final lastEmail = await localDatabase.read(key: LocalKeys.last_email_otp_email);
+    if (lastRequest != null && lastRequest is int && email == lastEmail) {
+      final diff = DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(lastRequest));
+      if (diff.inSeconds < otpTimeout) {
+        pendingOTPTime = otpTimeout - diff.inSeconds;
+      }
+    }
+    if (pendingOTPTime != null) {
+      _startTimer();
+    }
+  }
+
+  Future<void> requestEmailOTP({
+    required String email,
+    required bool remember,
+  }) async {
+    currentMode = OTPDeliveryMode.email;
+    rememberMe = remember;
+    emit(OTPLoading());
+
+    await _initEmailCooldown(email);
+    final lastEmail = await localDatabase.read(key: LocalKeys.last_email_otp_email);
+    if (pendingOTPTime != null && lastEmail == email) {
+      emit(OTPFailure(NetworkFailure(message: OTPErrorModel.alreadySent().code ?? '')));
+      ready.value = true;
+      return;
+    }
+
+    final result = await loginRepository.requestEmailOTP(email: email);
+    result.fold(
+      (failure) => emit(OTPFailure(failure)),
+      (response) {
+        currentMaskedEmail = response.maskedEmail;
+        pendingOTPTime = response.retryAfter;
+        localDatabase.write(
+          key: LocalKeys.last_email_otp_request,
+          value: DateTime.now().millisecondsSinceEpoch,
+        );
+        localDatabase.write(key: LocalKeys.last_email_otp_email, value: email);
+        _startTimer();
+        ready.value = true;
+        emit(OTPReady());
+      },
+    );
+  }
+
+  Future<void> confirmEmailOTP({
+    required String email,
+    required String code,
+  }) async {
+    emit(OTPLoading());
+    final result = await loginRepository.confirmEmailOTP(email: email, code: code);
+    result.fold(
+      (failure) => emit(OTPFailure(failure)),
+      (response) {
+        localDatabase.delete(key: LocalKeys.last_email_otp_request);
+        localDatabase.delete(key: LocalKeys.last_email_otp_email);
+        _timer?.cancel();
+        if (rememberMe) {
+          localDatabase.write(key: LocalKeys.rememberMe, value: true);
+        }
+        UserBloc.get.loggedIn(response.user);
+        emit(OTPSuccess());
+      },
+    );
+  }
+
+  Future<void> resendEmailOTP({required String email}) async {
+    await requestEmailOTP(email: email, remember: rememberMe);
   }
 
   @override

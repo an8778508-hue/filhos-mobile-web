@@ -337,6 +337,23 @@ abstract class LocalizationKeys {
   static const String or_login_with = "or_login_with";
   static const String dont_have_account = "don't_have_an_account";
   static const String create_account = "create_account";
+
+  // Email OTP
+  static const String email_otp_tab_label = "email_otp_tab_label";
+  static const String email_otp_email_placeholder = "email_otp_email_placeholder";
+  static const String email_otp_send_cta = "email_otp_send_cta";
+  static const String email_otp_verify_title = "email_otp_verify_title";
+  static const String email_otp_verify_subline = "email_otp_verify_subline";
+  static const String email_otp_check_spam_hint = "email_otp_check_spam_hint";
+  static const String email_otp_resend_cta = "email_otp_resend_cta";
+  static const String email_otp_error_invalid_format = "email_otp_error_invalid_format";
+  static const String email_otp_error_not_enabled = "email_otp_error_not_enabled";
+  static const String email_otp_error_not_registered = "email_otp_error_not_registered";
+  static const String email_otp_error_send_failed = "email_otp_error_send_failed";
+  static const String email_otp_error_expired = "email_otp_error_expired";
+  static const String email_otp_error_too_many_attempts = "email_otp_error_too_many_attempts";
+  static const String email_otp_error_too_soon = "email_otp_error_too_soon";
+  static const String email_otp_error_generic = "email_otp_error_generic";
 }
 
 extension LocalizationKeysTr on String {

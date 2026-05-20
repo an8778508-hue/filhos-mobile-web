@@ -297,9 +297,10 @@ class _FeaturedEventsBodyState extends State<FeaturedEventsBody> {
                   child: InkWell(
                     onTap: () async {
                       if (currentId != null) {
+                        final nav = Navigator.of(context);
                         await BlocProvider.of<FeaturedEventsBloc>(context).cache(currentId!);
                         if (mounted) {
-                          await Navigator.of(context).push(
+                          await nav.push(
                             MaterialPageRoute(
                               builder: (context) => AcceptEventScreen(eventId: currentId!),
                             ),

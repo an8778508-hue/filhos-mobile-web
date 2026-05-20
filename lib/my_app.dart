@@ -12,7 +12,6 @@ import 'package:escola/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:escola/features/featured_events/bloc/featured_events_bloc.dart';
 import 'package:escola/features/main/bloc/main_bloc.dart';
 import 'package:escola/features/splash/presentation/splash_screen.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_theme/flutter_custom_theme.dart';

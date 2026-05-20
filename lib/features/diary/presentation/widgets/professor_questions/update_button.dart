@@ -19,8 +19,9 @@ class UpdateQuestionsButton extends StatelessWidget {
               backgroundColor: context.colors.success,
               content:
                   Text(LocalizationKeys.updated_successfully.tr(context))));
+          final nav = Navigator.of(context);
           Future.delayed(const Duration(seconds: 1), () {
-            Navigator.pop(context);
+            nav.pop();
           });
         } else if (state is SendQuestionsError) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(

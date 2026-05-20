@@ -139,7 +139,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   maxLines: widget.maxLines,
                   minLines: widget.minLines,
                   onChanged: (value) {
-                    field.setValue(value);
+                    field.didChange(value);
                     widget.onChanged?.call(value);
                   },
                   onSubmitted: (value) {

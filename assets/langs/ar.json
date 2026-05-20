@@ -159,5 +159,20 @@
   "or_login_with": "او تسجيل الدخول بواسطة",
   "don't_have_an_account": "ليس لديك حساب؟",
   "create_account": "إنشاء حساب",
-  "this_is_not_a_valid_email": "هذا ليس بريد الكتروني صالح"
+  "this_is_not_a_valid_email": "هذا ليس بريد الكتروني صالح",
+  "email_otp_tab_label": "بريد إلكتروني",
+  "email_otp_email_placeholder": "بريدك الإلكتروني المسجل",
+  "email_otp_send_cta": "إرسال الرمز",
+  "email_otp_verify_title": "تحقق من بريدك الإلكتروني",
+  "email_otp_verify_subline": "تم إرسال الرمز إلى {maskedEmail}. تحقق من صندوق الوارد ومجلد البريد العشوائي.",
+  "email_otp_check_spam_hint": "لم يصل؟ تحقق من مجلد البريد العشوائي أو أعد الإرسال خلال {seconds} ثانية.",
+  "email_otp_resend_cta": "إعادة الإرسال",
+  "email_otp_error_invalid_format": "صيغة البريد الإلكتروني غير صالحة.",
+  "email_otp_error_not_enabled": "مدرستك تستخدم OTP عبر الهاتف. استخدم علامة التبويب 'الهاتف'.",
+  "email_otp_error_not_registered": "لم يتم العثور على حساب بهذا البريد الإلكتروني. تحقق مع مدرستك.",
+  "email_otp_error_send_failed": "تعذر الإرسال الآن. حاول مرة أخرى بعد بضع دقائق.",
+  "email_otp_error_expired": "انتهت صلاحية الرمز. اطلب رمزاً جديداً.",
+  "email_otp_error_too_many_attempts": "محاولات كثيرة جداً. اطلب رمزاً جديداً.",
+  "email_otp_error_too_soon": "انتظر {seconds} ثانية قبل الطلب مرة أخرى.",
+  "email_otp_error_generic": "تعذر التحقق الآن. حاول مرة أخرى."
 }

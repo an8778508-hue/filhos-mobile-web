@@ -4,15 +4,19 @@ import 'package:escola/core/components/fields/error_field.dart';
 import 'package:escola/core/components/fields/phone_field.dart';
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/components/text/professors_container.dart';
+import 'package:escola/core/config/config.dart';
 import 'package:escola/core/config/widgets/config_builder.dart';
 import 'package:escola/core/dependency_injection/di.dart';
+import 'package:escola/core/local_db/local_db_repo.dart';
 import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/app_constants.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/login/presentation/bloc/login_bloc.dart';
+import 'package:escola/features/login/presentation/widget/email_tab.dart';
 import 'package:escola/features/login/presentation/widget/social_login_widget.dart';
+import 'package:escola/features/otp/models/otp_delivery_mode.dart';
 import 'package:escola/features/otp/presentation/otp_screen.dart';
 import 'package:escola/features/privacy_policy/privacy_policy_screen.dart';
 import 'package:escola/features/terms_and_condtions/terms_and_conditions_screen.dart';
@@ -45,6 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late ValueNotifier<bool> rememberMeToggle;
   late Country country;
   late TextEditingController emailController;
+  late TextEditingController emailOtpController;
   late ValueNotifier<bool> isEmailLogin;
 
   String? verificationId;
@@ -52,17 +57,41 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isValidNumber = false;
   bool showValidNumberError = false;
 
+  bool get _showEmailOtpTab => Config.get.emailOtpGloballyVisible;
+  final ValueNotifier<int> _loginTabIndex = ValueNotifier(0);
+
   @override
   void initState() {
-    // phoneController = TextEditingController(text: isDriver ?'01000000004':'01000000001');
     phoneController = TextEditingController();
     passwordController = TextEditingController();
     rememberMeToggle = ValueNotifier(false);
     emailController = TextEditingController();
+    emailOtpController = TextEditingController();
     isEmailLogin = ValueNotifier(false);
-    // todo
     country = Country.parse(AppConstants.egCountryCode);
+    _restoreLoginMode();
     super.initState();
+  }
+
+  Future<void> _restoreLoginMode() async {
+    final lastMode = await di<LocalDatabaseRepo>().read(key: LocalKeys.last_login_mode);
+    if (lastMode == 'email' && _showEmailOtpTab) {
+      _loginTabIndex.value = 1;
+    }
+  }
+
+  void _onLoginTabChanged(int index) {
+    _loginTabIndex.value = index;
+    di<LocalDatabaseRepo>().write(
+      key: LocalKeys.last_login_mode,
+      value: index == 1 ? 'email' : 'sms',
+    );
+    // Clear inactive tab state
+    if (index == 0) {
+      emailOtpController.clear();
+    } else {
+      phoneController.clear();
+    }
   }
 
   @override
@@ -71,7 +100,9 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordController.dispose();
     rememberMeToggle.dispose();
     emailController.dispose();
+    emailOtpController.dispose();
     isEmailLogin.dispose();
+    _loginTabIndex.dispose();
     super.dispose();
   }
 
@@ -125,6 +156,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 (route) => false,
               );
             }
+          }
+          if (state is LoginEmailOTPReady) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: BlocProvider.of<LoginBloc>(context),
+                  child: OTPScreen(
+                    mode: OTPDeliveryMode.email,
+                    email: emailOtpController.text.trim(),
+                    maskedEmail: state.maskedEmail,
+                    rememberMe: rememberMeToggle.value,
+                  ),
+                ),
+              ),
+            );
           }
         },
         child: Scaffold(
@@ -250,27 +296,52 @@ class _LoginScreenState extends State<LoginScreen> {
                                 //     ),
                                 //   ),
                                 // ],
-                                AnimatedSwitcher(
-                                  duration: const Duration(milliseconds: 300),
-                                  transitionBuilder: (Widget child, Animation<double> animation) {
-                                    return FadeTransition(
-                                      opacity: animation,
-                                      child: SlideTransition(
-                                        position: Tween<Offset>(
-                                          begin: const Offset(0.0, 0.1),
-                                          end: Offset.zero,
-                                        ).animate(animation),
-                                        child: child,
-                                      ),
+                                if (_showEmailOtpTab) ...[
+                                  _buildLoginTabBar(context),
+                                  SizedBox(height: 20.csh),
+                                ],
+                                ValueListenableBuilder<int>(
+                                  valueListenable: _loginTabIndex,
+                                  builder: (context, tabIndex, _) {
+                                    if (_showEmailOtpTab && tabIndex == 1) {
+                                      return EmailOTPTab(
+                                        emailController: emailOtpController,
+                                        formKey: formKey,
+                                      );
+                                    }
+                                    return AnimatedSwitcher(
+                                      duration: const Duration(milliseconds: 300),
+                                      transitionBuilder: (Widget child, Animation<double> animation) {
+                                        return FadeTransition(
+                                          opacity: animation,
+                                          child: SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: const Offset(0.0, 0.1),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          ),
+                                        );
+                                      },
+                                      child: isEmailLogin.value
+                                          ? _buildEmailLoginForm(context)
+                                          : _buildPhoneLoginForm(context),
                                     );
                                   },
-                                  child: isEmailLogin.value
-                                      ? _buildEmailLoginForm(context)
-                                      : _buildPhoneLoginForm(context),
                                 ),
                                 SizedBox(
                                   height: 20.csh,
                                 ),
+                                // Remember me + Login button — hidden when email OTP tab is active
+                                // (EmailOTPTab has its own send button)
+                                ValueListenableBuilder<int>(
+                                  valueListenable: _loginTabIndex,
+                                  builder: (context, tabIndex, _) {
+                                    if (_showEmailOtpTab && tabIndex == 1) {
+                                      return const SizedBox();
+                                    }
+                                    return Column(
+                                      children: [
                                 Row(
                                   children: [
                                     SizedBox(
@@ -372,6 +443,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.w500,
                                   ),
+                                ),
+                                      ],
+                                    );
+                                  },
                                 ),
                                 SizedBox(
                                   height: 20.csh,
@@ -571,6 +646,71 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildLoginTabBar(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 42.csw),
+      child: ValueListenableBuilder<int>(
+        valueListenable: _loginTabIndex,
+        builder: (context, currentIndex, _) => Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () => _onLoginTabChanged(0),
+                child: Column(
+                  children: [
+                    Text(
+                      LocalizationKeys.phone.tr(context),
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: currentIndex == 0 ? FontWeight.w600 : FontWeight.w400,
+                        color: currentIndex == 0
+                            ? context.colors.primary
+                            : context.colors.textColor,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Container(
+                      height: 2.h,
+                      color: currentIndex == 0
+                          ? context.colors.primary
+                          : Colors.transparent,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: GestureDetector(
+                onTap: () => _onLoginTabChanged(1),
+                child: Column(
+                  children: [
+                    Text(
+                      LocalizationKeys.email_otp_tab_label.tr(context),
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: currentIndex == 1 ? FontWeight.w600 : FontWeight.w400,
+                        color: currentIndex == 1
+                            ? context.colors.primary
+                            : context.colors.textColor,
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Container(
+                      height: 2.h,
+                      color: currentIndex == 1
+                          ? context.colors.primary
+                          : Colors.transparent,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

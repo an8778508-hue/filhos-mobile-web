@@ -1,9 +1,5 @@
 plugins {
     id "com.android.application"
-    // START: FlutterFire Configuration
-    id 'com.google.gms.google-services'
-    //id 'com.google.firebase.crashlytics'
-    // END: FlutterFire Configuration
     id "kotlin-android"
     id "dev.flutter.flutter-gradle-plugin"
     // Firebase: picks up per-flavor src/{flavor}/google-services.json and
@@ -40,7 +36,7 @@ android {
     namespace "com.algoriza.disneyNew"
     compileSdk = 36
 //    ndkVersion flutter.ndkVersion
-    ndkVersion = "27.0.12077973"
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         coreLibraryDesugaringEnabled true

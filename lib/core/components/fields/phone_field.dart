@@ -152,7 +152,7 @@ class _PhoneFieldState extends State<PhoneField> {
                       )
                     ],
                     onChanged: (value) {
-                      field.setValue(value);
+                      field.didChange(value);
                       checkValidation(value);
                       if (widget.onChanged != null) {
                         widget.onChanged!(value);

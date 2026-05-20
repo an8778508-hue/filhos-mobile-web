@@ -21,6 +21,7 @@ class DurtionItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () async {
+        final diaryBloc = context.read<DiaryBloc>();
         showTimePicker(
           context: context,
           initialTime: TimeOfDay.fromDateTime(DateTime.now()),
@@ -31,7 +32,7 @@ class DurtionItem extends StatelessWidget {
               label: question.title,
               duration: DateFunctions.formatTimeOfDay(time),
             );
-            context.read<DiaryBloc>().add(AddQuetsion(question: durationQuestion, categoryId: question.categoryId));
+            diaryBloc.add(AddQuetsion(question: durationQuestion, categoryId: question.categoryId));
           }
         });
       },

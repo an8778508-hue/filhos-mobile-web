@@ -324,5 +324,20 @@
   "remind_later": "Lembre-me mais tarde",
   "is_featured": "Apresentar este evento?",
   "see_more": "Ver mais",
-  "file": "Arquivo"
+  "file": "Arquivo",
+  "email_otp_tab_label": "E-mail",
+  "email_otp_email_placeholder": "Seu e-mail cadastrado",
+  "email_otp_send_cta": "Enviar código",
+  "email_otp_verify_title": "Verifique seu e-mail",
+  "email_otp_verify_subline": "Código enviado para {maskedEmail}. Verifique sua caixa de entrada e a pasta de spam.",
+  "email_otp_check_spam_hint": "Não chegou? Verifique a pasta de spam ou solicite novamente em {seconds}s.",
+  "email_otp_resend_cta": "Enviar novamente",
+  "email_otp_error_invalid_format": "Formato de e-mail inválido.",
+  "email_otp_error_not_enabled": "Sua escola usa OTP por telefone. Use a aba 'Telefone'.",
+  "email_otp_error_not_registered": "Não encontramos uma conta com este e-mail. Verifique com sua escola.",
+  "email_otp_error_send_failed": "Não foi possível enviar agora. Tente em alguns minutos.",
+  "email_otp_error_expired": "Código expirado. Solicite um novo.",
+  "email_otp_error_too_many_attempts": "Muitas tentativas. Solicite um novo código.",
+  "email_otp_error_too_soon": "Aguarde {seconds}s para solicitar novamente.",
+  "email_otp_error_generic": "Não foi possível verificar agora. Tente novamente."
 }

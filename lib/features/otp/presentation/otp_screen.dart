@@ -11,7 +11,9 @@ import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/login/presentation/bloc/login_bloc.dart';
 import 'package:escola/features/main/presentation/main_screen.dart';
+import 'package:escola/features/otp/models/otp_delivery_mode.dart';
 import 'package:escola/features/otp/presentation/bloc/otp_bloc.dart';
+import 'package:escola/features/otp/presentation/widgets/delivery_mode_chrome.dart';
 import 'package:escola/features/your_account_under_review/presentation/your_account_under_review_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,14 +23,20 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 class OTPScreen extends StatefulWidget {
   const OTPScreen({
     super.key,
-    required this.phone,
-    required this.phoneCode,
-    required this.countryCode,
-    required this.rememberMe,
+    this.phone,
+    this.phoneCode,
+    this.countryCode,
+    this.rememberMe = false,
+    this.mode = OTPDeliveryMode.sms,
+    this.email,
+    this.maskedEmail,
   });
 
-  final String phone, phoneCode, countryCode;
+  final String? phone, phoneCode, countryCode;
   final bool rememberMe;
+  final OTPDeliveryMode mode;
+  final String? email;
+  final String? maskedEmail;
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -55,6 +63,21 @@ class _OTPScreenState extends State<OTPScreen> {
     super.initState();
   }
 
+  void _submitCode(BuildContext context) {
+    if (widget.mode == OTPDeliveryMode.email) {
+      BlocProvider.of<OTPBloc>(context).confirmEmailOTP(
+        email: widget.email!,
+        code: codeController.text,
+      );
+    } else {
+      BlocProvider.of<OTPBloc>(context).confirmSMSCode(
+        phone: "+${widget.phoneCode! + widget.phone!}",
+        code: codeController.text,
+        countryCode: widget.countryCode!,
+      );
+    }
+  }
+
   @override
   void dispose() {
     validPhone.dispose();
@@ -64,12 +87,14 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<OTPBloc>(
-      create: (BuildContext context) => di<OTPBloc>(),
-        // ..requestOTP(
-        //   phone: "+${widget.phoneCode + widget.phone}",
-        //   remember: widget.rememberMe,
-        //   countryCode: widget.countryCode,
-        // ),
+      create: (BuildContext context) {
+        final bloc = di<OTPBloc>();
+        if (widget.mode == OTPDeliveryMode.email) {
+          bloc.currentMode = OTPDeliveryMode.email;
+          bloc.currentMaskedEmail = widget.maskedEmail;
+        }
+        return bloc;
+      },
       child: Builder(
         builder: (context) => BlocListener<OTPBloc, OTPState>(
           listener: (BuildContext context, OTPState state) async {
@@ -115,57 +140,11 @@ class _OTPScreenState extends State<OTPScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedBox(height: 40.h),
-                                Align(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  child: Text(
-                                    LocalizationKeys.phone_verification.tr(context),
-                                    style: TextStyle(
-                                      fontSize: 25.sp,
-                                      color: context.colors.primaryDark,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 10.h),
-                                Align(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  child: Text(
-                                    LocalizationKeys.enter_otp_that_sent_to.tr(context),
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      color: context.colors.textColor,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 20.h),
-                                Align(
-                                  alignment: AlignmentDirectional.centerStart,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        '+${widget.phoneCode}',
-                                        style: TextStyle(
-                                          fontSize: 20.sp,
-                                          color: context.colors.textColor,
-                                          height: 1.2.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      SizedBox(width: 2.w),
-                                      Text(
-                                        widget.phone,
-                                        style: TextStyle(
-                                          fontSize: 20.sp,
-                                          color: context.colors.textColor,
-                                          height: 1.2.sp,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      SizedBox(width: 10.w),
-                                    ],
-                                  ),
+                                DeliveryModeChrome(
+                                  mode: widget.mode,
+                                  phone: widget.phone,
+                                  phoneCode: widget.phoneCode,
+                                  maskedEmail: BlocProvider.of<OTPBloc>(context).currentMaskedEmail,
                                 ),
                                 SizedBox(height: 120.h),
                                 BlocSelector<LoginBloc, LoginState, String?>(
@@ -239,14 +218,10 @@ class _OTPScreenState extends State<OTPScreen> {
                                       // Pass it here
                                       onChanged: (value) {
                                         setState(() {
-                                          field.setValue(value);
+                                          field.didChange(value);
                                         });
                                         if(value.length == 6 && !loading){
-                                          BlocProvider.of<OTPBloc>(context).confirmSMSCode(
-                                            phone: "+${widget.phoneCode + widget.phone}",
-                                            code: codeController.text,
-                                            countryCode: widget.countryCode,
-                                          );
+                                          _submitCode(context);
                                         }
                                       },
                                       appContext: context,
@@ -276,10 +251,16 @@ class _OTPScreenState extends State<OTPScreen> {
                                       InkResponse(
                                         onTap: () {
                                           BlocProvider.of<LoginBloc>(context).clearError();
-                                          BlocProvider.of<OTPBloc>(context).resendOTP(
-                                            phone: "+${widget.phoneCode + widget.phone}",
-                                            countryCode: widget.countryCode,
-                                          );
+                                          if (widget.mode == OTPDeliveryMode.email) {
+                                            BlocProvider.of<OTPBloc>(context).resendEmailOTP(
+                                              email: widget.email!,
+                                            );
+                                          } else {
+                                            BlocProvider.of<OTPBloc>(context).resendOTP(
+                                              phone: "+${widget.phoneCode! + widget.phone!}",
+                                              countryCode: widget.countryCode!,
+                                            );
+                                          }
                                         },
                                         child: Text(
                                           LocalizationKeys.resend_again.tr(context),
@@ -321,10 +302,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                                       final valid = formKey.currentState?.validate();
                                                       validPhone.value = valid ?? false;
                                                       if (valid ?? false) {
-                                                        BlocProvider.of<OTPBloc>(context).confirmSMSCode(
-                                                          phone: "+${widget.phoneCode + widget.phone}",
-                                                          code: codeController.text, countryCode: widget.countryCode,
-                                                        );
+                                                        _submitCode(context);
                                                       }
                                                     },
                                                     child: Container(

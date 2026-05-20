@@ -20,6 +20,7 @@ class FileIcon extends StatelessWidget {
       child: Icon(Icons.file_present,
           color: ChatColors.actionIconsColor, size: 25.w),
     ).splash(onPressed: () async {
+      final imagesBloc = context.read<ImagesMessageBloc>();
       try {
         final result = await FilePicker.platform.pickFiles();
         final pickedFiles =
@@ -32,7 +33,7 @@ class FileIcon extends StatelessWidget {
             fileToSend.add(XFile(pickedFile.path!));
           }
         }
-        context.read<ImagesMessageBloc>().add(AddImages(images: fileToSend));
+        imagesBloc.add(AddImages(images: fileToSend));
       } catch (e) {}
     });
   }

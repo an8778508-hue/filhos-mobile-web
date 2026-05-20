@@ -40,3 +40,11 @@ final class LoginWithEmailSuccess extends LoginState {
   @override
   List<Object> get props => [userModel];
 }
+
+final class LoginEmailOTPReady extends LoginState {
+  final String maskedEmail;
+  const LoginEmailOTPReady(this.maskedEmail);
+
+  @override
+  List<Object> get props => [maskedEmail];
+}

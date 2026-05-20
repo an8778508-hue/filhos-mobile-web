@@ -9,6 +9,8 @@ import 'package:escola/core/network/network_models.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/utils/constants/static_config.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
+import 'package:escola/features/login/models/email_otp_send_response.dart';
+import 'package:escola/features/login/models/email_otp_verify_response.dart';
 import 'package:escola/features/login/models/login_email_paramaters.dart';
 import 'package:escola/features/login/models/login_requset.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
@@ -51,6 +53,7 @@ class LoginImpl extends LoginRepository {
         'device_token': deviceToken,
         // Pre-login: no UserBloc user yet — role comes from the flavor binary.
         'role': isProfessorsFlavor ? 'teacher' : 'parent',
+        if (request.firebaseIdToken != null) 'firebase_id_token': request.firebaseIdToken,
       }, headers: {
         'school': StaticConfig.schoolId
       }),
@@ -140,7 +143,7 @@ class LoginImpl extends LoginRepository {
     if (kDebugMode && _isDebugBypass) {
       if (smsCode == _debugOTPCode) {
         debugPrint('DEBUG MODE: OTP verified successfully');
-        return Right(OTPRequest(phoneNumber: phone));
+        return Right(OTPRequest(phoneNumber: phone, firebaseIdToken: 'debug-firebase-id-token'));
       } else {
         debugPrint('DEBUG MODE: Invalid code. Use "$_debugOTPCode"');
         return const Left(OTPErrorModel(
@@ -168,21 +171,15 @@ class LoginImpl extends LoginRepository {
     required String phone,
   }) async {
     try {
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      return Right(OTPRequest(phoneNumber: phone));
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+      final idToken = await userCredential.user?.getIdToken();
+      return Right(OTPRequest(phoneNumber: phone, firebaseIdToken: idToken));
     } on FirebaseAuthException catch (e) {
       debugPrint('OTP MANUAL VERIFICATION FAILED ${e.code}\n\t\t${e.message}');
-      if (e.code == 'invalid-verification-code') {
-        return Left(OTPErrorModel(
-          code: e.code,
-          message: e.message,
-        ));
-      } else {
-        return Left(OTPErrorModel(
-          code: e.code,
-          message: e.message,
-        ));
-      }
+      return Left(OTPErrorModel(
+        code: e.code,
+        message: e.message,
+      ));
     }
   }
 
@@ -418,5 +415,40 @@ class LoginImpl extends LoginRepository {
       debugPrint('LoginImpl.loginWithEmail error: $e');
       return const Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, EmailOTPSendResponse>> requestEmailOTP({
+    required String email,
+  }) {
+    return networkClient.handleRequest(
+      NetworkRequest(
+        method: HttpMethod.post,
+        url: LoginRepository.emailOtpSendEndpoint,
+        body: {
+          'email': email,
+          'lang': UserBloc.get.state.language,
+        },
+      ),
+      onSuccess: (json) => EmailOTPSendResponse.fromJson(json),
+    );
+  }
+
+  @override
+  Future<Either<Failure, EmailOTPVerifyResponse>> confirmEmailOTP({
+    required String email,
+    required String code,
+  }) {
+    return networkClient.handleRequest(
+      NetworkRequest(
+        method: HttpMethod.post,
+        url: LoginRepository.emailOtpVerifyEndpoint,
+        body: {
+          'email': email,
+          'code': code,
+        },
+      ),
+      onSuccess: (json) => EmailOTPVerifyResponse.fromJson(json),
+    );
   }
 }

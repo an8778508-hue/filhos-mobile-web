@@ -138,6 +138,17 @@ class LoginBloc extends Cubit<LoginState> {
           },
     );
   }
+  Future<void> requestEmailOTP({required String email}) async {
+    emit(LoginLoading());
+    final result = await loginRepository.requestEmailOTP(email: email);
+    result.fold(
+      (failure) => emit(LoginFailure(failure)),
+      (response) {
+        emit(LoginEmailOTPReady(response.maskedEmail));
+      },
+    );
+  }
+
   Future<void> loginWithEmail({
     required String email,
     required String password,

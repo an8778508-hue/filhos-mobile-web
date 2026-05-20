@@ -11,29 +11,25 @@ chooseImage({
   required BuildContext context,
   required void Function(Uint8List, XFile) onFinish,
 }) async {
-  print('account update choose image');
+  debugPrint('account update choose image');
   try {
-    Future<XFile?> pickedImage = ImagePicker().pickImage(source: imageSource);
-    print('account update choose image pickedImage');
-
-    pickedImage.then((value) {
-      if (value == null) {
-        return;
-      }
-      cropResize(
-        pickedImage: value,
-        context: context,
-        onFinish: onFinish,
-        source: imageSource,
-      );
-    });
+    final XFile? value = await ImagePicker().pickImage(source: imageSource);
+    debugPrint('account update choose image pickedImage');
+    if (value == null) return;
+    if (!context.mounted) return;
+    cropResize(
+      pickedImage: value,
+      context: context,
+      onFinish: onFinish,
+      source: imageSource,
+    );
   } catch (e) {}
 }
 
 Future<void> cropResize({required XFile pickedImage, required BuildContext context, required void Function(Uint8List, XFile) onFinish, source}) async {
   final controller = CropController();
   final image = await pickedImage.readAsBytes();
-  // ignore: use_build_context_synchronously
+  if (!context.mounted) return;
   await Navigator.push(
     context,
     MaterialPageRoute(

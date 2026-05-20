@@ -53,6 +53,9 @@ abstract class LocalKeys {
   static const last_otp_phone = "last_otp_phone";
   static const rememberMe = "rememberMe";
   static const seenFeaturedEvents = "seen_featured_events";
+  static const last_email_otp_request = "last_email_otp_request";
+  static const last_email_otp_email = "last_email_otp_email";
+  static const last_login_mode = "last_login_mode";
   static const en = "en";
   static const ar = "ar";
 }

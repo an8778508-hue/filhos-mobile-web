@@ -1,6 +1,3 @@
-import 'package:escola/core/components/icons/common_image.dart';
-import 'package:escola/core/config/widgets/config_builder.dart';
-import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/core/components/buttons/button_with_icon.dart';
 import 'package:escola/core/components/icons/common_image.dart';
 import 'package:escola/core/components/widgets/app_bar.dart';
@@ -120,37 +117,33 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with Ticker
                                 firstIconHeight: 25.csw,
                                 firstIconWidth: 25.csw,
                                 onPressed: () async {
+                                 final nav = Navigator.of(context);
+                                 final mainBloc = context.read<MainBloc>();
+                                 final isProfessors = context.isProfessors;
                                  await UserBloc.get.selectLang(Config.get.langs[index].code,Config.get.langs[index].codeWithLocale);
+                                  if (!mounted) return;
                                   if (widget.fromSettings) {
-                                    // Navigator.pop(context);
-                                    context.read<MainBloc>().add(ChangePage(id: PageID.home.name));
-                                    // Navigator.push(
-                                    //     context, MaterialPageRoute(builder: (_) => const SplashScreen()));
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
+                                    mainBloc.add(ChangePage(id: PageID.home.name));
+                                    nav.pushAndRemoveUntil(
                                       MaterialPageRoute(builder: (_) => const SplashScreen()),
                                           (route) => false,
                                     );
                                     return;
                                   }
-                                  if (mounted) {
-                                    if (context.isProfessors) {
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
+                                  if (isProfessors) {
+                                    nav.pushAndRemoveUntil(
+                                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                                      (route) => false,
+                                    );
+                                  } else {
+                                    if (validList(Config.get.onBoards)) {
+                                      nav.push(
+                                          MaterialPageRoute(builder: (_) => const OnBoardScreen()));
+                                    } else {
+                                      nav.pushAndRemoveUntil(
                                         MaterialPageRoute(builder: (_) => const LoginScreen()),
                                         (route) => false,
                                       );
-                                    } else {
-                                      if (validList(Config.get.onBoards)) {
-                                        Navigator.push(
-                                            context, MaterialPageRoute(builder: (_) => const OnBoardScreen()));
-                                      } else {
-                                        Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(builder: (_) => const LoginScreen()),
-                                          (route) => false,
-                                        );
-                                      }
                                     }
                                   }
                                 },
