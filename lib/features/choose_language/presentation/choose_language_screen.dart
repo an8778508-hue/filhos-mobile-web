@@ -7,7 +7,10 @@ import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
-import 'package:escola/features/login/presentation/login_screen.dart';
+// LoginEntry routes to either the legacy Firebase login or the new
+// server-driven login depending on Config.serverDrivenAuthEnabled. See
+// spec.md §Deviations item 1 ("flag on Firebase, pass not delete").
+import 'package:escola/features/server_driven_auth/presentation/login_entry.dart';
 import 'package:escola/features/onboard/presentation/onboard_screen.dart';
 import 'package:escola/features/splash/presentation/splash_screen.dart';
 import 'package:escola/flavors/app_flavors.dart';
@@ -34,7 +37,7 @@ class ChooseLanguageScreen extends StatefulWidget {
       if (context.isProfessors) {
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (_) => const LoginScreen()),
+          LoginEntry.route(),
               (route) => false,
         );
       } else {
@@ -44,7 +47,7 @@ class ChooseLanguageScreen extends StatefulWidget {
         } else {
           Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => const LoginScreen()),
+            LoginEntry.route(),
                 (route) => false,
           );
         }
@@ -132,7 +135,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with Ticker
                                   }
                                   if (isProfessors) {
                                     nav.pushAndRemoveUntil(
-                                      MaterialPageRoute(builder: (_) => const LoginScreen()),
+                                      LoginEntry.route(),
                                       (route) => false,
                                     );
                                   } else {
@@ -141,7 +144,7 @@ class _ChooseLanguageScreenState extends State<ChooseLanguageScreen> with Ticker
                                           MaterialPageRoute(builder: (_) => const OnBoardScreen()));
                                     } else {
                                       nav.pushAndRemoveUntil(
-                                        MaterialPageRoute(builder: (_) => const LoginScreen()),
+                                        LoginEntry.route(),
                                         (route) => false,
                                       );
                                     }

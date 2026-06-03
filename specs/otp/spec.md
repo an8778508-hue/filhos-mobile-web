@@ -16,6 +16,8 @@ migrated_date: 2026-05-14
 
 **Input**: Reverse-engineered from [lib/features/otp/](../../lib/features/otp/) and the existing [features.md `## otp · B`](../features.md#otp--b) entry.
 
+> ⚠️ **Superseded behind a rollout flag by `server_driven_auth`** *(added 2026-06-01).* When `ConfigCubit.serverDrivenAuthEnabled == true`, the SMS-OTP flow this spec describes is bypassed entirely — the new flow uses **phone + password** (`REQUIRE_PASSWORD` action) instead of an SMS verification step. Email-based OTPs (`VERIFY_EMAIL_OTP`, `VERIFY_RESET_OTP`) replace SMS as the only OTP channel and are delivered via Gmail SMTP (no Firebase Auth in the new path). Umbrella: [specs/server_driven_auth/spec.md](../server_driven_auth/spec.md). The login-by-email-OTP path in [specs/email_otp/spec.md](../email_otp/spec.md) remains independent and orthogonal to this change. Wave 8 of [server_driven_auth/tasks.md](../server_driven_auth/tasks.md) plans the deletion of `lib/features/otp/` after the pilot soak.
+
 ## Flavor Scope
 
 - **Target flavor(s)**: both. The OTP screen is identical for parents and teachers.

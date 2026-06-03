@@ -16,6 +16,8 @@ migrated_date: 2026-05-14
 
 **Input**: Reverse-engineered from [lib/features/login/](../../lib/features/login/) and the existing [features.md `## login · B`](../features.md#login--b) entry.
 
+> ⚠️ **Superseded behind a rollout flag by `server_driven_auth`** *(added 2026-06-01).* When `ConfigCubit.serverDrivenAuthEnabled == true`, the app routes to the new server-driven `LoginScreen` under `lib/features/server_driven_auth/` and this spec's flow is bypassed. When the flag is `false` (default), this spec is still authoritative. The umbrella feature: [specs/server_driven_auth/spec.md](../server_driven_auth/spec.md). The action vocabulary that replaces this spec's client-driven branching: [specs/server_driven_auth/contracts/rest-endpoints.md §0 Action vocabulary](../server_driven_auth/contracts/rest-endpoints.md). Wave 8 of the new feature's [tasks.md](../server_driven_auth/tasks.md) plans the deletion of `lib/features/login/` after a 7-day pilot soak.
+
 ## Flavor Scope *(mandatory for Criarte)*
 
 - **Target flavor(s)**: both (parents + professores)

@@ -1,8 +1,10 @@
 # Feature Specification: Phone + Password Login with Biometric Access
 
-**Created**: 2026-05-20 | **Status**: Draft | **Flavors**: both (parents + professores)
+**Created**: 2026-05-20 | **Status**: Draft (folded under `server_driven_auth` 2026-06-01) | **Flavors**: both (parents + professores)
 
 ---
+
+> ℹ️ **Folded under the umbrella `server_driven_auth` feature** *(added 2026-06-01).* The phone+password primary login this draft proposes is realized by the umbrella's `REQUIRE_PASSWORD` action + `POST auth/login`. Email-OTP verification for self-registration is realized by `VERIFY_EMAIL_OTP` + `POST auth/verify-email-otp`. Forgot-password (the missing flow in this draft) is fully specified in the umbrella as Scenario 5. **Biometric login remains specific to this spec** — it layers on top of `REQUIRE_PASSWORD` and is deferred from `server_driven_auth` v1. See [specs/server_driven_auth/spec.md §Relationship to sibling features](../server_driven_auth/spec.md) for the fold-in mapping; the umbrella's rollout flag `server_driven_auth_enabled` supersedes this draft's `sms_otp_enabled` flag for switching login modes.
 
 ## Summary
 

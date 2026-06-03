@@ -143,6 +143,15 @@ class NetworkClient implements NetworkClientRepository {
       } else {
         Map<String, dynamic> map = jsonDecode(response?.data);
 
+        // Server-driven-auth uniform error envelope: { "error": { "code": "...", "message": "..." } }
+        // The cubit reads `Failure.message` and maps the machine code → a
+        // localized key via `AuthErrorCodes.localizedKey`. Keep this branch
+        // first so legacy `errors`/`message` shapes still fall through below.
+        final dynamic err = map['error'];
+        if (err is Map && err['code'] is String) {
+          throw ServerException(message: err['code'] as String);
+        }
+
         if (map.keys.contains("errors") && map['errors'] is Map<String, dynamic>) {
           // get the error code error translations
           final errorMap = (map['errors'] as Map<String, dynamic>);
@@ -195,14 +204,29 @@ class NetworkClient implements NetworkClientRepository {
   };
 
   /// Paths whose request/response bodies are fully redacted (LGPD — email + OTP codes).
+  ///
+  /// Server-driven-auth endpoints (FR-SDA-20): every one of the 8 `auth/*`
+  /// endpoints introduced by `specs/server_driven_auth/` carries phone, email,
+  /// password, OTP code, or `temp_token` material and must never appear in
+  /// Crashlytics breadcrumbs.
   static const Set<String> _sensitivePathPrefixes = {
     'auth/email-otp/',
+    'auth/check-identifier',
+    'auth/set-initial-password',
+    'auth/self-register',
+    'auth/verify-email-otp',
+    'auth/login',
+    'auth/forgot-password',
+    'auth/verify-reset-otp',
+    'auth/reset-password',
   };
 
   /// Body keys we MUST strip — Brazilian PII + medical data.
   static const Set<String> _sensitiveBodyKeys = {
     'password',
+    'password_confirmation',
     'token',
+    'temp_token',
     'access_token',
     'refresh_token',
     'cpf',
@@ -210,6 +234,7 @@ class NetworkClient implements NetworkClientRepository {
     'phone',
     'phone_number',
     'email',
+    'code',
     'medicine',
     'medication',
     'prescription',

@@ -135,6 +135,13 @@ function runFlutterBuild(flavor: Flavor, log: LogTee): Promise<void> {
       // (lib/core/components/my_icon.dart), so IconData is non-constant and
       // icon font tree-shaking is impossible. Disable it, as Flutter advises.
       '--no-tree-shake-icons',
+      // Force the SDA dev-test toggle OFF for harness builds so legacy specs
+      // see the legacy LoginScreen. SDA specs activate the new flow at
+      // runtime by mocking `/api/v1/config` with `server_driven_auth_enabled:
+      // true`. See `lib/core/utils/debug_flags.dart` and
+      // `parentsFlow.ts#mockConfigWithSdaOn`. `flutter run` (without
+      // --dart-define) keeps the source default for manual play.
+      '--dart-define=SDA_DEV_TEST=false',
       '-t',
       flavorEntry[flavor],
       `--output=${flavorBuildDir[flavor]}`,

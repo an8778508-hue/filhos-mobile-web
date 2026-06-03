@@ -10,7 +10,10 @@ import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/safe_x.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/choose_language/presentation/choose_language_screen.dart';
-import 'package:escola/features/login/presentation/login_screen.dart';
+// LoginEntry routes to either the legacy Firebase login or the new
+// server-driven login depending on Config.serverDrivenAuthEnabled (spec.md
+// §Deviations item 1: "flag on Firebase, pass not delete").
+import 'package:escola/features/server_driven_auth/presentation/login_entry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -44,7 +47,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
           if (!validList(config.onBoards)) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (_) => const LoginScreen()),
+              LoginEntry.route(),
               (route) => false,
             );
           }
@@ -166,7 +169,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
                       if (end) {
                         Navigator.pushAndRemoveUntil(
                           context,
-                          MaterialPageRoute(builder: (_) => const LoginScreen()),
+                          LoginEntry.route(),
                           (route) => false,
                         );
                         // final prefs = await SharedPreferences.getInstance();
@@ -265,7 +268,7 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
                           onPressed: () async {
                             Navigator.pushAndRemoveUntil(
                               context,
-                              MaterialPageRoute(builder: (_) => const LoginScreen()),
+                              LoginEntry.route(),
                               (route) => false,
                             );
                             // final prefs = await SharedPreferences.getInstance();

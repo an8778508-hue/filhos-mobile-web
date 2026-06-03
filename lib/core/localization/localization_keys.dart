@@ -354,6 +354,44 @@ abstract class LocalizationKeys {
   static const String email_otp_error_too_many_attempts = "email_otp_error_too_many_attempts";
   static const String email_otp_error_too_soon = "email_otp_error_too_soon";
   static const String email_otp_error_generic = "email_otp_error_generic";
+
+  // Server-driven auth (sda) — see specs/server_driven_auth/spec.md §Localization
+  static const String sda_phone_label = "sda_phone_label";
+  static const String sda_next_cta = "sda_next_cta";
+  static const String sda_password_label = "sda_password_label";
+  static const String sda_confirm_password_label = "sda_confirm_password_label";
+  static const String sda_login_cta = "sda_login_cta";
+  static const String sda_create_account_link = "sda_create_account_link";
+  static const String sda_forgot_password_cta = "sda_forgot_password_cta";
+  static const String sda_set_initial_password_title = "sda_set_initial_password_title";
+  static const String sda_set_new_password_title = "sda_set_new_password_title";
+  static const String sda_register_title = "sda_register_title";
+  static const String sda_register_name_label = "sda_register_name_label";
+  static const String sda_register_email_label = "sda_register_email_label";
+  static const String sda_email_otp_title = "sda_email_otp_title";
+  static const String sda_email_otp_subline = "sda_email_otp_subline";
+  static const String sda_reset_otp_title = "sda_reset_otp_title";
+  static const String sda_reset_otp_subline = "sda_reset_otp_subline";
+  static const String sda_forgot_email_title = "sda_forgot_email_title";
+  static const String sda_forgot_email_hint = "sda_forgot_email_hint";
+  static const String sda_send_code_cta = "sda_send_code_cta";
+  static const String sda_resend_cta = "sda_resend_cta";
+  static const String sda_resend_in = "sda_resend_in";
+  static const String sda_pending_approval_title = "sda_pending_approval_title";
+  static const String sda_pending_approval_body = "sda_pending_approval_body";
+  static const String sda_back_to_login_cta = "sda_back_to_login_cta";
+  static const String sda_reset_success = "sda_reset_success";
+  static const String sda_no_account_prompt = "sda_no_account_prompt";
+  static const String sda_error_account_suspended = "sda_error_account_suspended";
+  static const String sda_error_reset_unavailable = "sda_error_reset_unavailable";
+  static const String sda_error_token_invalid = "sda_error_token_invalid";
+  static const String sda_error_otp_expired = "sda_error_otp_expired";
+  static const String sda_error_otp_too_many = "sda_error_otp_too_many";
+  static const String sda_error_invalid_credentials = "sda_error_invalid_credentials";
+  static const String sda_error_password_mismatch = "sda_error_password_mismatch";
+  static const String sda_error_password_weak = "sda_error_password_weak";
+  static const String sda_error_unknown_action = "sda_error_unknown_action";
+  static const String sda_error_generic = "sda_error_generic";
 }
 
 extension LocalizationKeysTr on String {

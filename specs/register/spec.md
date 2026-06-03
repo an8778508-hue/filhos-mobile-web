@@ -16,6 +16,8 @@ migrated_date: 2026-05-14
 
 **Input**: Reverse-engineered from [lib/features/register/](../../lib/features/register/) and the freshly-added [features.md#register--b](../features.md#register--b).
 
+> ⚠️ **Superseded behind a rollout flag by `server_driven_auth`** *(added 2026-06-01).* When `ConfigCubit.serverDrivenAuthEnabled == true`, registration uses the new `SelfRegisterScreen` (Scenario 2 in the umbrella) hitting `POST auth/self-register` instead of `POST auth/register`. The new flow branches on the server-side `EMAIL_OTP_ENABLED` flag: when enforced, the user verifies their email via OTP before landing on `PendingApprovalScreen`; when bypassed, the account is created `email_verified = true` immediately and routes straight to pending approval. The legacy `auth/register` endpoint stays for backward compatibility during the flag-gated rollout. Umbrella: [specs/server_driven_auth/spec.md](../server_driven_auth/spec.md). Wave 8 of [server_driven_auth/tasks.md](../server_driven_auth/tasks.md) plans the deletion of `lib/features/register/` after the pilot soak.
+
 ## Flavor Scope
 
 - **Target flavor(s)**: both. The same screen renders for parents and teachers.

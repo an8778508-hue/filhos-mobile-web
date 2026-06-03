@@ -126,3 +126,144 @@ export async function submitEmailLogin(
   await typeInto(page, 'Password', creds.password);
   await page.getByRole('button', { name: 'Login' }).click();
 }
+
+// ─── Server-driven auth (SDA) helpers — mirror of parentsFlow.ts SDA block ──
+//
+// Visual UI for the SDA screens is flavor-agnostic — the new LoginScreen,
+// SelfRegisterScreen, EmailOtpScreen, etc. don't fork on `context.isProfessors`.
+// Only the boot path differs: professores has NO onboard carousel
+// (chooser → LoginScreen directly), and the `role` field on every auth
+// request body is `'teacher'` instead of `'parent'`. The mock endpoints don't
+// care about the role value, so the same `sdaActionEnvelope` works for both.
+//
+// References (same as the parents file):
+//  • lib/features/server_driven_auth/presentation/login_screen.dart
+//  • lib/features/server_driven_auth/presentation/self_register_screen.dart
+//  • lib/features/server_driven_auth/presentation/email_otp_screen.dart
+//  • Localization keys in assets/langs/en.json (sda_*)
+
+export const SDA_CREATE_ACCOUNT_LINK = 'Create new account';
+export const SDA_REGISTER_TITLE = 'Create account';
+export const SDA_EMAIL_OTP_TITLE = 'Verify your email';
+export const SDA_PENDING_APPROVAL_TITLE = /under\s+review/i;
+export const SDA_VALID_OTP = '123456';
+export const SDA_TEST_PHONE_VERIFY_OTP = '11111110003';
+
+/** Variant of `mockConfig` that injects `server_driven_auth_enabled: true`
+ *  into the canned config payload. Harness builds with
+ *  `--dart-define=SDA_DEV_TEST=false`, so LoginScreen routing depends solely
+ *  on `Config.serverDrivenAuthEnabled` — i.e. the value in the `config/*`
+ *  JSON. Flipping that one field activates SDA per-spec. */
+export async function mockConfigWithSdaOn(page: Page): Promise<void> {
+  const base = JSON.parse(CONFIG_JSON) as Record<string, unknown>;
+  const data = (base.data ?? {}) as Record<string, unknown>;
+  const config = { ...((data.config ?? {}) as Record<string, unknown>) };
+  config.server_driven_auth_enabled = true;
+  const merged = { ...base, data: { ...data, config } };
+  await page.route('**/api/v1/config', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify(merged),
+    }),
+  );
+}
+
+/** Walk to the SDA LoginScreen. Differs from `reachLogin` in two ways:
+ *  (a) the config mock flips `server_driven_auth_enabled = true`, and
+ *  (b) the assertion waits for the SDA-specific "Create new account" link
+ *  instead of the legacy "Login Professors" heading. No onboard step —
+ *  professores chooser → LoginScreen directly. */
+export async function reachSdaLoginViaConfigFlag(
+  app: AppPage,
+  page: Page,
+): Promise<void> {
+  await mockConfigWithSdaOn(page);
+  await app.coldStart();
+  await page.getByRole('button', { name: 'English' }).click();
+  await page
+    .getByRole('button', { name: SDA_CREATE_ACCOUNT_LINK })
+    .first()
+    .waitFor({ state: 'visible', timeout: 20_000 });
+}
+
+/** Open SelfRegisterScreen via the bottom "Create new account" link. */
+export async function openSdaRegister(page: Page): Promise<void> {
+  await page.getByRole('button', { name: SDA_CREATE_ACCOUNT_LINK }).first().click();
+  await page
+    .getByText(SDA_REGISTER_TITLE, { exact: false })
+    .first()
+    .waitFor({ state: 'visible', timeout: 10_000 });
+}
+
+/** Fill all five SelfRegisterScreen fields. */
+export async function fillSdaRegisterForm(
+  page: Page,
+  form: { name: string; phone: string; email: string; password: string },
+): Promise<void> {
+  await typeInto(page, 'Full name', form.name);
+  await typeInto(page, 'Phone', form.phone);
+  await typeInto(page, 'Email', form.email);
+  await typeInto(page, 'Password', form.password);
+  await typeInto(page, 'Confirm password', form.password);
+}
+
+export async function submitSdaRegister(page: Page): Promise<void> {
+  await page.getByRole('button', { name: SDA_REGISTER_TITLE }).click();
+}
+
+/** Same OTP-typer as the parents flavor — see that file for the rationale
+ *  on `waitFor` + focus + backspace clear. Identical behavior here since
+ *  the SDA OTP screens don't fork on flavor. */
+export async function typeSdaOtp(page: Page, code: string): Promise<void> {
+  const pinBox = page.getByRole('textbox').first();
+  await pinBox.waitFor({ state: 'visible', timeout: 10_000 });
+  await pinBox.focus();
+  for (let i = 0; i < 6; i++) {
+    await page.keyboard.press('Backspace');
+  }
+  await page.keyboard.type(code, { delay: 30 });
+}
+
+/** Enter the SDA LoginScreen phone field. */
+export async function enterSdaPhone(page: Page, phone: string): Promise<void> {
+  await typeInto(page, 'Phone', phone);
+}
+
+/** Tap the SDA LoginScreen primary CTA (the "Next" button on the initial
+ *  state). */
+export async function tapSdaNext(page: Page): Promise<void> {
+  await page.getByRole('button', { name: 'Next' }).click();
+}
+
+export function sdaActionEnvelope(
+  action: string,
+  opts: { tempToken?: string; expiresIn?: number } = {},
+): { action: string; temp_token?: string; expires_in?: number } {
+  return {
+    action,
+    ...(opts.tempToken !== undefined ? { temp_token: opts.tempToken } : {}),
+    ...(opts.expiresIn !== undefined ? { expires_in: opts.expiresIn } : {}),
+  };
+}
+
+export function sdaErrorEnvelope(code: string, message = code) {
+  return { error: { code, message } };
+}
+
+export async function mockSdaEndpoint(
+  page: Page,
+  endpoint:
+    | 'check-identifier'
+    | 'set-initial-password'
+    | 'self-register'
+    | 'verify-email-otp'
+    | 'login'
+    | 'forgot-password'
+    | 'verify-reset-otp'
+    | 'reset-password',
+  body: unknown,
+  status = 200,
+): Promise<void> {
+  await mockJson(page, `**/api/v1/auth/${endpoint}`, body, status);
+}

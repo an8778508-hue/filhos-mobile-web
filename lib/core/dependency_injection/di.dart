@@ -30,6 +30,7 @@ import 'package:escola/features/notifications/bloc/notifications_bloc.dart';
 import 'package:escola/features/notifications/repo/notifications_repo.dart';
 import 'package:escola/features/otp/presentation/bloc/otp_bloc.dart';
 import 'package:escola/features/search/search_di.dart';
+import 'package:escola/features/server_driven_auth/server_driven_auth_di.dart';
 import 'package:escola/features/search_for_filter/bloc/search_for_filter_bloc.dart';
 import 'package:escola/features/settings/about/bloc/about_bloc.dart';
 import 'package:escola/features/settings/about/repo/about_repo.dart';
@@ -109,6 +110,10 @@ FutureOr dependencyInjection() async {
   //features
   UserInjection().init();
   LoginInjection().init();
+  // Server-driven auth ships dark behind `Config.serverDrivenAuthEnabled`
+  // (default false). Registering its DI is safe even when the flag is off —
+  // factories are lazy and nothing is constructed until a screen opens.
+  ServerDrivenAuthInjection().init();
   DiaryInjection().init();
   ChatInjection().init();
   BackgroundServicesInjection().init();

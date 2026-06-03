@@ -2,6 +2,7 @@ import 'package:escola/core/config/app_info.dart';
 import 'package:escola/core/config/langs.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/user/current_role.dart';
+import 'package:escola/core/utils/debug_flags.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/home/models/card_model.dart';
 import 'package:escola/features/home/models/section_model.dart';
@@ -26,6 +27,18 @@ class Config {
   String? get logo_horizontal => json['logo_horizontal'];
 
   bool get emailOtpGloballyVisible => json['email_otp_globally_visible'] == true;
+
+  /// Rollout flag for the server-driven auth feature. When `true`, the app
+  /// routes Login through `lib/features/server_driven_auth/` and the new
+  /// 8-action vocabulary. When `false` (default), the legacy Firebase
+  /// phone-SMS login under `lib/features/login/` is used unchanged.
+  ///
+  /// [DebugFlags.kSdaDevTest] forces this `true` regardless of Firestore so
+  /// the new flow can be exercised locally without admin access to the
+  /// `config/*` doc. The dev-test flag is `false` on the default branch.
+  /// See [specs/server_driven_auth/spec.md] §Relationship to sibling features.
+  bool get serverDrivenAuthEnabled =>
+      DebugFlags.kSdaDevTest || json['server_driven_auth_enabled'] == true;
 
   Styling get styling => Styling(validateMap(json['styling']));
 

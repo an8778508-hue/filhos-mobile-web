@@ -153,6 +153,16 @@ From [features.md "NOT building" section](features.md#not-building--explicit-non
 - ❌ **HR / payroll module** — scope creep
 - ❌ **Full discovery / marketplace pivot** — different business model
 
+## Cross-cutting refactors / in-flight specs (post-migration)
+
+Specs that don't map 1:1 to an existing `lib/features/<feature>/` folder — they're cross-cutting refactors that introduce a new umbrella feature or replace a behavior across multiple existing features. Track them here so the inventory stays honest after the 2026-05-15 closing line above.
+
+| Spec | Folder | Status | Touches code in | Summary |
+|---|---|---|---|---|
+| `email_otp` | [specs/email_otp/](email_otp/) | 🟡 in progress | `login/`, `otp/`, `core/config/`, `core/local_db/`, `core/network/` | Email-delivered OTP as a **login** fallback; FR-EM-01..20. Gated by `email_otp_globally_visible`. |
+| `phone_password_login` | [specs/phone_password_login/](phone_password_login/) | 💡 draft | `login/`, `otp/`, `core/config/` | Replace Firebase phone-SMS as primary with phone+password (+ biometric). Gated by `sms_otp_enabled`. Folds in under `server_driven_auth` (`REQUIRE_PASSWORD` → `login`). |
+| `server_driven_auth` | [specs/server_driven_auth/](server_driven_auth/) | 🟡 draft | NEW `lib/features/server_driven_auth/` + `core/config/`, `core/localization/`, `core/network/`, `splash/`, `onboard/` | **Umbrella refactor** of authentication. Unified `auth/check-identifier` + 8-string action vocabulary + Forgot Password (Scenario 5). Gmail SMTP for OTP; `EMAIL_OTP_ENABLED` server flag. Mobile half implemented + flag-gated by `server_driven_auth_enabled` (default `false`); backend (Laravel + Botble, separate repo) delivered as integration contract at [specs/server_driven_auth/contracts/](server_driven_auth/contracts/). Reconciles with `email_otp` and `phone_password_login` (see that spec's §Relationship to sibling features). |
+
 ## Migration history
 
 | Date | Wave | Features | Highlights |
@@ -160,6 +170,7 @@ From [features.md "NOT building" section](features.md#not-building--explicit-non
 | 2026-05-14 | 1 | `login`, `otp`, `splash`, `register`, `notifications` | Proved template format on small features |
 | 2026-05-14 | 2 | `chat`, `diary` | Surfaced duplicate `_asMap` compile bug in chat; hardcoded `childId: 1`, O(n² log n) sort in diary |
 | 2026-05-15 | 3 (final) | All 21 remaining features | 81 trio files written; surfaced 4 flavor-tag drifts, 5 stub/unwired surfaces, 10 P0 bugs (see tables above) |
+| 2026-06-01 | refactor | `server_driven_auth` (NEW) + reconciles `email_otp`, `phone_password_login`, `login`, `otp`, `register` | Replaced client-driven auth with server-driven model. Unified `auth/check-identifier` entry + 8-string action vocabulary. New Forgot-Password flow (Scenario 5) with email OTP via project Gmail SMTP. New server-side `EMAIL_OTP_ENABLED` flag controls OTP enforcement (default `true`; dev/QA bypass only). New client-side `server_driven_auth_enabled` rollout flag — legacy Firebase login kept **alongside** the new flow (decision: "flag on Firebase, pass not delete"), to be removed in Wave 8 of [specs/server_driven_auth/tasks.md](server_driven_auth/tasks.md) after a 7-day pilot soak. Backend (separate repo) handed off as integration contract — `users.password` nullable, `status` enum, `email_verified` columns, `password_reset_otps` + `email_verification_otps` + temp-token store, session invalidation on reset. PII redaction extended to 8 new `auth/*` endpoints. Deviations from master-prompt documented in [specs/server_driven_auth/spec.md §Deviations](server_driven_auth/spec.md). |
 
 ## Cross-feature work (still tracked in features.md)
 

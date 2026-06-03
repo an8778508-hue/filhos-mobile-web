@@ -19,6 +19,8 @@ created: 2026-05-19
 
 Cross-references: [specs/otp/spec.md](../otp/spec.md) (existing SMS OTP), [specs/login/spec.md](../login/spec.md), [CLAUDE.md §1.2 Sign-in flow](../../CLAUDE.md#12-core-user-flows). **For per-team responsibilities + setup checklists** see [contracts/integration-contract.md](contracts/integration-contract.md).
 
+> ℹ️ **Relationship to `server_driven_auth`** *(added 2026-06-01).* This spec defines email OTP as a **login** method (the user picks the "E-mail" tab on LoginScreen and verifies via emailed code). The umbrella `server_driven_auth` feature uses a **different** email-OTP machinery for two other purposes — registration email verification (`VERIFY_EMAIL_OTP`) and forgot-password (`VERIFY_RESET_OTP`) — delivered via the project's own **Gmail SMTP** account (not the Firebase "Trigger Email from Firestore" + SendGrid pipeline this spec uses). The two paths are orthogonal: `email_otp_globally_visible` controls whether this spec's login-by-email-OTP tab is shown; `server_driven_auth_enabled` controls whether the umbrella's `check-identifier`-driven flow takes over LoginScreen. See [specs/server_driven_auth/spec.md §Relationship to sibling features](../server_driven_auth/spec.md).
+
 ## Flavor Scope *(mandatory for Criarte)*
 
 - **Target flavor(s)**: both (parents + professores)
