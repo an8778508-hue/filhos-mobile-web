@@ -24,7 +24,7 @@ test.describe('Professores Login — Email Form', () => {
     await openEmailForm(page);
     await submitEmailLogin(page, { email: 'prof@test.com', password: 'secret1' });
 
-    await expect(page.getByRole('textbox', { name: 'Email' })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('textbox', { name: 'Username' })).toBeVisible({ timeout: 15_000 });
     await expect(app.semanticText(LOGIN_TITLE).first()).toBeVisible();
   });
 });

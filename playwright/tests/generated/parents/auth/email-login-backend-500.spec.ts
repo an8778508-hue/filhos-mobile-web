@@ -24,7 +24,7 @@ test.describe('Login — Email Form', () => {
     await submitEmailLogin(page, { email: 'ana@test.com', password: 'secret1' });
 
     // LoginFailure → ErrorField rendered on the login screen; we stay put.
-    await expect(page.getByRole('textbox', { name: 'Email' })).toBeVisible({ timeout: 15_000 });
+    await expect(page.getByRole('textbox', { name: 'Username' })).toBeVisible({ timeout: 15_000 });
     await expect(app.semanticText('Login Parents').first()).toBeVisible();
   });
 });

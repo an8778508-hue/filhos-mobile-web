@@ -4,7 +4,10 @@ import { test, expect } from '../../../../src/fixtures/index.js';
 import { reachLogin, openEmailForm, typeInto } from '../../../../src/helpers/parentsFlow.js';
 
 test.describe('Login — Email Form', () => {
-  test('invalid email format shows the email validation error', async ({ app, page }) => {
+  // The default login form is now username + password — the username field has
+  // no email-format validation (that moved to the sign-up form and the
+  // flag-gated email-OTP tab). This login-screen scenario no longer applies.
+  test.fixme('invalid email format shows the email validation error', async ({ app, page }) => {
     await page.route('**/api/v1/**', (route) =>
       route.fulfill({ status: 503, contentType: 'application/json', body: '{}' }),
     );

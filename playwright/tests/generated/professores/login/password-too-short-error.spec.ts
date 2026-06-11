@@ -12,7 +12,7 @@ test.describe('Professores Login', () => {
     await reachLogin(app, page);
     await openEmailForm(page);
 
-    await typeInto(page, 'Email', 'prof@test.com');
+    await typeInto(page, 'Username', 'prof_test');
     await typeInto(page, 'Password', '123');
     await page.getByRole('button', { name: 'Login' }).click();
 

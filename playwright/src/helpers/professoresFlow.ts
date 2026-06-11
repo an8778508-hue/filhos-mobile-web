@@ -109,20 +109,36 @@ export async function enterPhone(page: Page, localNumber: string): Promise<void>
   await page.keyboard.type(localNumber, { delay: 20 });
 }
 
+/**
+ * The default login form is now **username + password** — there is no
+ * email/phone toggle unless the `phone_login_visible` remote flag is on (it is
+ * OFF in the test config). Kept for back-compat with specs that used to switch
+ * to the email form: it simply asserts the credential form is mounted.
+ */
 export async function openEmailForm(page: Page): Promise<void> {
-  const buttons = page.getByRole('button');
-  const count = await buttons.count();
-  await buttons.nth(count - 2).click();
   await page
-    .getByRole('textbox', { name: 'Email' })
+    .getByRole('textbox', { name: 'Username' })
+    .first()
     .waitFor({ state: 'visible', timeout: 10_000 });
 }
 
+export async function submitCredentialLogin(
+  page: Page,
+  creds: { username: string; password: string },
+): Promise<void> {
+  await typeInto(page, 'Username', creds.username);
+  await typeInto(page, 'Password', creds.password);
+  await page.getByRole('button', { name: 'Login' }).click();
+}
+
+/**
+ * Back-compat shim: login now uses a username identifier (sent to the same
+ * mocked `auth/login-with-email` endpoint), so the email value is typed into
+ * the Username field.
+ */
 export async function submitEmailLogin(
   page: Page,
   creds: { email: string; password: string },
 ): Promise<void> {
-  await typeInto(page, 'Email', creds.email);
-  await typeInto(page, 'Password', creds.password);
-  await page.getByRole('button', { name: 'Login' }).click();
+  await submitCredentialLogin(page, { username: creds.email, password: creds.password });
 }
