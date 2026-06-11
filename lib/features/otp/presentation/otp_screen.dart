@@ -14,6 +14,7 @@ import 'package:escola/features/main/presentation/main_screen.dart';
 import 'package:escola/features/otp/models/otp_delivery_mode.dart';
 import 'package:escola/features/otp/presentation/bloc/otp_bloc.dart';
 import 'package:escola/features/otp/presentation/widgets/delivery_mode_chrome.dart';
+import 'package:escola/features/register/bloc/register_event.dart';
 import 'package:escola/features/your_account_under_review/presentation/your_account_under_review_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +31,7 @@ class OTPScreen extends StatefulWidget {
     this.mode = OTPDeliveryMode.sms,
     this.email,
     this.maskedEmail,
+    this.registerParams,
   });
 
   final String? phone, phoneCode, countryCode;
@@ -37,6 +39,10 @@ class OTPScreen extends StatefulWidget {
   final OTPDeliveryMode mode;
   final String? email;
   final String? maskedEmail;
+
+  /// When set, this OTP screen is part of the self sign-up flow: confirming the
+  /// code verifies the email and then creates the account.
+  final RegisterParamaters? registerParams;
 
   @override
   State<OTPScreen> createState() => _OTPScreenState();
@@ -65,10 +71,18 @@ class _OTPScreenState extends State<OTPScreen> {
 
   void _submitCode(BuildContext context) {
     if (widget.mode == OTPDeliveryMode.email) {
-      BlocProvider.of<OTPBloc>(context).confirmEmailOTP(
-        email: widget.email!,
-        code: codeController.text,
-      );
+      if (widget.registerParams != null) {
+        BlocProvider.of<OTPBloc>(context).confirmEmailOtpForRegister(
+          email: widget.email!,
+          code: codeController.text,
+          params: widget.registerParams!,
+        );
+      } else {
+        BlocProvider.of<OTPBloc>(context).confirmEmailOTP(
+          email: widget.email!,
+          code: codeController.text,
+        );
+      }
     } else {
       BlocProvider.of<OTPBloc>(context).confirmSMSCode(
         phone: "+${widget.phoneCode! + widget.phone!}",

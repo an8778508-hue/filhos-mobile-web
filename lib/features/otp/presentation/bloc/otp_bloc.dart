@@ -4,12 +4,15 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
+import 'package:escola/core/models/user_model.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
+import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/features/login/models/login_requset.dart';
 import 'package:escola/features/otp/models/otp_delivery_mode.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
 import 'package:escola/features/otp/models/otp_requset.dart';
+import 'package:escola/features/register/bloc/register_event.dart';
 import 'package:flutter/cupertino.dart';
 
 // part 'otp_event.dart';
@@ -26,32 +29,21 @@ class OTPBloc extends Cubit<OTPState> {
   OTPDeliveryMode currentMode = OTPDeliveryMode.sms;
   String? currentMaskedEmail;
 
-  OTPBloc(this.loginRepository, this.localDatabase) : super(OTPInitial()) {
-    // on<OTPEvent>((event, emit) async {
-    //   if (event is RequestOTPEvent) {
-    //     await requestOTP(emit,phone: event.loginRequest.phoneNumber,);
-    //   }
-    //   if (event is SubmitOTPEvent) {
-    //     await confirmSMSCode(emit,phone: event.otpRequest.phone,code: event.otpRequest.phone);
-    //   }
-    // });
-  }
+  OTPBloc(this.loginRepository, this.localDatabase) : super(OTPInitial());
 
   final int otpTimeout = 60;
 
   _successOTP(OTPRequest model, String countryCode) async {
-    final loginResponse =
-        await loginRepository.login(LoginRequest(
-          phone: model.phoneNumber,
-          country_code: countryCode,
-          firebaseIdToken: model.firebaseIdToken,
-        ));
+    final loginResponse = await loginRepository.login(LoginRequest(
+      phone: model.phoneNumber,
+      country_code: countryCode,
+      firebaseIdToken: model.firebaseIdToken,
+    ));
     await loginResponse.fold((l) async => emit(OTPFailure(l)), (user) async {
       localDatabase.delete(key: LocalKeys.last_otp_request);
       localDatabase.delete(key: LocalKeys.last_otp_phone);
       _timer?.cancel();
       loginModel = model;
-
       if (rememberMe) {
         localDatabase.write(key: LocalKeys.rememberMe, value: rememberMe);
       }
@@ -69,7 +61,6 @@ class OTPBloc extends Cubit<OTPState> {
         pendingOTPTime = otpTimeout - diff.inSeconds;
       }
     }
-
     if (pendingOTPTime != null) {
       _startTimer();
     }
@@ -103,11 +94,8 @@ class OTPBloc extends Cubit<OTPState> {
     final lastOtpPhone = await localDatabase.read(key: LocalKeys.last_otp_phone);
     if (pendingOTPTime != null && lastOtpPhone == phone) {
       emit(OTPFailure(NetworkFailure(message: OTPErrorModel.alreadySent().code ?? '')));
-      // print('OTPBloc.requestOTP ${l.code}');
-      // if(l.code == 'already_sent'){
       ready.value = true;
       return;
-      // }
     }
     await localDatabase.write(key: LocalKeys.last_otp_request, value: DateTime.now().millisecondsSinceEpoch);
     await localDatabase.write(key: LocalKeys.last_otp_phone, value: phone);
@@ -122,7 +110,6 @@ class OTPBloc extends Cubit<OTPState> {
         emit(OTPReady());
       },
       onFailed: (l) async {
-        print('OTPBloc.requestOTP ${l.code}');
         if (l.code == 'already_sent') {
           ready.value = true;
           return;
@@ -139,7 +126,6 @@ class OTPBloc extends Cubit<OTPState> {
     required String phone,
     required String countryCode,
   }) async {
-    // safeEmit(const OTPState());
     await requestOTP(phone: phone, remember: rememberMe, countryCode: countryCode);
   }
 
@@ -149,16 +135,10 @@ class OTPBloc extends Cubit<OTPState> {
     required String countryCode,
   }) async {
     emit(OTPLoading());
-// safeEmit(state.asLoading());
-    final f = await loginRepository.confirmOTP(
-      smsCode: code,
-      phone: phone,
-    );
+    final f = await loginRepository.confirmOTP(smsCode: code, phone: phone);
     f.fold(
-      (l) {
-        emit(OTPFailure(NetworkFailure(message: l.code ?? '')));
-      },
-      (r) => _successOTP(r, countryCode),
+          (l) => emit(OTPFailure(NetworkFailure(message: l.code ?? ''))),
+          (r) => _successOTP(r, countryCode),
     );
   }
 
@@ -196,8 +176,8 @@ class OTPBloc extends Cubit<OTPState> {
 
     final result = await loginRepository.requestEmailOTP(email: email);
     result.fold(
-      (failure) => emit(OTPFailure(failure)),
-      (response) {
+          (failure) => emit(OTPFailure(failure)),
+          (response) {
         currentMaskedEmail = response.maskedEmail;
         pendingOTPTime = response.retryAfter;
         localDatabase.write(
@@ -219,8 +199,8 @@ class OTPBloc extends Cubit<OTPState> {
     emit(OTPLoading());
     final result = await loginRepository.confirmEmailOTP(email: email, code: code);
     result.fold(
-      (failure) => emit(OTPFailure(failure)),
-      (response) {
+          (failure) => emit(OTPFailure(failure)),
+          (response) {
         localDatabase.delete(key: LocalKeys.last_email_otp_request);
         localDatabase.delete(key: LocalKeys.last_email_otp_email);
         _timer?.cancel();
@@ -235,6 +215,36 @@ class OTPBloc extends Cubit<OTPState> {
 
   Future<void> resendEmailOTP({required String email}) async {
     await requestEmailOTP(email: email, remember: rememberMe);
+  }
+
+  // ── Email OTP for self sign-up ─────────────────────────────
+
+  Future<void> confirmEmailOtpForRegister({
+    required String email,
+    required String code,
+    required RegisterParamaters params,
+  }) async {
+    emit(OTPLoading());
+
+    // 1) Verify the emailed code
+    final verify = await loginRepository.confirmEmailOTP(email: email, code: code);
+    await verify.fold(
+          (failure) async => emit(OTPFailure(failure)),
+          (_) async {
+        // 2) Email verified → create the account
+        final registration = await loginRepository.register(event: params);
+        registration.fold(
+              (failure) => emit(OTPFailure(failure)),
+              (user) {
+            localDatabase.delete(key: LocalKeys.last_email_otp_request);
+            localDatabase.delete(key: LocalKeys.last_email_otp_email);
+            _timer?.cancel();
+            UserBloc.get.loggedIn(user);
+            emit(OTPSuccess());
+          },
+        );
+      },
+    );
   }
 
   @override

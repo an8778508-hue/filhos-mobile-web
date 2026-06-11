@@ -20,6 +20,7 @@ class SocialLoginButtons extends StatelessWidget {
   final String loginWithEmailImage;
   final String phoneButtonImage;
   final bool isEmail; // Add flag to track current mode
+  final bool showToggle; // Whether to show the phone/email login-method toggle
 
   const SocialLoginButtons({
     super.key,
@@ -33,6 +34,7 @@ class SocialLoginButtons extends StatelessWidget {
     required this.loginWithEmailImage,
     required this.phoneButtonImage,
     required this.isEmail, // Default to false for social login
+    this.showToggle = true,
   });
 
   @override

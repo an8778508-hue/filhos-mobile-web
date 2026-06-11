@@ -44,30 +44,37 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
 
-  late TextEditingController phoneController;
+  late TextEditingController usernameController;
   late TextEditingController passwordController;
+  late TextEditingController phoneController;
+  late TextEditingController emailOtpController;
   late ValueNotifier<bool> rememberMeToggle;
   late Country country;
-  late TextEditingController emailController;
-  late TextEditingController emailOtpController;
-  late ValueNotifier<bool> isEmailLogin;
 
-  String? verificationId;
+  // Toggles between the default username + password form and the (flag-gated)
+  // phone login form. Defaults to the username + password form.
+  late ValueNotifier<bool> isPhoneLogin;
+
+  // 0 = password (username + password) tab, 1 = email-OTP tab.
+  final ValueNotifier<int> _loginTabIndex = ValueNotifier(0);
 
   bool isValidNumber = false;
   bool showValidNumberError = false;
 
+  /// Phone/SMS login is only available when the remote flag is enabled.
+  bool get _phoneLoginVisible => Config.get.phoneLoginVisible;
+
+  /// The email-OTP login tab is only available when the remote flag is enabled.
   bool get _showEmailOtpTab => Config.get.emailOtpGloballyVisible;
-  final ValueNotifier<int> _loginTabIndex = ValueNotifier(0);
 
   @override
   void initState() {
-    phoneController = TextEditingController();
+    usernameController = TextEditingController();
     passwordController = TextEditingController();
-    rememberMeToggle = ValueNotifier(false);
-    emailController = TextEditingController();
+    phoneController = TextEditingController();
     emailOtpController = TextEditingController();
-    isEmailLogin = ValueNotifier(false);
+    rememberMeToggle = ValueNotifier(false);
+    isPhoneLogin = ValueNotifier(false);
     country = Country.parse(AppConstants.egCountryCode);
     _restoreLoginMode();
     super.initState();
@@ -84,26 +91,61 @@ class _LoginScreenState extends State<LoginScreen> {
     _loginTabIndex.value = index;
     di<LocalDatabaseRepo>().write(
       key: LocalKeys.last_login_mode,
-      value: index == 1 ? 'email' : 'sms',
+      value: index == 1 ? 'email' : 'password',
     );
-    // Clear inactive tab state
+    // Clear the inactive tab's state.
     if (index == 0) {
       emailOtpController.clear();
     } else {
+      usernameController.clear();
+      passwordController.clear();
       phoneController.clear();
     }
   }
 
   @override
   void dispose() {
-    phoneController.dispose();
+    usernameController.dispose();
     passwordController.dispose();
-    rememberMeToggle.dispose();
-    emailController.dispose();
+    phoneController.dispose();
     emailOtpController.dispose();
-    isEmailLogin.dispose();
+    rememberMeToggle.dispose();
+    isPhoneLogin.dispose();
     _loginTabIndex.dispose();
     super.dispose();
+  }
+
+  void _onLoginPressed(BuildContext context) {
+    formKey.currentState?.save();
+    if (formKey.currentState?.validate() ?? false) {
+      if (_phoneLoginVisible && isPhoneLogin.value) {
+        BlocProvider.of<LoginBloc>(context).requestOTP(
+          phone: "+${country.phoneCode + phoneController.text}",
+          countryCode: country.countryCode,
+        );
+      } else {
+        BlocProvider.of<LoginBloc>(context).loginWithEmail(
+          username: usernameController.text,
+          password: passwordController.text,
+        );
+      }
+    }
+  }
+
+  void _routeAfterLogin(BuildContext context) {
+    if (UserBloc.get.state.user?.isApproval == true) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const MainScreen()),
+        (route) => false,
+      );
+    } else {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (_) => const YourAccountUnderReviewScreen()),
+        (route) => false,
+      );
+    }
   }
 
   @override
@@ -128,34 +170,10 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           }
           if (state is LoginSocialSuccess) {
-            if (UserBloc.get.state.user?.isApproval == true) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const MainScreen()),
-                (route) => false,
-              );
-            } else {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const YourAccountUnderReviewScreen()),
-                (route) => false,
-              );
-            }
+            _routeAfterLogin(context);
           }
           if (state is LoginWithEmailSuccess) {
-            if (UserBloc.get.state.user?.isApproval == true) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const MainScreen()),
-                (route) => false,
-              );
-            } else {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const YourAccountUnderReviewScreen()),
-                (route) => false,
-              );
-            }
+            _routeAfterLogin(context);
           }
           if (state is LoginEmailOTPReady) {
             Navigator.of(context).push(
@@ -201,390 +219,332 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     Expanded(
                       child: SingleChildScrollView(
-                        child: ValueListenableBuilder(
-                          valueListenable: isEmailLogin,
-                          builder: (context, value, child) {
-                            return Column(
-                              children: [
-                                SizedBox(
-                                  height: isEmailLogin.value ? 36.csh : 66.csh,
-                                ),
-                                SizedBox(
-                                  height: 90.h,
-                                  width: 210.csw,
-                                  child: ConfigSelector(
-                                    selector: (config) => config.logo_horizontal,
-                                    builder: (context, logo) {
-                                      return CommonImage(
-                                      imageUrl: logo ?? Assets.icons.defaultHorizontalLogo.path,
-                                      fallBackImagePath: Assets.icons.defaultHorizontalLogo.path,
-                                      height: 90.h,
-                                      width: 210.csw,
-                                    );
-                                    },
-                                  ),
-                                ),
-                                if (context.isProfessors) ...[
-                                  SizedBox(
-                                    height: 17.csh,
-                                  ),
-                                  ProfessorsContainer(
-                                    paddingHorizontal: 30.w,
-                                    paddingVertical: 5.h,
-                                    fontSize: 19.sp,
-                                  ),
-                                ],
-                                SizedBox(
-                                  height: context.isProfessors ? 40.h : 98.h,
-                                ),
-                                Text(
-                                  "${LocalizationKeys.login_title.tr(context)} ${context.isProfessors ? LocalizationKeys.professors.tr(context) : LocalizationKeys.parents.tr(context)}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20.sp,
-                                    color: context.colors.textColor,
-                                    height: 1,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 40.csh,
-                                ),
-                                // Container(
-                                //   margin: EdgeInsets.symmetric(horizontal: 42.csw),
-                                //   child: PhoneField(
-                                //     background: context.colors.background,
-                                //     padding: EdgeInsets.symmetric(vertical: 5.csh, horizontal: 20.csw),
-                                //     borderRadius: 30.r,
-                                //     onChanged: (value) {
-                                //       // if (!showValidNumberError) {
-                                //       //   setState(() => showValidNumberError = true);
-                                //       // }
-                                //     },
-                                //     isCountryValid: (valid) {
-                                //       setState(() => isValidNumber = valid);
-                                //     },
-                                //     validator: (value) {
-                                //       if (!validString(value)) {
-                                //         return LocalizationKeys.this_field_cant_be_empty.tr(context);
-                                //       }
-                                //       return null;
-                                //     },
-                                //     initial: phoneController.text,
-                                //     phoneController: phoneController,
-                                //     strokeWidth: 0.0,
-                                //     strokeColor: Colors.transparent,
-                                //     marginErrorWidthPercentage: 0.0,
-                                //     onCountrySelected: (Country value) {
-                                //       if (mounted) {
-                                //         setState(() {
-                                //           country = value;
-                                //         });
-                                //       }
-                                //     },
-                                //     country: country,
-                                //   ),
-                                // ),
-                                // if (!isValidNumber && showValidNumberError) ...[
-                                //   SizedBox(
-                                //     height: 10.csh,
-                                //   ),
-                                //   Padding(
-                                //     padding: EdgeInsets.symmetric(horizontal: 42.csw),
-                                //     child: ErrorField(
-                                //       text: LocalizationKeys.please_enter_a_valid_phone_number.tr(context),
-                                //     ),
-                                //   ),
-                                // ],
-                                if (_showEmailOtpTab) ...[
-                                  _buildLoginTabBar(context),
-                                  SizedBox(height: 20.csh),
-                                ],
-                                ValueListenableBuilder<int>(
-                                  valueListenable: _loginTabIndex,
-                                  builder: (context, tabIndex, _) {
-                                    if (_showEmailOtpTab && tabIndex == 1) {
-                                      return EmailOTPTab(
-                                        emailController: emailOtpController,
-                                        formKey: formKey,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 36.csh,
+                            ),
+                            SizedBox(
+                              height: 90.h,
+                              width: 210.csw,
+                              child: ConfigSelector(
+                                selector: (config) => config.logo_horizontal,
+                                builder: (context, logo) {
+                                  return CommonImage(
+                                    imageUrl: logo ?? Assets.icons.defaultHorizontalLogo.path,
+                                    fallBackImagePath: Assets.icons.defaultHorizontalLogo.path,
+                                    height: 90.h,
+                                    width: 210.csw,
+                                  );
+                                },
+                              ),
+                            ),
+                            if (context.isProfessors) ...[
+                              SizedBox(
+                                height: 17.csh,
+                              ),
+                              ProfessorsContainer(
+                                paddingHorizontal: 30.w,
+                                paddingVertical: 5.h,
+                                fontSize: 19.sp,
+                              ),
+                            ],
+                            SizedBox(
+                              height: context.isProfessors ? 40.h : 98.h,
+                            ),
+                            Text(
+                              "${LocalizationKeys.login_title.tr(context)} ${context.isProfessors ? LocalizationKeys.professors.tr(context) : LocalizationKeys.parents.tr(context)}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20.sp,
+                                color: context.colors.textColor,
+                                height: 1,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 40.csh,
+                            ),
+                            if (_showEmailOtpTab) ...[
+                              _buildLoginTabBar(context),
+                              SizedBox(height: 20.csh),
+                            ],
+                            ValueListenableBuilder<int>(
+                              valueListenable: _loginTabIndex,
+                              builder: (context, tabIndex, _) {
+                                if (_showEmailOtpTab && tabIndex == 1) {
+                                  return EmailOTPTab(
+                                    emailController: emailOtpController,
+                                    formKey: formKey,
+                                  );
+                                }
+                                return ValueListenableBuilder<bool>(
+                                  valueListenable: isPhoneLogin,
+                                  builder: (context, phoneMode, __) => AnimatedSwitcher(
+                                    duration: const Duration(milliseconds: 300),
+                                    transitionBuilder: (Widget child, Animation<double> animation) {
+                                      return FadeTransition(
+                                        opacity: animation,
+                                        child: SlideTransition(
+                                          position: Tween<Offset>(
+                                            begin: const Offset(0.0, 0.1),
+                                            end: Offset.zero,
+                                          ).animate(animation),
+                                          child: child,
+                                        ),
                                       );
-                                    }
-                                    return AnimatedSwitcher(
-                                      duration: const Duration(milliseconds: 300),
-                                      transitionBuilder: (Widget child, Animation<double> animation) {
-                                        return FadeTransition(
-                                          opacity: animation,
-                                          child: SlideTransition(
-                                            position: Tween<Offset>(
-                                              begin: const Offset(0.0, 0.1),
-                                              end: Offset.zero,
-                                            ).animate(animation),
-                                            child: child,
-                                          ),
-                                        );
-                                      },
-                                      child: isEmailLogin.value
-                                          ? _buildEmailLoginForm(context)
-                                          : _buildPhoneLoginForm(context),
-                                    );
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 20.csh,
-                                ),
-                                // Remember me + Login button — hidden when email OTP tab is active
-                                // (EmailOTPTab has its own send button)
-                                ValueListenableBuilder<int>(
-                                  valueListenable: _loginTabIndex,
-                                  builder: (context, tabIndex, _) {
-                                    if (_showEmailOtpTab && tabIndex == 1) {
-                                      return const SizedBox();
-                                    }
-                                    return Column(
-                                      children: [
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: 42.csw,
-                                    ),
-                                    Directionality(
-                                      textDirection: TextDirection.ltr,
-                                      child: GestureDetector(
-                                        behavior: HitTestBehavior.translucent,
-                                        onTap: () {
-                                          rememberMeToggle.value = !rememberMeToggle.value;
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            ValueListenableBuilder(
-                                              valueListenable: rememberMeToggle,
-                                              builder: (context, v, child) => SizedBox(
-                                                width: 20.w,
-                                                height: 20.w,
-                                                child: Theme(
-                                                  data: Theme.of(context).copyWith(
-                                                    unselectedWidgetColor: context.colors.primary,
-                                                  ),
-                                                  child: Checkbox(
-                                                    value: v,
-                                                    shape: RoundedRectangleBorder(
-                                                        side: BorderSide(color: context.colors.accent)),
-                                                    onChanged: (value) {
-                                                      rememberMeToggle.value = !rememberMeToggle.value;
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 5.w),
-                                            Text(
-                                              LocalizationKeys.keep_me_logged_in.tr(context),
-                                              style: TextStyle(
-                                                color: context.colors.textColor,
-                                                fontSize: 14.sp,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    const Spacer(),
-                                    SizedBox(
-                                      width: 42.csw,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 40.csh,
-                                ),
-                                BlocBuilder<LoginBloc, LoginState>(
-                                  builder: (context, state) {
-                                    return state is LoginFailure
-                                      ? Padding(
-                                          padding: const EdgeInsets.only(bottom: 20.0),
-                                          child: Center(child: ErrorField(text: state.failure.message.tr(context))),
-                                        )
-                                      : const SizedBox();
-                                  },
-                                ),
-                                BlocSelector<LoginBloc, LoginState, bool>(
-                                  selector: (state) => state is LoginLoading,
-                                  builder: (context, loading) => ButtonWithIcon(
-                                    isLoading: loading,
-                                    hasError: isEmailLogin.value
-                                        ? false
-                                        : !isValidNumber,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    onPressed: () {
-                                      formKey.currentState?.save();
-                                      if (formKey.currentState?.validate() ?? false) {
-                                        if (isEmailLogin.value == false) {
-                                          BlocProvider.of<LoginBloc>(context).requestOTP(
-                                            phone: "+${country.phoneCode + phoneController.text}",
-                                            countryCode: country.countryCode,
-                                          );
-                                        } else {
-                                          BlocProvider.of<LoginBloc>(context).loginWithEmail(
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          );
-                                        }
-                                      }
                                     },
-                                    buttonBackgroundColor: context.colors.primary,
-                                    textColor: context.colors.secondaryTextColor,
-                                    text: LocalizationKeys.login.tr(context),
-                                    marginWidth: 40.w,
-                                    marginHeight: 0,
-                                    padding: EdgeInsets.symmetric(vertical: 10.h),
-                                    borderRadius: 30.r,
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w500,
+                                    child: (_phoneLoginVisible && phoneMode)
+                                        ? _buildPhoneLoginForm(context)
+                                        : _buildCredentialLoginForm(context),
                                   ),
-                                ),
-                                      ],
-                                    );
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 20.csh,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 40.w),
-                                  child: Text.rich(
-                                    textAlign: TextAlign.center,
-                                    TextSpan(
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: context.colors.labelColor,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      children: [
-                                        TextSpan(
-                                          text: LocalizationKeys.by_continuing_i_agree.tr(context),
-                                        ),
-                                        WidgetSpan(
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) => const TermsAndConditions()));
-                                            },
-                                            child: Padding(
-                                              padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.h),
-                                              child: Text(
-                                                LocalizationKeys.terms_and_conditions.tr(context),
-                                                style: TextStyle(
-                                                  decoration: TextDecoration.underline,
-                                                  color: context.colors.labelColor,
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          alignment: PlaceholderAlignment.middle,
-                                        ),
-                                        TextSpan(
-                                          text: LocalizationKeys.and.tr(context),
-                                        ),
-                                        WidgetSpan(
-                                          child: InkWell(
-                                            onTap: () {
-                                              Navigator.push(context,
-                                                  MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2),
-                                              child: Text(
-                                                LocalizationKeys.privacy_policy.tr(context),
-                                                style: TextStyle(
-                                                  decoration: TextDecoration.underline,
-                                                  color: context.colors.labelColor,
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          alignment: PlaceholderAlignment.middle,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 50.csh,
-                                ),
-                                BlocBuilder<LoginBloc, LoginState>(
-                                  builder: (context, state) {
-                                    return SocialLoginButtons(
-                                      googleButtonImage: Assets.icons.google.path,
-                                      facebookButtonImage: Assets.icons.facebook.path,
-                                      appleButtonImage: Assets.images.apple.path,
-                                      onGoogleLogin: () {
-                                        BlocProvider.of<LoginBloc>(context).loginWithGoogle();
-                                        // Add Google login logic here
-                                      },
-                                      onFacebookLogin: () {
-                                        // Add Facebook login logic here
-                                        BlocProvider.of<LoginBloc>(context).loginWithFacebook();
-                                      },
-                                      onAppleLogin: () {
-                                        // Add Apple login logic here
-                                        BlocProvider.of<LoginBloc>(context).loginWithApple();
-                                      },
-                                      loginWithEmailImage: Assets.icons.email.path,
-                                      onToggleLoginMethod: () {
-                                        isEmailLogin.value = !isEmailLogin.value;
-                                        emailController.clear();
-                                        phoneController.clear();
-                                        passwordController.clear();
-                                      },
-                                      isEmail: !isEmailLogin.value,
-                                      phoneButtonImage: Assets.icons.phone.path,
-                                    );
-                                  },
-                                ),
-                                SizedBox(
-                                  height: 50.csh,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                );
+                              },
+                            ),
+                            SizedBox(
+                              height: 20.csh,
+                            ),
+                            // Remember me + login button — hidden when the email-OTP tab
+                            // is active (EmailOTPTab has its own send button).
+                            ValueListenableBuilder<int>(
+                              valueListenable: _loginTabIndex,
+                              builder: (context, tabIndex, _) {
+                                if (_showEmailOtpTab && tabIndex == 1) {
+                                  return const SizedBox();
+                                }
+                                return Column(
                                   children: [
-                                    Text(
-                                      LocalizationKeys.dont_have_account.tr(context),
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: context.colors.labelColor,
-                                        fontWeight: FontWeight.w400,
-                                      ),
+                                    Row(
+                                      children: [
+                                        SizedBox(
+                                          width: 42.csw,
+                                        ),
+                                        Directionality(
+                                          textDirection: TextDirection.ltr,
+                                          child: GestureDetector(
+                                            behavior: HitTestBehavior.translucent,
+                                            onTap: () {
+                                              rememberMeToggle.value = !rememberMeToggle.value;
+                                            },
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: [
+                                                ValueListenableBuilder(
+                                                  valueListenable: rememberMeToggle,
+                                                  builder: (context, v, child) => SizedBox(
+                                                    width: 20.w,
+                                                    height: 20.w,
+                                                    child: Theme(
+                                                      data: Theme.of(context).copyWith(
+                                                        unselectedWidgetColor: context.colors.primary,
+                                                      ),
+                                                      child: Checkbox(
+                                                        value: v,
+                                                        shape: RoundedRectangleBorder(
+                                                            side: BorderSide(color: context.colors.accent)),
+                                                        onChanged: (value) {
+                                                          rememberMeToggle.value = !rememberMeToggle.value;
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                Text(
+                                                  LocalizationKeys.keep_me_logged_in.tr(context),
+                                                  style: TextStyle(
+                                                    color: context.colors.textColor,
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        const Spacer(),
+                                        SizedBox(
+                                          width: 42.csw,
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(width: 5.w),
-                                    InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+                                    SizedBox(
+                                      height: 40.csh,
+                                    ),
+                                    BlocBuilder<LoginBloc, LoginState>(
+                                      builder: (context, state) {
+                                        return state is LoginFailure
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(bottom: 20.0),
+                                                child: Center(
+                                                    child: ErrorField(text: state.failure.message.tr(context))),
+                                              )
+                                            : const SizedBox();
                                       },
-                                      child: Text(
-                                        LocalizationKeys.create_account.tr(context),
-                                        style: TextStyle(
-                                          fontSize: 14.sp,
-                                          color: context.colors.primary,
+                                    ),
+                                    ValueListenableBuilder<bool>(
+                                      valueListenable: isPhoneLogin,
+                                      builder: (context, phoneMode, _) =>
+                                          BlocSelector<LoginBloc, LoginState, bool>(
+                                        selector: (state) => state is LoginLoading,
+                                        builder: (context, loading) => ButtonWithIcon(
+                                          isLoading: loading,
+                                          hasError: (_phoneLoginVisible && phoneMode) ? !isValidNumber : false,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          onPressed: () => _onLoginPressed(context),
+                                          buttonBackgroundColor: context.colors.primary,
+                                          textColor: context.colors.secondaryTextColor,
+                                          text: LocalizationKeys.login.tr(context),
+                                          marginWidth: 40.w,
+                                          marginHeight: 0,
+                                          padding: EdgeInsets.symmetric(vertical: 10.h),
+                                          borderRadius: 30.r,
+                                          fontSize: 20.sp,
                                           fontWeight: FontWeight.w500,
-                                          decoration: TextDecoration.underline,
                                         ),
                                       ),
                                     ),
                                   ],
+                                );
+                              },
+                            ),
+                            SizedBox(
+                              height: 20.csh,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 40.w),
+                              child: Text.rich(
+                                textAlign: TextAlign.center,
+                                TextSpan(
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: context.colors.labelColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: LocalizationKeys.by_continuing_i_agree.tr(context),
+                                    ),
+                                    WidgetSpan(
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (context) => const TermsAndConditions()));
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.h),
+                                          child: Text(
+                                            LocalizationKeys.terms_and_conditions.tr(context),
+                                            style: TextStyle(
+                                              decoration: TextDecoration.underline,
+                                              color: context.colors.labelColor,
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      alignment: PlaceholderAlignment.middle,
+                                    ),
+                                    TextSpan(
+                                      text: LocalizationKeys.and.tr(context),
+                                    ),
+                                    WidgetSpan(
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(builder: (context) => const PrivacyPolicy()));
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2),
+                                          child: Text(
+                                            LocalizationKeys.privacy_policy.tr(context),
+                                            style: TextStyle(
+                                              decoration: TextDecoration.underline,
+                                              color: context.colors.labelColor,
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      alignment: PlaceholderAlignment.middle,
+                                    ),
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 20.csh,
+                              ),
+                            ),
+                            SizedBox(
+                              height: 50.csh,
+                            ),
+                            BlocBuilder<LoginBloc, LoginState>(
+                              builder: (context, state) {
+                                return ValueListenableBuilder<bool>(
+                                  valueListenable: isPhoneLogin,
+                                  builder: (context, phoneMode, _) => SocialLoginButtons(
+                                    googleButtonImage: Assets.icons.google.path,
+                                    facebookButtonImage: Assets.icons.facebook.path,
+                                    appleButtonImage: Assets.images.apple.path,
+                                    onGoogleLogin: () {
+                                      BlocProvider.of<LoginBloc>(context).loginWithGoogle();
+                                    },
+                                    onFacebookLogin: () {
+                                      BlocProvider.of<LoginBloc>(context).loginWithFacebook();
+                                    },
+                                    onAppleLogin: () {
+                                      BlocProvider.of<LoginBloc>(context).loginWithApple();
+                                    },
+                                    loginWithEmailImage: Assets.icons.email.path,
+                                    // Phone toggle is only meaningful when phone login is enabled.
+                                    showToggle: _phoneLoginVisible,
+                                    onToggleLoginMethod: () {
+                                      isPhoneLogin.value = !isPhoneLogin.value;
+                                      usernameController.clear();
+                                      phoneController.clear();
+                                      passwordController.clear();
+                                    },
+                                    isEmail: !phoneMode,
+                                    phoneButtonImage: Assets.icons.phone.path,
+                                  ),
+                                );
+                              },
+                            ),
+                            SizedBox(
+                              height: 50.csh,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  LocalizationKeys.dont_have_account.tr(context),
+                                  style: TextStyle(
+                                    fontSize: 14.sp,
+                                    color: context.colors.labelColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                SizedBox(width: 5.w),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+                                  },
+                                  child: Text(
+                                    LocalizationKeys.create_account.tr(context),
+                                    style: TextStyle(
+                                      fontSize: 14.sp,
+                                      color: context.colors.primary,
+                                      fontWeight: FontWeight.w500,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
                                 ),
                               ],
-                            );
-                          },
+                            ),
+                            SizedBox(
+                              height: 20.csh,
+                            ),
+                          ],
                         ),
                       ),
                     )
@@ -594,58 +554,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildEmailLoginForm(BuildContext context) {
-    return Container(
-      key: const ValueKey('email_form'),
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 42.csw),
-            child: CustomTextField(
-              controller: emailController,
-              hint: LocalizationKeys.email.tr(context),
-              backgroundColor: context.colors.background,
-              padding: EdgeInsets.symmetric(vertical: 5.csh, horizontal: 20.csw),
-              borderRadius: 30.r,
-              keyboardType: TextInputType.emailAddress,
-              validator: (value) {
-                if (!validString(value)) {
-                  return LocalizationKeys.this_field_cant_be_empty.tr(context);
-                }
-                final emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-                if (!emailRegExp.hasMatch(value!)) {
-                  return LocalizationKeys.this_is_not_a_valid_email.tr(context);
-                }
-                return null;
-              },
-            ),
-          ),
-          SizedBox(height: 20.csh),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 42.csw),
-            child: CustomTextField(
-              controller: passwordController,
-              hint: LocalizationKeys.password.tr(context),
-              backgroundColor: context.colors.background,
-              padding: EdgeInsets.symmetric(vertical: 5.csh, horizontal: 20.csw),
-              borderRadius: 30.r,
-              obscurePasswordController: ValueNotifier(true),
-              isPassword: true,
-              maxLines: 1,
-              // Explicitly set to 1 for password fields
-              validator: (value) {
-                if (!validString(value) || (value?.length ?? 0) < 6) {
-                  return "${LocalizationKeys.this_field_cant_be_empty_or_less_than.tr(context)} 6 ${LocalizationKeys.character.tr(context)}";
-                }
-                return null;
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -663,21 +571,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   children: [
                     Text(
-                      LocalizationKeys.phone.tr(context),
+                      LocalizationKeys.password.tr(context),
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: currentIndex == 0 ? FontWeight.w600 : FontWeight.w400,
-                        color: currentIndex == 0
-                            ? context.colors.primary
-                            : context.colors.textColor,
+                        color: currentIndex == 0 ? context.colors.primary : context.colors.textColor,
                       ),
                     ),
                     SizedBox(height: 8.h),
                     Container(
                       height: 2.h,
-                      color: currentIndex == 0
-                          ? context.colors.primary
-                          : Colors.transparent,
+                      color: currentIndex == 0 ? context.colors.primary : Colors.transparent,
                     ),
                   ],
                 ),
@@ -693,17 +597,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: currentIndex == 1 ? FontWeight.w600 : FontWeight.w400,
-                        color: currentIndex == 1
-                            ? context.colors.primary
-                            : context.colors.textColor,
+                        color: currentIndex == 1 ? context.colors.primary : context.colors.textColor,
                       ),
                     ),
                     SizedBox(height: 8.h),
                     Container(
                       height: 2.h,
-                      color: currentIndex == 1
-                          ? context.colors.primary
-                          : Colors.transparent,
+                      color: currentIndex == 1 ? context.colors.primary : Colors.transparent,
                     ),
                   ],
                 ),
@@ -711,6 +611,53 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildCredentialLoginForm(BuildContext context) {
+    return Container(
+      key: const ValueKey('credential_form'),
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 42.csw),
+            child: CustomTextField(
+              controller: usernameController,
+              hint: LocalizationKeys.username.tr(context),
+              backgroundColor: context.colors.background,
+              padding: EdgeInsets.symmetric(vertical: 5.csh, horizontal: 20.csw),
+              borderRadius: 30.r,
+              keyboardType: TextInputType.text,
+              validator: (value) {
+                if (!validString(value)) {
+                  return LocalizationKeys.this_field_cant_be_empty.tr(context);
+                }
+                return null;
+              },
+            ),
+          ),
+          SizedBox(height: 20.csh),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 42.csw),
+            child: CustomTextField(
+              controller: passwordController,
+              hint: LocalizationKeys.password.tr(context),
+              backgroundColor: context.colors.background,
+              padding: EdgeInsets.symmetric(vertical: 5.csh, horizontal: 20.csw),
+              borderRadius: 30.r,
+              obscurePasswordController: ValueNotifier(true),
+              isPassword: true,
+              maxLines: 1,
+              validator: (value) {
+                if (!validString(value) || (value?.length ?? 0) < 6) {
+                  return "${LocalizationKeys.this_field_cant_be_empty_or_less_than.tr(context)} 6 ${LocalizationKeys.character.tr(context)}";
+                }
+                return null;
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -726,11 +673,7 @@ class _LoginScreenState extends State<LoginScreen> {
               background: context.colors.background,
               padding: EdgeInsets.symmetric(vertical: 5.csh, horizontal: 20.csw),
               borderRadius: 30.r,
-              onChanged: (value) {
-                // if (!showValidNumberError) {
-                //   setState(() => showValidNumberError = true);
-                // }
-              },
+              onChanged: (value) {},
               isCountryValid: (valid) {
                 setState(() => isValidNumber = valid);
               },

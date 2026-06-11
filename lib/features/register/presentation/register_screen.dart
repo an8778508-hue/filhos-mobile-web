@@ -10,6 +10,9 @@ import 'package:escola/core/localization/localization_keys.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
+import 'package:escola/features/login/presentation/bloc/login_bloc.dart';
+import 'package:escola/features/otp/models/otp_delivery_mode.dart';
+import 'package:escola/features/otp/presentation/otp_screen.dart';
 import 'package:escola/features/register/bloc/register_bloc.dart';
 import 'package:escola/features/register/bloc/register_event.dart';
 import 'package:escola/features/register/bloc/register_state.dart';
@@ -20,12 +23,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/components/widgets/app_bar.dart';
-import '../../../core/user/bloc/user_bloc.dart';
-import '../../main/presentation/main_screen.dart';
 import '../../privacy_policy/privacy_policy_screen.dart';
 import '../../settings/edit_profile/widgets/edit_profile_field_tile.dart';
 import '../../terms_and_condtions/terms_and_conditions_screen.dart';
-import '../../your_account_under_review/presentation/your_account_under_review_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -59,26 +59,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
+  RegisterParamaters _buildParams() => RegisterParamaters(
+        name: nameController.text,
+        email: emailController.text.trim(),
+        password: passwordController.text,
+        confirmPassword: confirmPasswordController.text,
+      );
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<RegisterBloc>(
       create: (BuildContext context) => di<RegisterBloc>(),
       child: BlocListener<RegisterBloc, RegisterStates>(
         listener: (context, state) {
-          if (state is SuccessRegisterState) {
-            if (UserBloc.get.state.user?.isApproval == true) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const MainScreen()),
-                    (route) => false,
-              );
-            } else {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => const YourAccountUnderReviewScreen()),
-                    (route) => false,
-              );
-            }
+          // Step 1 done: the verification code has been emailed. Move to the
+          // OTP screen, which verifies the code and then creates the account.
+          if (state is RegisterOtpSentState) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => BlocProvider<LoginBloc>(
+                  create: (_) => di<LoginBloc>(),
+                  child: OTPScreen(
+                    mode: OTPDeliveryMode.email,
+                    email: emailController.text.trim(),
+                    maskedEmail: state.maskedEmail,
+                    registerParams: _buildParams(),
+                  ),
+                ),
+              ),
+            );
           }
         },
         child: Scaffold(
@@ -96,11 +106,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 key: formKey,
                 child: Column(
                   children: [
-
                     Expanded(
                       child: SingleChildScrollView(
                         child: Padding(
-                          padding:  EdgeInsets.symmetric(horizontal: 42.w),
+                          padding: EdgeInsets.symmetric(horizontal: 42.w),
                           child: Column(
                             children: [
                               SizedBox(
@@ -156,7 +165,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   }
                                   return null;
                                 },
-                                keyboardType: TextInputType.name ,
+                                keyboardType: TextInputType.name,
                               ),
                               SizedBox(
                                 height: 20.csh,
@@ -192,7 +201,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderRadius: 30.r,
                                 obscurePasswordController: ValueNotifier(true),
                                 isPassword: true,
-                                maxLines: 1,  // Explicitly set to 1 for password fields
+                                maxLines: 1, // Explicitly set to 1 for password fields
                                 validator: (value) {
                                   if (!validString(value) || (value?.length ?? 0) < 6) {
                                     return "${LocalizationKeys.this_field_cant_be_empty_or_less_than.tr(context)} 6 ${LocalizationKeys.character.tr(context)}";
@@ -212,7 +221,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 borderRadius: 30.r,
                                 obscurePasswordController: ValueNotifier(true),
                                 isPassword: true,
-                                maxLines: 1,  // Explicitly set to 1 for password fields
+                                maxLines: 1, // Explicitly set to 1 for password fields
                                 validator: (value) {
                                   if (!validString(value)) {
                                     return LocalizationKeys.this_field_cant_be_empty.tr(context);
@@ -226,7 +235,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 height: 40.csh,
                               ),
-
                               BlocSelector<RegisterBloc, RegisterStates, bool>(
                                 selector: (state) => state is LoadingRegisterState,
                                 builder: (context, loading) => ButtonWithIcon(
@@ -238,14 +246,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                       // This ensures the form has the latest values from controllers
                                       currentState.save();
                                       if (currentState.validate()) {
-                                        BlocProvider.of<RegisterBloc>(context).submitRegister(
-                                          RegisterParamaters(
-                                            name: nameController.text,
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                            confirmPassword: confirmPasswordController.text,
-                                          ),
-                                        );
+                                        // Step 1: email the verification code; account is
+                                        // created on the OTP screen after it is confirmed.
+                                        context.read<RegisterBloc>().sendEmailOtp(
+                                              email: emailController.text.trim(),
+                                            );
                                       }
                                     }
                                   },
@@ -333,35 +338,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               SizedBox(
                                 height: 20.csh,
                               ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     Text(
-                              //       LocalizationKeys.dont_have_account.tr(context),
-                              //       style: TextStyle(
-                              //         fontSize: 14.sp,
-                              //         color: context.colors.labelColor,
-                              //         fontWeight: FontWeight.w400,
-                              //       ),
-                              //     ),
-                              //     SizedBox(width: 5.w),
-                              //     InkWell(
-                              //       onTap: () {
-                              //         Navigator.pop(context);
-                              //       },
-                              //       child: Text(
-                              //         LocalizationKeys.login.tr(context),
-                              //         style: TextStyle(
-                              //           fontSize: 14.sp,
-                              //           color: context.colors.primary,
-                              //           fontWeight: FontWeight.w500,
-                              //           decoration: TextDecoration.underline,
-                              //         ),
-                              //       ),
-                              //     ),
-                              //   ],
-                              // ),
-                              // SizedBox(height: 30.csh),
                             ],
                           ),
                         ),

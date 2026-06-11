@@ -8,15 +8,15 @@ abstract class LoginWithEmailEvents extends Equatable {
 }
 
 class LoginEmailParamaters extends LoginWithEmailEvents {
-  final String email;
+  final String username;
   final String password;
 
   const LoginEmailParamaters({
-    required this.email,
+    required this.username,
     required this.password,
   });
 
 
   @override
-  List<Object> get props => [ email, password];
+  List<Object> get props => [username, password];
 }

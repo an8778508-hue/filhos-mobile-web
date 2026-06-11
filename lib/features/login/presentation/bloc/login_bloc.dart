@@ -150,12 +150,12 @@ class LoginBloc extends Cubit<LoginState> {
   }
 
   Future<void> loginWithEmail({
-    required String email,
+    required String username,
     required String password,
   }) async {
     emit(LoginLoading());
     final result = await loginRepository.loginWithEmail(
-      parameters: LoginEmailParamaters(email: email, password: password),
+      parameters: LoginEmailParamaters(username: username, password: password),
     );
     result.fold(
       (failure) => emit(LoginFailure(failure)),

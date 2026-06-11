@@ -27,6 +27,11 @@ class Config {
 
   bool get emailOtpGloballyVisible => json['email_otp_globally_visible'] == true;
 
+  /// When false (default), the phone/SMS-OTP login path is hidden and login is
+  /// username + password only. Flip the remote `phone_login_visible` flag to
+  /// re-enable phone login.
+  bool get phoneLoginVisible => json['phone_login_visible'] == true;
+
   Styling get styling => Styling(validateMap(json['styling']));
 
   final _appInfoJson = const {

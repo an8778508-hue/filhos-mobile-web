@@ -1,10 +1,8 @@
 // lib/features/auth/register/bloc/register_bloc.dart
 
-import 'package:escola/features/register/bloc/register_event.dart';
 import 'package:escola/features/register/bloc/register_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../core/user/bloc/user_bloc.dart';
 import '../../login/data_sources/login_repository.dart';
 
 class RegisterBloc extends Cubit<RegisterStates> {
@@ -12,20 +10,16 @@ class RegisterBloc extends Cubit<RegisterStates> {
 
   RegisterBloc(this.loginRepository) : super(InitialRegisterState());
 
-  Future<void> submitRegister(RegisterParamaters event) async {
+  Future<void> sendEmailOtp({required String email}) async {
     emit(LoadingRegisterState());
     try {
-      final result = await loginRepository.register(event: event);
+      final result = await loginRepository.requestEmailOTP(email: email);
       result.fold(
-        (failure) => emit(ErrorRegisterState(failure.message)),
-        (success) {
-          UserBloc.get.loggedIn(success);
-          emit(SuccessRegisterState());
-        },
+            (failure) => emit(ErrorRegisterState(failure.message)),
+            (response) => emit(RegisterOtpSentState(response.maskedEmail)),
       );
     } catch (e) {
       emit(ErrorRegisterState(e.toString()));
     }
-
   }
 }

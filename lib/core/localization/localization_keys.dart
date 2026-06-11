@@ -202,6 +202,7 @@ abstract class LocalizationKeys {
   static const String add_new = 'add_new';
   static const String contact_us = 'contact_us';
   static const String email = 'email';
+  static const String username = 'username';
   static const String no_activities = 'no_activities';
   static const String no_children = 'no_children';
   static const String search_by_parent_name = 'search_by_parent_name';
