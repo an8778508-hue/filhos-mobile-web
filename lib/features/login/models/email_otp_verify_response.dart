@@ -9,9 +9,13 @@ class EmailOTPVerifyResponse {
     required this.user,
   });
 
-  factory EmailOTPVerifyResponse.fromJson(Map<String, dynamic> json) =>
-      EmailOTPVerifyResponse(
-        accessToken: json['access_token'] as String,
-        user: UserModel.fromJson(json['data'] as Map<String, dynamic>),
-      );
+  factory EmailOTPVerifyResponse.fromJson(Map<String, dynamic> json) {
+    // Laravel (auth/login shape): the user — including the real Sanctum
+    // access_token — lives inside `data`.
+    final data = json['data'] as Map<String, dynamic>;
+    return EmailOTPVerifyResponse(
+      accessToken: (data['access_token'] ?? '').toString(),
+      user: UserModel.fromJson(data),
+    );
+  }
 }

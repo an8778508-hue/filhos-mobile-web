@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:escola/core/errors/exceptions.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/models/user_model.dart';
@@ -29,18 +28,6 @@ class LoginImpl extends LoginRepository {
   final NetworkClientRepository networkClient;
 
   LoginImpl(this.networkClient);
-
-  // ── Node.js OTP Dio client ─────────────────────────────────
-  final Dio _otpDio = Dio(BaseOptions(
-    baseUrl: kIsWeb
-        ? 'https://brunch-distract-studio.ngrok-free.dev/'
-        : 'http://10.0.2.2:3000/',
-    connectTimeout: Duration(seconds: 10),
-    receiveTimeout: Duration(seconds: 10),
-    headers: {
-      'ngrok-skip-browser-warning': 'true',
-    },
-  ));
 
   @override
   Future<Either<Failure, UserModel>> login(LoginRequest request) async {
@@ -309,22 +296,33 @@ class LoginImpl extends LoginRepository {
     }
   }
 
-  // ── Email OTP → Node.js Backend ───────────────────────────
+  // ── Email OTP → Laravel Backend (disney.filhos.app) ───────
 
   @override
   Future<Either<Failure, EmailOTPSendResponse>> requestEmailOTP({
     required String email,
   }) async {
     try {
-      await _otpDio.post('auth/send-otp', data: {'email': email});
-      return Right(EmailOTPSendResponse(
-        maskedEmail: email,
-        retryAfter: 60,
-      ));
-    } on DioException catch (e) {
-      return Left(ServerFailure(
-        message: e.response?.data['error'] ?? 'Failed to send OTP',
-      ));
+      return await networkClient.handleRequest<EmailOTPSendResponse>(
+        NetworkRequest(
+          method: HttpMethod.post,
+          url: LoginRepository.emailOtpSendEndpoint,
+          body: {
+            'email': email,
+            'role': isProfessorsFlavor ? 'teacher' : 'parent',
+          },
+        ),
+        onSuccess: (json) {
+          if (json['error'] == true || json['data'] == null) {
+            throw ServerException(message: json['message'] ?? 'Failed to send OTP');
+          }
+          return EmailOTPSendResponse.fromJson(json['data']);
+        },
+      );
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return const Left(ServerFailure());
     }
   }
 
@@ -334,25 +332,33 @@ class LoginImpl extends LoginRepository {
     required String code,
   }) async {
     try {
-      await _otpDio.post('auth/verify-otp', data: {
-        'email': email,
-        'otp': code,
-      });
-      return Right(EmailOTPVerifyResponse(
-        accessToken: 'otp-verified',
-        user: UserModel.fromJson({
-          'id': '0',
-          'email': email,
-          'name': '',
-          'access_token': 'otp-verified',
-          'is_approval': false,
-          'role': isProfessorsFlavor ? 'teacher' : 'parent',
-        }),
-      ));
-    } on DioException catch (e) {
-      return Left(ServerFailure(
-        message: e.response?.data['error'] ?? 'Invalid OTP',
-      ));
+      return await networkClient.handleRequest<EmailOTPVerifyResponse>(
+        NetworkRequest(
+          method: HttpMethod.post,
+          url: LoginRepository.emailOtpVerifyEndpoint,
+          body: {
+            'email': email,
+            'otp': code,
+            'role': isProfessorsFlavor ? 'teacher' : 'parent',
+          },
+        ),
+        onSuccess: (json) {
+          if (json['error'] == true || json['data'] == null) {
+            throw ServerException(message: json['message'] ?? 'Invalid OTP');
+          }
+          // Laravel returns the user (with a real Sanctum access_token) inside
+          // `data` — same shape as auth/login.
+          final data = json['data'] as Map<String, dynamic>;
+          return EmailOTPVerifyResponse(
+            accessToken: (data['access_token'] ?? '').toString(),
+            user: UserModel.fromJson(data),
+          );
+        },
+      );
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
+    } catch (e) {
+      return const Left(ServerFailure());
     }
   }
 }
