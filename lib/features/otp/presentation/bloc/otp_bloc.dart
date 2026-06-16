@@ -4,10 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:escola/core/errors/failures.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
-import 'package:escola/core/models/user_model.dart';
 import 'package:escola/core/user/bloc/user_bloc.dart';
 import 'package:escola/features/login/data_sources/login_repository.dart';
-import 'package:escola/flavors/app_flavors.dart';
 import 'package:escola/features/login/models/login_requset.dart';
 import 'package:escola/features/otp/models/otp_delivery_mode.dart';
 import 'package:escola/features/otp/models/otp_error_model.dart';
@@ -161,6 +159,7 @@ class OTPBloc extends Cubit<OTPState> {
   Future<void> requestEmailOTP({
     required String email,
     required bool remember,
+    bool isRegister = false,
   }) async {
     currentMode = OTPDeliveryMode.email;
     rememberMe = remember;
@@ -174,7 +173,10 @@ class OTPBloc extends Cubit<OTPState> {
       return;
     }
 
-    final result = await loginRepository.requestEmailOTP(email: email);
+    final result = await loginRepository.requestEmailOTP(
+      email: email,
+      purpose: isRegister ? 'register' : 'login',
+    );
     result.fold(
           (failure) => emit(OTPFailure(failure)),
           (response) {
@@ -213,8 +215,8 @@ class OTPBloc extends Cubit<OTPState> {
     );
   }
 
-  Future<void> resendEmailOTP({required String email}) async {
-    await requestEmailOTP(email: email, remember: rememberMe);
+  Future<void> resendEmailOTP({required String email, bool isRegister = false}) async {
+    await requestEmailOTP(email: email, remember: rememberMe, isRegister: isRegister);
   }
 
   // ── Email OTP for self sign-up ─────────────────────────────
@@ -226,23 +228,18 @@ class OTPBloc extends Cubit<OTPState> {
   }) async {
     emit(OTPLoading());
 
-    // 1) Verify the emailed code
-    final verify = await loginRepository.confirmEmailOTP(email: email, code: code);
-    await verify.fold(
-          (failure) async => emit(OTPFailure(failure)),
-          (_) async {
-        // 2) Email verified → create the account
-        final registration = await loginRepository.register(event: params);
-        registration.fold(
-              (failure) => emit(OTPFailure(failure)),
-              (user) {
-            localDatabase.delete(key: LocalKeys.last_email_otp_request);
-            localDatabase.delete(key: LocalKeys.last_email_otp_email);
-            _timer?.cancel();
-            UserBloc.get.loggedIn(user);
-            emit(OTPSuccess());
-          },
-        );
+    // auth/register verifies the emailed code server-side (and burns it) before
+    // creating the account, so this is a single atomic call — no separate verify
+    // step (the login verify endpoint requires an already-existing account).
+    final registration = await loginRepository.register(event: params, otp: code);
+    registration.fold(
+          (failure) => emit(OTPFailure(failure)),
+          (user) {
+        localDatabase.delete(key: LocalKeys.last_email_otp_request);
+        localDatabase.delete(key: LocalKeys.last_email_otp_email);
+        _timer?.cancel();
+        UserBloc.get.loggedIn(user);
+        emit(OTPSuccess());
       },
     );
   }

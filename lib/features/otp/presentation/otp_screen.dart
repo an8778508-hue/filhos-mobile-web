@@ -268,6 +268,7 @@ class _OTPScreenState extends State<OTPScreen> {
                                           if (widget.mode == OTPDeliveryMode.email) {
                                             BlocProvider.of<OTPBloc>(context).resendEmailOTP(
                                               email: widget.email!,
+                                              isRegister: widget.registerParams != null,
                                             );
                                           } else {
                                             BlocProvider.of<OTPBloc>(context).resendOTP(

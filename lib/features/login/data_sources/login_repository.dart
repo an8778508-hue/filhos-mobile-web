@@ -34,17 +34,22 @@ abstract class LoginRepository {
     required String phone,
   });
 
-  // Register methods
+  // Register methods. [otp] is the emailed code, verified server-side by
+  // auth/register so the account is only created for a confirmed email.
   Future<Either<Failure, UserModel>> register({
    required RegisterParamaters event,
+   required String otp,
   });
   Future<Either<Failure, UserModel>> loginWithEmail({
     required LoginEmailParamaters parameters,
 
   });
 
+  /// [purpose] selects the backend behaviour: 'login' (default) requires the
+  /// email to already exist; 'register' requires it to be available.
   Future<Either<Failure, EmailOTPSendResponse>> requestEmailOTP({
     required String email,
+    String purpose,
   });
 
   Future<Either<Failure, EmailOTPVerifyResponse>> confirmEmailOTP({

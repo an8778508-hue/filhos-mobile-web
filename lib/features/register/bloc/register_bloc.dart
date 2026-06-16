@@ -13,7 +13,7 @@ class RegisterBloc extends Cubit<RegisterStates> {
   Future<void> sendEmailOtp({required String email}) async {
     emit(LoadingRegisterState());
     try {
-      final result = await loginRepository.requestEmailOTP(email: email);
+      final result = await loginRepository.requestEmailOTP(email: email, purpose: 'register');
       result.fold(
             (failure) => emit(ErrorRegisterState(failure.message)),
             (response) => emit(RegisterOtpSentState(response.maskedEmail)),

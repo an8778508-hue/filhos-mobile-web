@@ -248,9 +248,12 @@ class LoginImpl extends LoginRepository {
   }
 
   @override
-  Future<Either<Failure, UserModel>> register({required RegisterParamaters event}) async {
+  Future<Either<Failure, UserModel>> register({
+    required RegisterParamaters event,
+    required String otp,
+  }) async {
     try {
-      return networkClient.handleRequest(
+      return await networkClient.handleRequest<UserModel>(
         NetworkRequest(
           method: HttpMethod.post,
           url: registerEndpoint,
@@ -259,13 +262,21 @@ class LoginImpl extends LoginRepository {
             'email': event.email,
             'password': event.password,
             'password_confirmation': event.confirmPassword,
+            'otp': otp,
             'role': isProfessorsFlavor ? 'teacher' : 'parent',
           },
         ),
-        onSuccess: (json) => UserModel.fromJson(json?['data'] ?? {}),
+        onSuccess: (json) {
+          if (json['error'] == true || json['data'] == null) {
+            throw ServerException(message: json['message'] ?? 'Registration failed');
+          }
+          return UserModel.fromJson(json['data']);
+        },
       );
+    } on ServerException catch (e) {
+      return Left(ServerFailure(message: e.message));
     } catch (e) {
-      return Left(ServerFailure(message: 'Registration failed'));
+      return const Left(ServerFailure(message: 'Registration failed'));
     }
   }
 
@@ -301,6 +312,7 @@ class LoginImpl extends LoginRepository {
   @override
   Future<Either<Failure, EmailOTPSendResponse>> requestEmailOTP({
     required String email,
+    String purpose = 'login',
   }) async {
     try {
       return await networkClient.handleRequest<EmailOTPSendResponse>(
@@ -309,6 +321,7 @@ class LoginImpl extends LoginRepository {
           url: LoginRepository.emailOtpSendEndpoint,
           body: {
             'email': email,
+            'purpose': purpose,
             'role': isProfessorsFlavor ? 'teacher' : 'parent',
           },
         ),
