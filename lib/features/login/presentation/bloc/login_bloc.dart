@@ -43,8 +43,10 @@ class LoginBloc extends Cubit<LoginState> {
     }
     await localDatabase.write(key: LocalKeys.last_otp_request, value: DateTime.now().millisecondsSinceEpoch);
     await localDatabase.write(key: LocalKeys.last_otp_phone, value: phone);
+    // Seed the countdown so _startTimer actually ticks down (otherwise
+    // pendingOTPTime stays null and the timer never decrements or cancels).
+    pendingOTPTime = otpTimeout;
     _startTimer();
-        debugPrint('OTPBloc.requestOtttttttttttttttttttttTP $phone');
     await loginRepository.requestOTP(
       phone: phone,
       onReady: () async {

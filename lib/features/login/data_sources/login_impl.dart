@@ -288,7 +288,8 @@ class LoginImpl extends LoginRepository {
           url: loginWithEmailEndpoint,
           method: HttpMethod.post,
           body: {
-            'username': parameters.username,
+            // Backend `auth/login-with-email` validates/reads `email`, not `username`.
+            'email': parameters.username,
             'password': parameters.password,
             'role': isProfessorsFlavor ? 'teacher' : 'parent',
           },
@@ -360,12 +361,9 @@ class LoginImpl extends LoginRepository {
             throw ServerException(message: json['message'] ?? 'Invalid OTP');
           }
           // Laravel returns the user (with a real Sanctum access_token) inside
-          // `data` — same shape as auth/login.
-          final data = json['data'] as Map<String, dynamic>;
-          return EmailOTPVerifyResponse(
-            accessToken: (data['access_token'] ?? '').toString(),
-            user: UserModel.fromJson(data),
-          );
+          // `data` — same shape as auth/login. Parse via the factory so there's a
+          // single source of truth for the response shape.
+          return EmailOTPVerifyResponse.fromJson(json);
         },
       );
     } on ServerException catch (e) {

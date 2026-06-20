@@ -9,7 +9,7 @@ Guidance for Claude Code when working in this repository. Read this first; it ca
 **Product name:** **Criarte** (sometimes referred to internally as "Escola" / "Filhos").
 **What it is:** A Brazilian school ↔ home communication platform. It bridges teachers and parents around a shared child, surfacing the child's daily activities, photos, events, medications, and direct messaging.
 **Target users:** Brazilian private/early-education schools and the families enrolled in them. Portuguese is the primary UI language.
-**Pubspec name:** `escola` · **API base:** `https://criarte.filhos.app/api/v1/` · **Firebase project:** `escola-cede2`.
+**Pubspec name:** `escola` · **API base:** `https://disney.filhos.app/api/v1/` (the active `productionNewBaseUrl` in `api_const.dart`; `criarte.filhos.app` is the older production host) · **Firebase project:** `escola-cede2`.
 
 ### 1.1 Two flavors (two distinct apps from one codebase)
 
@@ -71,7 +71,7 @@ Core models in [lib/core/models/](lib/core/models/) and feature `models/` folder
 - **DI:** `get_it` (`di` singleton in [lib/core/dependency_injection/di.dart](lib/core/dependency_injection/di.dart))
 - **HTTP:** `dio` with custom interceptors
 - **Local storage:** `hive` (token, user, OTP state, rememberMe, seen-events flags) + `hydrated_bloc` storage for cubit state
-- **Backend:** REST API at `criarte.filhos.app` + Firebase (Auth, Firestore for chat, Storage for media, Messaging for push, Crashlytics)
+- **Backend:** REST API at `disney.filhos.app` (active prod; `criarte.filhos.app` is the older host) + Firebase (Auth, Firestore for chat, Storage for media, Messaging for push, Crashlytics)
 - **Media:** `image_picker`, `crop_your_image`, `flutter_sound` + `record` (audio messages), `just_audio`, `video_player` + `appinio_video_player`, `photo_view`
 - **Notifications:** `firebase_messaging` + `flutter_local_notifications` + `alarm` (for medicine reminders)
 - **Sizing/theming:** `flutter_screenutil` (design size 430×932), `flutter_custom_theme` driven by remote styling config
@@ -116,7 +116,7 @@ Feature DI files implement `DependencyInjection` and are wired through `initDepe
 
 ### 2.3 Networking conventions
 
-- Base URL constants in `lib/core/utils/constants/api_const.dart`. Production: `https://criarte.filhos.app/api/v1/`.
+- Base URL constants in `lib/core/utils/constants/api_const.dart`. Active production (`ApiConst.baseUrl` → `productionNewBaseUrl`): `https://disney.filhos.app/api/v1/`. `productionBaseUrl` (`criarte.filhos.app`) is the older host.
 - Auth header `Authorization: Bearer <token>` and `school`/`school_id`/`lang` headers are added by [lib/core/network/network_interceptor.dart](lib/core/network/network_interceptor.dart) — **don't add them manually in repos.**
 - Repo methods return `Future<Either<Failure, T>>` via `NetworkClient.handleRequest`. 500-class errors are reported to Crashlytics.
 - 10-hour Dio timeout is intentional (large uploads). Don't lower it without checking media upload flows.

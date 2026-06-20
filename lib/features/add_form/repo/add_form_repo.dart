@@ -116,7 +116,9 @@ class AddFormRepo {
       case AddFormType.event:
         endpoint = 'events/create';
       case AddFormType.announcement:
-        endpoint = '/api/v1/teacher/announcements';
+        // Base URL already includes `/api/v1/`; keep the path relative like every
+        // other endpoint, otherwise it doubles to `/api/v1/api/v1/...`.
+        endpoint = 'teacher/announcements';
     }
 
     // return Left(ServerFailure(message: 'test'));

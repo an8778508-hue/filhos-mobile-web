@@ -14,7 +14,8 @@ class AddressesRepo {
   final String countriesEndpoint = 'regions/countries';
   final String createOrAddAddressEndpoint = 'regions/addresses';
 
-  String citiesEndpoint(String id) => 'regions/states?city_id=$id';
+  // Fetches the states of a country. Backend `regions/states` reads `country_id`.
+  String citiesEndpoint(String id) => 'regions/states?country_id=$id';
 
   String regionsEndpoint(String id) => 'regions/cities?state_id=$id';
 

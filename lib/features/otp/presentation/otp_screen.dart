@@ -103,6 +103,10 @@ class _OTPScreenState extends State<OTPScreen> {
     return BlocProvider<OTPBloc>(
       create: (BuildContext context) {
         final bloc = di<OTPBloc>();
+        // Propagate the user's "remember me" choice; the success handlers
+        // (_successOTP / confirmEmailOTP) read it off the bloc, and this is a
+        // fresh bloc instance that would otherwise default to false.
+        bloc.rememberMe = widget.rememberMe;
         if (widget.mode == OTPDeliveryMode.email) {
           bloc.currentMode = OTPDeliveryMode.email;
           bloc.currentMaskedEmail = widget.maskedEmail;
