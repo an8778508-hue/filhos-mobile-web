@@ -74,3 +74,6 @@ playwright/test-results/
 playwright/playwright-report/
 playwright/.cache/
 playwright/*.tsbuildinfo
+
+# Stray nested clone — must not be embedded as a gitlink
+Evunity-mobile/

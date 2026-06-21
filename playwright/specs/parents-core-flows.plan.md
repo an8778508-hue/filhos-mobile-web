@@ -8,14 +8,14 @@
 
 The parents app boots: **Splash** (logo, ~2s) → no persisted user → `ChooseLanguageScreen.push`. With a multi-lang remote config, the **language chooser** shows one button per language (live: `English`, `العربية`; Portuguese is the bundled default). Selecting a language persists it (`UserBloc.selectLang`), then for the parents flavor: if `Config.onBoards` is non-empty → **OnBoardScreen** (carousel with `English` language toggle, `Skip`, `Next`), else → **LoginScreen**.
 
-**LoginScreen** (`lib/features/login/presentation/login_screen.dart`): phone form by default (`PhoneField`, country picker defaults to Egypt `+20`), `Keep me logged in` checkbox, `Login` button, `Terms and conditions` / `Privacy policy` links, `Create account` link, and a social row that toggles to an **email/password** form. Validation: empty phone → "This field can't be empty"; invalid email → "This is not a valid email"; password < 6 → "This field can't be empty or less than 6 character".
+**LoginScreen** (`lib/features/login/presentation/login_screen.dart`): defaults to a **username + password** form (`Username` field on top, `Password` below), `Keep me logged in` checkbox, `Login` button, `Terms and conditions` / `Privacy policy` links, `Create account` link, and a social row. Two remote flags gate the alternative methods, both **OFF** in the test config (`config-parents.json`): `phone_login_visible` re-adds the `PhoneField` form + the social-row phone/email toggle (country picker defaults to Egypt `+20`); `email_otp_globally_visible` adds a `Password` / `E-mail` tab bar where the second tab is the email-OTP login. Validation: empty username → "This field can't be empty"; password < 6 → "This field can't be empty or less than 6 character". (Email-format validation now lives only on the sign-up form and the email-OTP tab, not the default login form.)
 
 - `requestOTP` (`LoginBloc`) → in release builds runs the real `FirebaseAuth.verifyPhoneNumber` against the **Auth emulator** → `LoginReady` → pushes **OTPScreen**.
 - `OTPScreen` (`lib/features/otp/presentation/otp_screen.dart`): 6-cell `PinCodeTextField`. On 6 digits → `OTPBloc.confirmSMSCode` → `confirmOTP` (Firebase `signInWithCredential` on the Auth emulator) → on success `_successOTP` → `POST auth/login` → `UserModel`. `OTPSuccess` → if `isApproval == true` **MainScreen** (bottom nav: home/diary/events/settings) else **YourAccountUnderReviewScreen**. Invalid code → `OTPFailure` → `ErrorField`. `Resend again` re-requests; back arrow pops to login.
-- Email login → `POST auth/login-with-email` → success routes to MainScreen / under-review by `isApproval`; failure → `ErrorField`.
+- Default username login → `POST auth/login-with-email` with `{ username, password, role }` → success routes to MainScreen / under-review by `isApproval`; failure → `ErrorField`.
 - Social buttons (`auth/social-login`) cannot complete in headless web (Google/Facebook/Apple SDKs unavailable; Apple explicitly rejects web) — negative-only.
 
-**Endpoints to mock** (relative to `**/api/v1/`): `auth/login` (POST), `auth/login-with-email` (POST), `auth/social-login` (POST), `auth/register` (POST), `parent/home` (GET), plus a catch-all `**/api/v1/**` → 503 guard. Firebase Auth is genuinely emulated (do **not** mock `identitytoolkit`/`/emulator/v1`).
+**Endpoints to mock** (relative to `**/api/v1/`): `auth/login` (POST), `auth/login-with-email` (POST), `auth/social-login` (POST), `auth/register` (POST), `auth/email-otp/send` (POST), `auth/email-otp/verify` (POST), `parent/home` (GET), plus a catch-all `**/api/v1/**` → 503 guard. Firebase Auth is genuinely emulated (do **not** mock `identitytoolkit`/`/emulator/v1`). The email-OTP endpoints (used by the sign-up flow and the flag-gated email-OTP login tab) are pure REST and therefore mockable. `auth/email-otp/send` → `{ "masked_email": "a***@test.com", "retry_after": 60 }`; `auth/email-otp/verify` → `{ "access_token": "tok-test", "data": { …UserModel… } }`.
 
 **UserModel success body** (`auth/login` → `_successOTP`): `{ "data": { "id": "1", "name": "Ana Test", "phone": "<phone>", "email": "ana@test.com", "access_token": "tok-test", "is_approval": true, "country_code": "EG", "role": "parent" } }`. Set `"is_approval": false` for the under-review branch. `parent/home` accepts `{ "data": {} }` (HomeModel.fromJson tolerates empty).
 
@@ -106,42 +106,42 @@ The parents app boots: **Splash** (logo, ~2s) → no persisted user → `ChooseL
 **Steps:** reach Login; locate the `Keep me logged in` checkbox; toggle it.
 **Expected Results:** checkbox `checked` state flips (assert `toBeChecked()` / aria-checked via semantics).
 
-### 4. Login — Email Form
+### 4. Login — Username + Password Form (default)
 
-#### 4.1 Toggle to email form
-**Setup:** 503 catch-all.
-**Steps:** reach Login; click the email/phone toggle in the social row.
-**Expected Results:** email `textbox` and password `textbox` visible.
+> The default form is username + password (no toggle; `phone_login_visible` and `email_otp_globally_visible` are OFF in the test config). Login submits `{username,password,role}` to `auth/login-with-email`.
 
-#### 4.2 Empty email submit → required error
+#### 4.1 Default credential form visible
 **Setup:** 503 catch-all.
-**Steps:** to email form; click "Login".
+**Steps:** reach Login.
+**Expected Results:** `Username` `textbox` and `Password` `textbox` visible (no phone/email toggle).
+
+#### 4.2 Empty submit → required error
+**Setup:** 503 catch-all.
+**Steps:** at Login; click "Login" without typing.
 **Expected Results:** "This field can't be empty" visible.
 
-#### 4.3 Invalid email format → email error
-**Setup:** 503 catch-all.
-**Steps:** to email form; type `not-an-email` in email, `secret1` in password; click "Login".
-**Expected Results:** "This is not a valid email" visible.
+#### 4.3 Invalid email format → email error *(N/A — `test.fixme`)*
+The default login no longer validates email format (the identifier is a username). Email-format validation now lives on the sign-up form and the flag-gated email-OTP tab. Spec retained as `test.fixme`.
 
 #### 4.4 Short password → length error
 **Setup:** 503 catch-all.
-**Steps:** to email form; email `ana@test.com`, password `123`; click "Login".
+**Steps:** at Login; username `ana_test`, password `123`; click "Login".
 **Expected Results:** an error containing "6" and "character" visible.
 
-#### 4.5 Valid email login, approved user → MainScreen
-**Setup:** mock `POST **/api/v1/auth/login-with-email` → 200 `{data:{...is_approval:true}}`; mock `GET **/api/v1/parent/home` → 200 `{data:{}}`; 503 catch-all for the rest. Wrap the submit→land transition in `tracing.group('email-login')`; record a `tracing.startHar()` for this flow.
-**Steps:** to email form; email `ana@test.com`, password `secret1`; click "Login".
+#### 4.5 Valid login, approved user → MainScreen
+**Setup:** mock `POST **/api/v1/auth/login-with-email` → 200 `{data:{...is_approval:true}}`; mock `GET **/api/v1/parent/home` → 200 `{data:{}}`; 503 catch-all for the rest. Wrap the submit→land transition in `tracing.group('credential-login')`; record a `tracing.startHar()` for this flow.
+**Steps:** at Login; username `ana_test`, password `secret1`; click "Login".
 **Expected Results:** bottom navigation visible (home/diary/events/settings semantics); "Login Parents" no longer visible.
 
-#### 4.6 Valid email login, unapproved user → Account Under Review
+#### 4.6 Valid login, unapproved user → Account Under Review
 **Setup:** mock `auth/login-with-email` → 200 `{data:{...is_approval:false}}`; 503 catch-all.
 **Steps:** as 4.5.
 **Expected Results:** Account-under-review screen content visible (review/approval copy); bottom nav NOT visible.
 
-#### 4.7 Email login backend 500 → error field
+#### 4.7 Login backend 500 → error field
 **Setup:** mock `auth/login-with-email` → 500; 503 catch-all.
 **Steps:** as 4.5 with valid input.
-**Expected Results:** an `ErrorField` message visible; still on Login (email textbox visible).
+**Expected Results:** an `ErrorField` message visible; still on Login (`Username` textbox visible).
 
 ### 5. OTP Flow (real Auth emulator)
 
@@ -196,9 +196,14 @@ The parents app boots: **Splash** (logo, ~2s) → no persisted user → `ChooseL
 **Expected Results:** at least one "This field can't be empty" visible.
 
 #### 6.3 Register with unicode/emoji name accepted by field
-**Setup:** mock `POST **/api/v1/auth/register` → 200 `{data:{...is_approval:false}}`.
+**Setup:** mock `POST **/api/v1/auth/email-otp/send` → 200 (so Confirm progresses to the OTP screen).
 **Steps:** to Register; name `Añá 😀 الاسم`, valid email/password/confirm; submit.
-**Expected Results:** no client validation error on the name; request fired; routes to under-review (or success copy) — assert no `pageerror`.
+**Expected Results:** no client validation error on the name; `email-otp/send` request fired; the OTP screen is reached ("Resend again" visible) — assert no `pageerror`.
+
+#### 6.4 Sign up → email OTP → register creates account → MainScreen
+**Setup:** mock `POST **/api/v1/auth/email-otp/send` → 200 `{masked_email,retry_after}`; `POST **/api/v1/auth/email-otp/verify` → 200 `{access_token,data:{...}}`; `POST **/api/v1/auth/register` → 200 `{data:{...is_approval:true}}`; `GET **/api/v1/parent/home` → 200 `{data:{}}`; 503 catch-all.
+**Steps:** to Register; fill name/email/password/confirm; click "Confirm" (sends OTP, navigates to OTP screen — "Resend again" visible); enter the 6-digit code (auto-submits → verify → register).
+**Expected Results:** account created (approved) → bottom navigation visible; "Login Parents" not visible. *(Spec: `auth/register-email-otp-creates-account.spec.ts`. The pin-field interaction and OTP-screen copy need a live `npm run generated` / `/pw-heal` pass to lock selectors.)*
 
 ### 7. Legal Screens
 

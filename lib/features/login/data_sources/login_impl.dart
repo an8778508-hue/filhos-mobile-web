@@ -162,7 +162,8 @@ class LoginImpl extends LoginRepository {
             'token': idToken,
             'provider': provider,
             'role': isProfessorsFlavor ? 'teacher' : 'parent',
-            'platform': Platform.isAndroid ? 'android' : 'ios',
+            // Platform (dart:io) is unavailable on web — report 'web' there.
+            'platform': kIsWeb ? 'web' : (Platform.isAndroid ? 'android' : 'ios'),
           },
         ),
         onSuccess: (json) => UserModel.fromJson(json?['data'] ?? {}),
@@ -181,9 +182,13 @@ class LoginImpl extends LoginRepository {
 
       final GoogleSignIn googleSignIn = GoogleSignIn(
         scopes: ['email', 'profile'],
-        serverClientId: Platform.isAndroid
-            ? "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com"
-            : iosClientId,
+        // On web, Platform (dart:io) throws and google_sign_in takes its client
+        // id from the index.html meta tag instead of serverClientId.
+        serverClientId: kIsWeb
+            ? null
+            : (Platform.isAndroid
+                ? "328842559224-ebkef75qeupfjjsthn6cd0es0dp2hj89.apps.googleusercontent.com"
+                : iosClientId),
       );
 
       await googleSignIn.signOut();

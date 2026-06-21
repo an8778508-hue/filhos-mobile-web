@@ -70,9 +70,12 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
                             }
                           },
                         ),
-                        itemBuilder: (ctx, index) => SizedBox(
-                          height: double.maxFinite,
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                        itemBuilder: (ctx, index) => LayoutBuilder(
+                          builder: (context, constraints) => SingleChildScrollView(
+                            child: ConstrainedBox(
+                              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                              child: IntrinsicHeight(
+                                child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
                             SizedBox(
                               height: 513.h,
                               width: double.maxFinite,
@@ -137,7 +140,10 @@ class _OnBoardScreenState extends State<OnBoardScreen> with SingleTickerProvider
                             SizedBox(
                               height: 10.h,
                             ),
-                          ]),
+                                ]),
+                              ),
+                            ),
+                          ),
                         ),
                         itemCount: onBoards.length,
                         controller: controller,

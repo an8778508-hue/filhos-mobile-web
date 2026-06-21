@@ -7,6 +7,7 @@ import 'package:escola/core/utils/extensions/responsive_ext.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/chat/presentation/bloc/chat_bloc.dart';
 import 'package:escola/features/main/presentation/widgets/bottom_navigation_item.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +21,10 @@ class CustomBottomNavigation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 85.h,
+      // The nav items render ~3px taller on web than the fixed 85px design
+      // height (font metrics differ), tripping the "bottom overflowed by 3.0
+      // pixels" banner on every item. Give the bar extra headroom on web.
+      height: 85.h + (kIsWeb ? 12.0 : 0.0),
       width: double.infinity,
       color: context.colors.background,
       padding: EdgeInsets.symmetric(horizontal: 20.csw),

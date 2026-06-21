@@ -7,6 +7,7 @@ import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/main/bloc/main_bloc.dart';
 import 'package:escola/features/notifications/notifications_page.dart';
 import 'package:escola/shared/assets/assets.gen.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,6 +42,12 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function()? addFunction;
   final Function()? filterFunction;
 
+  /// Toolbar height. On web the toolbar content (avatar / two-line greeting /
+  /// notification button) renders a few logical pixels taller than the fixed
+  /// 80px design height, producing the "overflowed by 19 pixels" banner. Give
+  /// it extra headroom on web so the content never overflows.
+  double get _toolbarHeight => 80.h + (kIsWeb ? 20.0 : 0.0);
+
   @override
   Widget build(BuildContext context) {
     final currentId = BlocProvider.of<MainBloc>(context, listen: true).currentId;
@@ -57,7 +64,7 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Column(children: [
           AppBar(
             backgroundColor: color ?? context.colors.primary,
-            toolbarHeight: 80.h,
+            toolbarHeight: _toolbarHeight,
             titleSpacing: 0,
             automaticallyImplyLeading: false,
             leading: hasBackButton
@@ -201,5 +208,5 @@ class MyAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(80.h);
+  Size get preferredSize => Size.fromHeight(_toolbarHeight);
 }

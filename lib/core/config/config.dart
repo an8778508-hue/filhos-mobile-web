@@ -60,8 +60,10 @@ class Config {
   // List<OnBoardModel> get onBoards =>
   //     validateDataList(json['onBoards'], (e) => OnBoardModel(e));
 
+  // validateDataList guards against a null/absent `onboards` key (calling .map
+  // on null would crash the splash/onboard flow).
   List<OnBoardModel> get onBoards =>
-      List<OnBoardModel>.from(json['onboards'].map((e) => OnBoardModel.fromJson(e)).toList());
+      validateDataList(json['onboards'], (e) => OnBoardModel.fromJson(e));
 
   List<HomeCardModel> get homeCards {
     return validateDataList(json['home_cards'], (e) => HomeCardModel.fromJson(e));
@@ -153,7 +155,10 @@ class Config {
   }
 
   List<BottomBarItemModel> get bottomBar => validateDataList(json['bottomBar'], (e) => BottomBarItemModel(e));
-  SocialLoginConfig get socialLogin => SocialLoginConfig(json['social_login']?['data']);
+  // validateMap guards against a null `social_login.data` (e.g. when the config
+  // endpoint returns no social-login block) — passing null to the non-nullable
+  // SocialLoginConfig map threw "Null is not a subtype of Map<String, dynamic>".
+  SocialLoginConfig get socialLogin => SocialLoginConfig(validateMap(json['social_login']?['data']));
 }
 
 class BottomBarModel {

@@ -2,7 +2,7 @@
   <configuration default="false" name="Professors (Debug)" type="FlutterRunConfigurationType" factoryName="Flutter">
     <option name="additionalArgs" value="--flavor professores" />
     <option name="buildFlavor" value="professores" />
-    <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main_professores.dart" />
     <method v="2" />
   </configuration>
 </component>

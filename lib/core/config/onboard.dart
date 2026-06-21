@@ -7,7 +7,10 @@ class OnBoardModel {
 
   String get title => validateString(json['title']);
 
-  String get subTitle => validateString(json['description']);
+  // The config API sends the field as `subtitle`; older payloads used
+  // `description`. Prefer `subtitle`, fall back to `description`.
+  String get subTitle =>
+      validateString(json['subtitle'] ?? json['description']);
 
   String get image => validateString(json['image']);
 
