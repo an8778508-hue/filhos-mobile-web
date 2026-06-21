@@ -9,6 +9,7 @@ import 'package:escola/core/utils/alarm_manager/alarm_repo.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/flavors/app_flavors.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:permission_handler/permission_handler.dart';
 
 import '../debouncer.dart';
@@ -133,6 +134,10 @@ class AlarmManager {
   }
 
   removeAllAlarms() async {
+    // The `alarm` plugin and `dart:io` Platform have no web implementation —
+    // `Platform.isIOS` raises an UnsupportedError (an Error, not an Exception)
+    // on web, so guard the whole thing and catch broadly (not just Exception).
+    if (kIsWeb) return;
     try {
       if (Platform.isIOS) {
         for (int i = 0; i < ids.length; i++) {
@@ -141,7 +146,7 @@ class AlarmManager {
       } else {
         await Alarm.stopAll();
       }
-    } on Exception catch (e) {
+    } catch (e) {
       debugPrint('$e');
     }
   }

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:ui' show PlatformDispatcher;
 
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, debugPrint;
 import 'package:escola/core/config/cubit/cubit.dart';
 import 'package:escola/core/dependency_injection/di.dart';
 import 'package:escola/core/local_db/local_db_repo.dart';
@@ -88,13 +88,43 @@ class UserBloc extends HydratedCubit<UserState> {
   }
 
   Future<void> _signOutCleanup() async {
-    await localDatabaseRepo.removeUser();
-    await FirebaseAuth.instance.signOut();
-    await di<AlarmManager>().removeAllAlarms();
+    // Clear persisted auth FIRST, then emit the null state. This is what drives
+    // the logout navigation (the UserListener fires when user becomes null), so
+    // it must happen unconditionally — the best-effort platform cleanup below
+    // can throw (notably on web, where the native alarm plugin / dart:io
+    // `Platform` checks raise UnsupportedError) and must never abort logout.
+    try {
+      await localDatabaseRepo.removeUser();
+      // removeUser() only drops the user record; the auth token is a separate
+      // Hive key, so clear it explicitly or the next login keeps the old token.
+      await localDatabaseRepo.delete(key: LocalKeys.tokenKey);
+    } catch (e) {
+      debugPrint('logout: clearing local storage failed: $e');
+    }
+
+    emit(state.copyWith(user: null, userNullable: true));
+
+    // --- best-effort cleanup; failures here must not affect logout ---
+    try {
+      await FirebaseAuth.instance.signOut();
+    } catch (e) {
+      debugPrint('logout: firebase signOut failed: $e');
+    }
+    // The `alarm` plugin has no web implementation; calling it on web throws.
+    if (!kIsWeb) {
+      try {
+        await di<AlarmManager>().removeAllAlarms();
+      } catch (e) {
+        debugPrint('logout: removeAllAlarms failed: $e');
+      }
+    }
     // Drop the FCM token so pushes intended for the previous user don't reach
     // the next user on this device (LGPD cross-account leak).
-    await NotificationService.clearToken();
-    emit(state.copyWith(user: null, userNullable: true));
+    try {
+      await NotificationService.clearToken();
+    } catch (e) {
+      debugPrint('logout: clearToken failed: $e');
+    }
   }
 
   loggedOut() => _signOutCleanup();

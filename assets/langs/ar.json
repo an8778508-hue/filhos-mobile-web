@@ -1,4 +1,8 @@
 {
+  "parents": "أولياء الأمور",
+  "professors": "المعلمون",
+  "email": "البريد الإلكتروني",
+  "dont_have_account": "ليس لديك حساب؟",
   "camera": "كاميرا",
   "gallery": "معرض الصور",
   "pick_file_source": "اختيار مصدر الملف",
@@ -67,7 +71,7 @@
   "share": "مشاركة",
   "rate": "تقييم",
   "login_with_another_account": "تسجيل الدخول بحساب آخر",
-  "login_title": "عنوان تسجيل الدخول",
+  "login_title": "تسجيل دخول",
   "this_field_cant_be_empty": "لا يمكن ترك هذا الحقل فارغًا",
   "this_is_not_a_valid_mobile": "هذا ليس رقم هاتف صالح",
   "this_field_cant_be_empty_or_less_than": "لا يمكن ترك هذا الحقل فارغًا أو أقل من",

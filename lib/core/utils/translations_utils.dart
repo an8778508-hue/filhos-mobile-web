@@ -19,12 +19,18 @@ Future<Map<String, String>> downloadTranslationsFile(String code) async {
     }
 
     final Map<String, String> json = {};
-    for (final r in remoteJson.entries) {
-      json[r.key] = r.value;
-    }
+    // The bundled per-language file (assets/langs/<lang>.json) wins. It is
+    // correct for the *selected* language, whereas the remote `translations`
+    // map is a single, language-agnostic map — applying it first forced e.g.
+    // English strings ("Password", "Skip", "Keep me logged in") onto an Arabic
+    // UI, producing the mixed-language bug. Remote now only fills keys the
+    // bundled file doesn't define (so it can still add/override unknown keys).
     for (final l in localJson.entries) {
-      if (!json.containsKey(l.key)) {
-        json[l.key] = l.value;
+      json[l.key] = '${l.value}';
+    }
+    for (final r in remoteJson.entries) {
+      if (!json.containsKey(r.key)) {
+        json[r.key] = '${r.value}';
       }
     }
 
