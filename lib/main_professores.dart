@@ -16,7 +16,11 @@ class _DebugHttpOverrides extends HttpOverrides {
 }
 
 void main() async {
-  if (kDebugMode) {
+  // dart:io HttpOverrides don't exist on web (dio uses the browser adapter
+  // there), so only install the debug SSL bypass on native debug builds.
+  // Parity with main.dart — without the !kIsWeb guard the professores web
+  // build touches dart:io on startup.
+  if (kDebugMode && !kIsWeb) {
     HttpOverrides.global = _DebugHttpOverrides();
   }
   AppFlavor.setCurrent(AppType.professores);

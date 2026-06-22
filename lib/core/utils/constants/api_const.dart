@@ -12,6 +12,6 @@ const String productionNewBaseUrl = "https://disney.filhos.app/api/v1/";
 const String localBaseUrl = "http://localhost:8000/api/v1/";
 
 class ApiConst {
-  // ⚠️ LOCAL TESTING: switch to `localBaseUrl` to point at the local backend.
-  static const String baseUrl = productionNewBaseUrl;
+  // ⚠️ LOCAL TESTING: switch to `productionNewBaseUrl` for release builds.
+  static const String baseUrl = localBaseUrl;
 }
