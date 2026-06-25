@@ -22,14 +22,23 @@ class UserBloc extends HydratedCubit<UserState> {
   final UserRepo userRepo;
 
   UserBloc(this.localDatabaseRepo, this.userRepo)
-      : super(UserState(
-          // initial device language. Use `PlatformDispatcher.instance.locale`
-          // (from `dart:ui`) instead of `Platform.localeName` (from
-          // `dart:io`) because the latter throws on web.
-          language: parseLang(PlatformDispatcher.instance.locale.toString()),
-          languageWithCode: parseLang(PlatformDispatcher.instance.locale.toString()),
-        )) {
+      : super(_initialState()) {
     ConfigCubit.get.init(lang: state.languageWithCode);
+  }
+
+  /// Builds the initial state from the device locale. When the device is set to
+  /// Arabic, the app defaults to Arabic ('ar' / 'ar_EG'); otherwise it keeps the
+  /// historical Portuguese default. Use `PlatformDispatcher.instance.locale`
+  /// (from `dart:ui`) instead of `Platform.localeName` (from `dart:io`) because
+  /// the latter throws on web.
+  static UserState _initialState() {
+    final resolved = resolveInitialLanguage(
+      PlatformDispatcher.instance.locale.toString(),
+    );
+    return UserState(
+      language: resolved.language,
+      languageWithCode: resolved.languageWithCode,
+    );
   }
 
   updateDeviceToken() async {
