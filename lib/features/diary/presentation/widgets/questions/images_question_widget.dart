@@ -1,11 +1,11 @@
 import 'package:escola/core/components/icons/common_image.dart';
-import 'package:escola/core/components/video/video_player_widget.dart';
 import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/funuctions/widget_functions.dart';
 import 'package:escola/core/utils/valid_data.dart';
 import 'package:escola/features/diary/models/question_category.dart';
 import 'package:escola/features/diary/models/questions_models/image_question.dart';
 import 'package:escola/features/diary/presentation/widgets/gallery_media/media_gallery.dart';
+import 'package:escola/features/diary/widgets/video_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -75,9 +75,10 @@ class ImagesQuestionWidget extends StatelessWidget {
                           child: fileIsImage
                               ? CommonImage(imageUrl: image, fit: BoxFit.cover)
                               : fileIsVideo
-                                  ? VideoPlayerWidget(
-                                      url: image,
-                                      showJustImage: true,
+                                  ? VideoThumbnail(
+                                      // Tap handled by the outer GestureDetector
+                                      // (opens the media gallery / inline player).
+                                      thumbnailPath: image,
                                     )
                                   : Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
