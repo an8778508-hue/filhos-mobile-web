@@ -44,6 +44,7 @@ import 'package:escola/features/settings/medicines_professors/data_source/medici
 import 'package:escola/features/settings/my_children/bloc/my_children_bloc.dart';
 import 'package:escola/features/settings/my_children/repo/my_children_repo.dart';
 import 'package:escola/features/splash/presentation/bloc/splash_bloc.dart';
+import 'package:escola/features/subscription/subscription_di.dart';
 import 'package:escola/features/terms_and_condtions/bloc/terms_bloc.dart';
 import 'package:escola/features/terms_and_condtions/repo/terms_repo.dart';
 import 'package:get_it/get_it.dart';
@@ -126,4 +127,5 @@ FutureOr dependencyInjection() async {
   di.registerSingleton(GalleryRepo(networkClient: di()));
   di.registerFactory(() => GalleryBloc(di()));
   di.registerFactory(() => GalleryImagesBloc(di()));
+  SubscriptionInjection().init();
 }
