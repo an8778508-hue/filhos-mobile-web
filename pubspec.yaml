@@ -140,7 +140,7 @@ dev_dependencies:
 flutter_launcher_icons:
   ios: true
   android: true
-  image_path: "assets/app_icon/app_icon_parents.png"
+  image_path: "assets/app_icon/filhos_icon.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
