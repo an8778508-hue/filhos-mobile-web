@@ -12,6 +12,10 @@ const String productionNewBaseUrl = "https://disney.filhos.app/api/v1/";
 const String localBaseUrl = "http://localhost:8000/api/v1/";
 
 class ApiConst {
-  // ⚠️ LOCAL TESTING: switch to `productionNewBaseUrl` for release builds.
+  // Local backend for testing: production (disney.filhos.app) runs older code that
+  // is missing the email-otp routes, so the professors/parents registration flow
+  // (auth/email-otp/send → auth/register) 404s there and surfaces as "Server Error".
+  // The local backend has the OTP-gated register fix. Switch back to
+  // productionNewBaseUrl before release.
   static const String baseUrl = localBaseUrl;
 }
