@@ -32,9 +32,13 @@ Future initDependencies() async {
   }
 
   // initialize firebase
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    debugPrint('Firebase.initializeApp failed: $e');
+  }
 
   // Only activate App Check in release mode. On web, `playIntegrity` does
   // not apply — would need `ReCaptchaV3Provider('site-key')`. See

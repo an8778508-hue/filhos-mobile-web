@@ -116,8 +116,8 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                           child: ConfigSelector(
                             selector: (config) => config.logo,
                             builder:(context, logo) => CommonImage(
-                              imageUrl: logo ?? Assets.icons.defaultLogo.path,
-                              fallBackImagePath: Assets.icons.defaultLogo.path,
+                              imageUrl: logo ?? Assets.icons.filhosLogo.path,
+                              fallBackImagePath: Assets.icons.filhosLogo.path,
                               height: 260.h,
                             ),
                           ),

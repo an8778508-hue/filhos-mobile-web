@@ -9,6 +9,7 @@ import 'package:escola/core/utils/extensions/colors_ext.dart';
 import 'package:escola/core/utils/size_config.dart';
 import 'package:escola/features/background_services/bloc/background_services_bloc.dart';
 import 'package:escola/features/chat/presentation/bloc/chat_bloc.dart';
+import 'package:escola/features/choose_language/presentation/choose_language_screen.dart';
 import 'package:escola/features/featured_events/bloc/featured_events_bloc.dart';
 import 'package:escola/features/main/bloc/main_bloc.dart';
 import 'package:escola/features/splash/presentation/splash_screen.dart';
@@ -124,6 +125,24 @@ class MaterialAppWidget extends StatelessWidget {
                     child: app,
                   );
                 }
+                // Global forced-logout handler. When an authenticated request
+                // 401s, the network interceptor calls UserBloc.loggedOut(),
+                // which clears the token and emits user: null. Without a global
+                // listener nothing navigates, so the user is stranded on
+                // whatever authenticated screen failed (e.g. Home "Server
+                // Error") with no way back to login. This resets navigation to
+                // the login/language entry on the non-null -> null transition —
+                // the behaviour UserBloc._signOutCleanup already documents.
+                app = UserListener(
+                  listenWhen: (prev, curr) => prev.user != null && curr.user == null,
+                  listener: (_, __) {
+                    final navContext = navigatorKey.currentContext;
+                    if (navContext != null) {
+                      ChooseLanguageScreen.push(navContext);
+                    }
+                  },
+                  child: app,
+                );
                 return app;
               },
               home: const SplashScreen(),

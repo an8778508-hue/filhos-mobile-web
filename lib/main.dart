@@ -23,6 +23,10 @@ void main() async {
     HttpOverrides.global = _DebugHttpOverrides();
   }
   AppFlavor.setCurrent(AppType.parents);
-  await initDependencies();
+  try {
+    await initDependencies();
+  } catch (e) {
+    debugPrint('initDependencies failed: $e');
+  }
   runApp(AppFlavor(appType: AppType.parents, child: const MyApp()));
 }

@@ -22,7 +22,7 @@ class AppLogoIcon extends StatelessWidget {
       width: width.csw,
       height: width.csh,
       child: CommonImage(
-        imageUrl: assetsPath('default_logo'),
+        imageUrl: assetsPath('filhos_logo'),
         width: width.csw,
         height: width.csh,
         fit: BoxFit.fitHeight,
