@@ -12,6 +12,7 @@ const String productionNewBaseUrl = "https://disney.filhos.app/api/v1/";
 const String localBaseUrl = "http://localhost:8000/api/v1/";
 
 class ApiConst {
-  // ⚠️ LOCAL TESTING: switch to `productionNewBaseUrl` for release builds.
-  static const String baseUrl = localBaseUrl;
+  // Production host. Requires the backend (Ahmed_production / Ahmed_main) with the
+  // email-OTP routes to be deployed to disney.filhos.app.
+  static const String baseUrl = productionNewBaseUrl;
 }
